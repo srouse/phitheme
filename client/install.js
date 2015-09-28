@@ -1,6 +1,5 @@
 
 
-document.write("<link href='dist/phitheme.css' type='text/css' rel='stylesheet'>");
 
 var PhiModel;
 var PhiTheme = function () {};
