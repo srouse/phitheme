@@ -1,0 +1,198 @@
+
+.examplesList {
+    /*<csstag tag="section,list">
+        <div ...>
+            { .examplesList_header }
+            { .examplesList_row }
+            { .examplesList_row }
+            { .examplesList_row }
+        </div>
+    </csstag>*/
+    .zIndex( "examplesList" );
+
+    &.nano {
+        width: 100%;
+        padding-left: @phi_inv/2;
+
+        @media ( max-width: @screen-sm-min ) {
+            height: auto;
+            padding-left: 0px;
+        }
+
+        .nano-content {
+            padding-top: 50px;
+
+            @media ( max-width: @screen-sm-min ) {
+                overflow: visible;
+                position: relative;
+                width: 100%;
+                margin-right: 0px !important;
+                padding-top: 30px;
+            }
+        }
+    }
+    &.nano .nano-pane   {
+        background: none;
+        margin: 0px 0px;
+        margin-right: -1px;
+        padding: 0px;
+
+        border-radius: 0px;
+
+        width: 9px;
+    }
+    &.nano > .nano-pane > .nano-slider {
+        // background: @cs_purple;
+        border-radius: 0px;
+        background-image: url("/assets/cs_gradient.png");
+        background-size: 5px 100%;
+        background-size: 5px 100%;
+    }
+
+
+    body.s_project & {
+        @media ( max-width: @screen-sm-min ) {
+    		display: none;
+    	}
+    }
+
+    body.s_page & {
+        display: none;
+    }
+
+    .examplesList_spacer {
+        /*<csstag tag="shim">
+            <div ...></div>
+        </csstag>*/
+        height: 50px;
+        width: 10px;
+        clear: both;
+    }
+
+    .examplesList_header {
+        /*<csstag tag="row,header">
+            <div ...>
+                Header
+            </div>
+        </csstag>*/
+        float: left;
+        width: @phi;
+        margin-left: @phi_inv/2;
+        font-size: 26px;
+        padding-bottom: 28px;
+        margin-bottom: 0px;
+        color: #777;
+        border-bottom: 7px solid @cs_purple;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 90%; font-size: 26px;
+            margin-left: 5%;
+            text-align: center;
+        }
+
+        @media ( max-width: @screen-md-min ) {
+            text-align: center;
+        }
+    }
+
+    .examplesList_row {
+        /*<csstag tag="row">
+            <div ...>
+                { .examplesList_rowText }
+                { .examplesList_rowImage }
+            </div>
+        </csstag>*/
+        float: left;
+        width: @phi;
+        border-bottom: 1px solid #eee;
+        padding: 30px 0px;
+        margin-left: @phi_inv/2;
+        .hand();
+
+        &:hover {
+            // border-bottom: 1px solid #aaa;
+        }
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 90%;
+            margin-left: 5%;
+        }
+
+        .examplesList_rowText {
+            /*<csstag tag="row">
+                <div ...>
+                    { .examplesList_rowTitle }
+                    { .examplesList_rowSubTitle }
+                </div>
+            </csstag>*/
+            width: @phi;
+            float: left; clear: left;
+            margin-bottom: 20px;
+
+            @media ( max-width: @screen-sm-min ) {
+                width: 100%;
+            }
+
+            @media ( max-width: @screen-md-min ) {
+                width: 100%;
+            }
+
+            .examplesList_rowTitle {
+                /*<csstag tag="label">
+                    <div ...>
+                        Project Title
+                    </div>
+                </csstag>*/
+                font-size: 18px;
+                color: #555;
+
+                @media ( max-width: @screen-sm-min ) {
+                    font-size: 20px;
+                    text-align: center;
+                }
+
+                @media ( max-width: @screen-md-min ) {
+                    text-align: center;
+                }
+            }
+            .examplesList_rowSubTitle {
+                /*<csstag tag="label">
+                    <div ...>
+                        Project Sub Title
+                    </div>
+                </csstag>*/
+                font-size: 12px;
+                margin-top: 4px;
+                color: #999;
+
+                @media ( max-width: @screen-sm-min ) {
+                    font-size: 14px;
+                    text-align: center;
+                }
+
+                @media ( max-width: @screen-md-min ) {
+                    text-align: center;
+                }
+            }
+        }
+
+        .examplesList_rowImage {
+            /*<csstag tag="row">
+                <img ... src="/assets/content/posters/oh_poster/oh.png" />
+            </csstag>*/
+            float: right; clear: right;
+            box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .2 );
+            max-width: @phi_inv;
+
+            @media ( max-width: @screen-sm-min ) {
+                float: left; clear: left;
+                margin-left: @phi/2;
+            }
+
+            @media ( max-width: @screen-md-min ) {
+                float: left; clear: left;
+                margin-left: @phi/2;
+            }
+        }
+    }
+}

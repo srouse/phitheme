@@ -1,0 +1,263 @@
+
+.projectPage {
+    /*<csstag tag="section">
+        <div ...>
+            { .projectPage_img }
+            { .projectPage_nav }
+        </div>
+    </csstag>*/
+    position: fixed;
+    right: 0px; top: 0px;
+    background-color: rgba( 0 , 0 , 0 , .5 );
+    border-right: 0px solid #eee;
+    .zIndex( "project" );
+    height: 100%; width: 0px;
+    left: @phi_inv;
+    transition: width .3s, left .3s, height .3s;
+
+    @media ( max-width: @screen-sm-min ) {
+        position: relative;
+        height: 0px;
+        transition: none;
+    }
+
+    body.s_project & {
+        width: @phi;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 100%;
+            left: 0px; height: 60vh;
+        }
+    }
+
+    body.s_fullscreen & {
+        // transition: none;
+        width: 100%;
+        background-color: #777;
+        left: 0px;
+    }
+
+    .projectPage_title {
+        /*<csstag tag="title">
+            <div ...>title</div>
+        </csstag>*/
+        position: absolute;
+        top: 0px; left: 0px;
+        padding: 10px;
+        font-size: 14px;
+        color: #eee;
+        display: none;
+        .zIndex( "page_title" );
+        //background-color: rgba( 255,255,255,.7);
+
+        body.s_fullscreen & {
+            display: block;
+        }
+    }
+
+    .projectPage_img {
+        /*<csstag tag="image">
+            <img ... src="/assets/content/oh_full.png"
+                style="display:block;"/>
+        </csstag>*/
+        // background-color: #eee;
+        // border: 1px solid #eee;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        display: block;
+        left: 50%;
+        max-height: ~"calc(100% - 120px)";
+        max-width: ~"calc(100% - 100px)";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%) translateX(-50%);
+        display: none;
+        transition: all .3s;
+        .zIndex( "page_img" );
+        .hand();
+
+        body.s_project & {
+            display: block;
+        }
+
+        body.s_fullscreen & {
+            /*max-width: none;
+            max-height: none;
+            transform: none;
+            position: relative;
+            left: auto; top: auto;
+            margin: 50px;*/
+
+            max-height: ~"calc(100% - 80px)";
+            max-width: ~"calc(100% - 40px)";
+        }
+    }
+
+    .projectPage_imgNav {
+        /*<csstag tag="navigation">
+            <div ...>
+                { .projectPage_imgNav_icons }
+            </div>
+        </csstag>*/
+        position: absolute;
+        bottom: 0px; right: 0px;
+        width: 100%; height: 40px;
+
+        .projectPage_imgNav_icons {
+            /*<csstag tag="button">
+                <div ... style="width: 124px;">
+                    { .projectPage_imgNav_prev }
+                    { .projectPage_imgNav_icon }
+                    { .projectPage_imgNav_icon }
+                    { .projectPage_imgNav_next }
+                </div>
+            </csstag>*/
+            height: 100%;
+            margin: 0px auto;
+            width: 150px;
+
+            .projectPage_imgNav_prev {
+                /*<csstag tag="button">
+                    <div ...></div>
+                </csstag>*/
+                width: 50px; height: 100%;
+                background-image: url("/assets/prev_icon_sm_white.png");
+                float: left;
+                .hand();
+                &:hover {
+                    background-color: rgba( 0,0,0,.2);
+                }
+            }
+
+            .projectPage_imgNav_text {
+                /*<csstag tag="label">
+                    <div ...>3 / 4</div>
+                </csstag>*/
+                color: #eee;
+                font-size: 14px;
+                padding-top: 11px;
+                width: 50px;
+                float: left;
+                text-align: center;
+            }
+
+            .projectPage_imgNav_next {
+                /*<csstag tag="button">
+                    <div ...></div>
+                </csstag>*/
+                width: 50px; height: 100%;
+                background-image: url("/assets/next_icon_sm_white.png");
+                float: left;
+                .hand();
+                &:hover {
+                    background-color: rgba( 0,0,0,.2);
+                }
+            }
+
+            .projectPage_imgNav_icon {
+                /*<csstag tag="button">
+                    <div ...>
+                        { .projectPage_imgNav_iconBG }
+                    </div>
+                </csstag>*/
+                width: 30px; height: 100%;
+                float: left;
+                .hand();
+                &:hover {
+                    opacity: 0.5;
+                }
+
+                .projectPage_imgNav_iconBG {
+                    /*<csstag tag="button">
+                        <div ...></div>
+                    </csstag>*/
+                    width: 12px; height: 12px;
+                    border-radius: 50%;
+                    background-color: #fff;
+                    margin: 9px;
+                }
+            }
+
+        }
+
+    }
+
+/*===================*/
+    .projectPage_nav {
+        /*<csstag tag="navigation">
+            <div ...>
+                { .projectPage_navPrev }
+                { .projectPage_navNext }
+            </div>
+        </csstag>*/
+        position: absolute;
+        bottom: 0px; left: 0px;
+        width: 100%; height: 60px;
+        display:none;
+
+        body.s_project & {
+            display: block;
+        }
+
+        body.s_fullscreen & {
+            display: none;
+        }
+
+        .projectPage_navBase {
+            /*<csstag tag="button">
+                <div ...></div>
+            </csstag>*/
+            width: 50%; height: 100%;
+            // background-color: rgba( 30,30,30,.1);
+            .hand();
+            &:hover {
+                background-color: rgba( 0,0,0,.1);
+            }
+        }
+
+        .projectPage_navPrev {
+            /*<csstag tag="button">
+                <div ...></div>
+            </csstag>*/
+            &:extend(
+                .projectPage
+                .projectPage_nav
+                .projectPage_navBase all
+            );
+            float: left;
+            background-image: url("/assets/prev_icon.png");
+        }
+        .projectPage_navNext {
+            /*<csstag tag="button">
+                <div ...></div>
+            </csstag>*/
+            &:extend(
+                .projectPage
+                .projectPage_nav
+                .projectPage_navBase all
+            );
+            float: right;
+            background-image: url("/assets/next_icon.png");
+        }
+    }
+
+    .projectPage_close {
+        /*<csstag tag="button">
+            <div ...></div>
+        </csstag>*/
+        position: absolute;
+        width: 60px; height: 60px;
+        top: 0px; right: 0px;
+        background-image: url("/assets/close_icon_white.png");
+        .hand();
+        display:none;
+
+        body.s_project & {
+            display: block;
+        }
+
+        &:hover {
+            background-color: rgba( 30,30,30,.2);
+        }
+    }
+}

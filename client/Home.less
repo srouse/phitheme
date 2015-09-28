@@ -1,0 +1,164 @@
+
+.catapultStudio {
+    /*<csstag tag="app">
+        <div ...>
+            { .contentTitleSection }
+            { .identityNav }
+            { .contentArea }
+        </div>
+    </csstag>*/
+    width: 100%; height: 100%;
+    background-color: #fff;
+    position: relative;
+
+    @media ( max-width: @screen-sm-min ) {
+		height: auto;
+	}
+
+    .contentTitleSection {}
+
+    .identityNav {}
+
+    .contentArea {
+        /*<csstag tag="section">
+            <div ...>
+                { .examplesList }
+            </div>
+        </csstag>*/
+        width: @phi; height: 100%;
+        position: absolute;
+        right: 0px; top: 0px;
+        overflow: auto;
+        .zIndex( "contentArea" );
+        background-color: #fff;
+        display: none;
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            display: block;
+        }
+
+        @media ( max-width: @screen-sm-min ) {
+    		width: 100%; height: auto;
+            position: relative;
+            .zIndex( "contentArea_screen-sm-min" );
+    	}
+    }
+
+    /*needed here for layering*/
+    .catapultStudio_copyrightNav {
+        /*<csstag tag="container">
+            <div ...>
+                { .identityNav_bottomNav }
+            </div>
+        </div>*/
+        position: absolute;
+        left: 0px; bottom: 0px;
+        width: 100%; height: 62px;
+        transition: height .3s, width .3s, left .3s;
+        .zIndex( "catapultStudio_copyrightNav" );
+
+        @media ( max-width: @screen-sm-min ) {
+    	}
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            left: 0px;
+            width: @phi_inv;
+
+            @media ( max-width: @screen-sm-min ) {
+        		width: 100%;
+                position: relative;
+        	}
+        }
+
+        .identityNav_bottomNav {
+            /*<csstag tag="link">
+                <div ...>
+                    { .identityNav_bottomNavLink }
+                    { .identityNav_bottomNavLink }
+                    { .identityNav_copyright }
+                </div>
+            </csstag>*/
+            position: absolute;
+            left: 35%; bottom: 0px;
+            width: 30%; height: 100%;
+            border-top: 1px solid #eee;
+            transition: height .3s, width .3s, left .3s;
+            overflow: hidden;
+            padding: 0px 20px;
+
+            @media ( max-width: @screen-sm-min ) {
+                width: 80%; left: 10%;
+            }
+
+            body.s_project &,
+            body.s_list &,
+            body.s_page & {
+                left: @phi_inv/2;
+                width: @phi;
+            }
+
+            body.s_project & {
+                height: 0px;
+            }
+
+            .identityNav_bottomNavLink {
+                /*<csstag tag="link">
+                    <div ...>Contact</div>
+                </csstag>*/
+                width: 50%;
+                color: #aaa;
+                font-size: 14px;
+                text-align: center;
+                margin-top: 10px;
+                float: left;
+                .hand();
+
+                &:hover {
+                    color: #777;
+                }
+            }
+
+            .identityNav_aboutNavLink {
+                &:extend(
+                    .catapultStudio
+                    .catapultStudio_copyrightNav
+                    .identityNav_bottomNav
+                    .identityNav_bottomNavLink
+                );
+
+                body.s_page_about & {
+                    color: @cs_blue;
+                }
+            }
+
+            .identityNav_contactNavLink {
+                &:extend(
+                    .catapultStudio
+                    .catapultStudio_copyrightNav
+                    .identityNav_bottomNav
+                    .identityNav_bottomNavLink
+                );
+
+                body.s_page_contact & {
+                    color: @cs_blue;
+                }
+            }
+
+            .identityNav_copyright {
+                /*<csstag tag="link">
+                    <div ...>copyright 2015, CatapultStudio.com</div>
+                </csstag>*/
+                width: 100%;
+                font-size: 9px; color: #ccc;
+                text-align: center;
+                position: absolute;
+                bottom: 8px; left: 0px;
+            }
+        }
+    }
+
+}

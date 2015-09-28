@@ -1,0 +1,69 @@
+
+.page {
+    /*<csstag tag="page">
+        <div ...>
+            { .page_content }
+        </div>
+    </csstag>*/
+    display: none;
+    width: 100%;
+
+    body.s_page & {
+        display: block;
+    }
+
+
+
+    .page_content {
+        /*<csstag tag="section">
+            <div ...>
+                <h1>Title</h1>
+                <p>Some content</p>
+            </div>
+        </csstag>*/
+        width: @phi;
+        margin-left: @phi_inv/2;
+        padding-top: 50px;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 90%;
+            margin-left: 5%;
+            padding-top: 30px;
+        }
+
+        h1 {
+            /*<csstag tag="header">
+                <h1>Title</h1>
+            </csstag>*/
+            width: 100%;
+            float: left;
+            font-weight: normal;
+            font-size: 26px;
+            margin: 0px; padding: 0px;
+            padding-bottom: 28px;
+            margin-bottom: 0px;
+            color: #777;
+            border-bottom: 7px solid @cs_purple;
+
+            @media ( max-width: @screen-sm-min ) {
+                font-size: 26px;
+                text-align: center;
+            }
+        }
+
+        p {
+            /*<csstag tag="text">
+                <p>Some Content</p>
+            </csstag>*/
+            padding: 16px 0px;
+            color: #777;
+            float: left;
+            line-height: 26px;
+
+            @media ( max-width: @screen-sm-min ) {
+                font-size: 16px;
+                padding: 10px 0px;
+            }
+        }
+    }
+}

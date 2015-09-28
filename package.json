@@ -1,0 +1,36 @@
+{
+    "name" : "PhiTheme",
+    "description" : "www.phitheme.com",
+    "author" : "srouse",
+    "version" : "0.1.0",
+    "dependencies": {
+        "grunt":"0.4.5",
+        "grunt-contrib-watch": "0.6.1",
+        "grunt-contrib-less": "1.0.0",
+        "grunt-contrib-concat" : "0.5.1",
+        "grunt-react" : "~0.12",
+        "grunt-css-parse" : "~0.2",
+
+        "less":"~2.5",
+        "jquery": "~1.11",
+        "react" : "~0.13",
+        "routestate":"~0.3",
+        "nanoscroller":"~0.8",
+        "csstagged":"~0.1"
+   },
+   "bundledDependencies": [],
+    "devDependencies" : {
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/srouse/phitheme.git"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/srouse/phitheme/issues"
+    },
+    "homepage": "https://github.com/srouse/phitheme"
+}

@@ -1,0 +1,98 @@
+
+
+
+body {
+	background-color: #eee;
+}
+
+.frame.iphone {
+	width: 100%; height: 100%;
+	background-image: url('iphone_bg.png?v3');	
+	background-repeat: no-repeat;
+	background-position: center;
+	position: fixed;
+	z-index: 20;
+}
+
+
+.iphone .logo_box {
+	background-size: 320px 548px !important;
+}
+
+.iphone .logo {
+	background-size: 320px 548px !important;
+}
+
+
+.frame.iphone_land {
+	width: 100%; height: 100%;
+	background-image: url('iphone_land_bg.png?v3');	
+	background-repeat: no-repeat;
+	background-position: center;
+	position: fixed;
+	z-index: 20;
+}
+
+
+.iphone_land .logo_box {
+	background-size: 548px 320px !important;
+}
+
+.iphone_land .logo {
+	background-size: 548px 320px !important;
+}
+
+
+
+.frame.ipad {
+	width: 100%; height: 100%;
+	background-image: url('ipad_bg.png?v3');	
+	background-repeat: no-repeat;
+	background-position: center;
+	position: fixed;
+	z-index: 20;
+}
+
+.ipad .logo_box {
+	background-size: 718px 539px !important;
+}
+
+.ipad .logo {
+	background-size: 718px 539px !important;
+}
+
+
+.frame.browser {
+	width: 100%; height: 100%;
+	background-image: url('browser_bg.png?v3');	
+	background-repeat: no-repeat;
+	background-position: center;
+	position: fixed;
+	z-index: 20;
+}
+
+.browser .logo_box {
+	background-size: 730px 395px !important;
+}
+
+.browser .logo {
+	background-size: 730px 395px !important;
+}
+
+.frame.browser_v2 {
+	width: 100%; height: 100%;
+	background-image: url('browser_v2_bg.png?v3');	
+	background-repeat: no-repeat;
+	background-position: center;
+	position: fixed;
+	z-index: 20;
+}
+
+.browser_v2 .logo_box {
+	background-size: 730px 388px !important;
+}
+
+.browser_v2 .logo {
+	background-size: 730px 388px !important;
+}
+

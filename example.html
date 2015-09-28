@@ -1,0 +1,37 @@
+
+//JSON
+<script>
+    var allart =
+        {
+            artwork:[
+                {title:"wildflowers"},
+                {title:"clowns"}
+            ]
+        }
+</script>
+
+//HTML
+<div class="artworks">
+    <div class="artwork">
+        <h2>wildflowers</h2>
+    </div>
+    <div class="artwork">
+        <div><h2>clowns</h2></div>
+    </div>
+</div>
+
+//HTMLtoJSON
+<div id="PhiModel"
+    data-json="artworks:array">
+    <div class="artwork"
+        data-json="artwork:object">
+        <h2 data-json="title:string">wildflowers</h2>
+    </div>
+    <div class="artwork"
+        data-json="artwork:object">
+        <div>
+            <h2 data-json="title"
+                data-json-description='{"description":"dfsdf"}'>clowns</h2>
+        </div>
+    </div>
+</div>

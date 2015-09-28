@@ -1,0 +1,213 @@
+
+.identityNav {
+    /*<csstag tag="section">
+        <div ...>
+            { .identityNav_gradOffset }
+        </div>
+    </csstag>*/
+    width: 100%; height: 100%;
+    background-image: url("/assets/cs_gradient.png");
+    background-position: left;
+    background-size: 6px 100%;
+    background-color: #fff;
+    position: absolute;
+    left: 0px; top: 0px;
+    transition: height .3s, top .3s, width .3s;
+    border-right: 1px solid #eee;
+    box-shadow: 0px 0px 6px 0px rgba( 0,0,0,.2);
+    .zIndex( "identityNav" );
+
+    @media ( max-width: @screen-sm-min ) {
+		width: 100%; height: 100vh; top: 0px;
+        position: relative;
+        border-bottom: 1px solid #eee;
+	}
+
+    body.s_project & {
+        height: @phi;
+    }
+
+    body.s_project &,
+    body.s_list &,
+    body.s_page & {
+        width: @phi_inv;
+
+        @media ( max-width: @screen-sm-min ) {
+    		width: 100%; height: 80px;
+            position: relative;
+    	}
+    }
+
+    .identityNav_gradOffset {
+        /*<csstag tag="shim">
+            <div ...>
+                { .identityNav_logo }
+                { .identityNav_centerNav }
+            </div>
+        </csstag>*/
+        .calc( width , 90% , -6px );
+        height: 100%;
+        margin-left: 5px;
+        position: relative;
+        .calc( margin-left , 5% , 6px );
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            @media ( max-width: @screen-sm-min ) {
+        		margin-left: 6px;
+        	}
+        }
+    }
+
+    .identityNav_logo {
+        /*<csstag tag="graphic,logo">
+            <div ...></div>
+        </csstag>*/
+        width: 100%; height: 80%;
+        background-image: url("/assets/catapultstudio_logo_large.svg");
+        background-size: auto 50%;
+        transition: all .3s;
+        .hand();
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            height: 80%;
+            background-size: 50% auto;
+
+            @media ( max-width: @screen-sm-min ) {
+        		height: 100%; width: 75px;
+                background-image: url("/assets/catapultstudio_mark.svg");
+                background-size: 56%;
+        	}
+        }
+    }
+
+    .identityNav_centerNav {
+        /*<csstag tag="navigation">
+            <div ...>
+                { .identityNav_productsLink }
+                { .identityNav_designsLink }
+                { .identityNav_postersLink }
+            </div>
+        </csstag>*/
+        width: 50%; height: 40px;
+        position: absolute;
+        left: 25%;
+        transition: all .3s;
+        bottom: 100px;
+        text-align: center;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 100%;
+            left: 0px;  height: 40px;
+            bottom: 90px;
+            transition: none;
+        }
+
+        body.s_list &,
+        body.s_page & {
+            bottom: 80px;
+        }
+
+        body.s_project & {
+            bottom: 16px;
+        }
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            width: 100%;
+            left: 0px;
+            height: 30px;
+
+            @media ( max-width: @screen-sm-min ) {
+                .calc( width , 100% , -60px );
+                left: 80px;  height: 80px;
+                bottom: 0px;
+                transition: none;
+            }
+        }
+
+        .identityNav_link {
+            /*<csstag tag="link">
+                <div ...>Projects</div>
+            </csstag>*/
+            width: 33.3333%; height: 100%;
+            float: left;
+            font-size: 18px;
+            text-align: center;
+            .hand();
+            color: #333;
+            transition: all .2s;
+
+            &:hover {
+                color: @cs_blue;
+            }
+
+            @media ( max-width: @screen-sm-min ) {
+                font-size: 16px;
+                padding-top: 32px;
+            }
+
+            body.s_project &,
+            body.s_list &,
+            body.s_page & {
+                @media ( max-width: @screen-sm-min ) {
+                    font-size: 14px;
+                    padding-top: 32px;
+                }
+            }
+        }
+
+        .identityNav_productsLink {
+            /*<csstag tag="link">
+                <div ...>Products</div>
+            </csstag>*/
+            &:extend(
+                .identityNav
+                .identityNav_centerNav
+                .identityNav_link all
+            );
+
+            body.s_list_product & {
+                color: @cs_blue;
+            }
+        }
+
+        .identityNav_designsLink {
+            /*<csstag tag="link">
+                <div ...>Designs</div>
+            </csstag>*/
+            &:extend(
+                .identityNav
+                .identityNav_centerNav
+                .identityNav_link all
+            );
+
+            body.s_list_design & {
+                color: @cs_blue;
+            }
+        }
+
+        .identityNav_postersLink {
+            /*<csstag tag="link">
+                <div ...>Posters</div>
+            </csstag>*/
+            &:extend(
+                .identityNav
+                .identityNav_centerNav
+                .identityNav_link all
+            );
+
+            body.s_list_poster & {
+                color: @cs_blue;
+            }
+        }
+    }
+
+
+
+
+}
