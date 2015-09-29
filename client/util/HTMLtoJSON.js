@@ -1,6 +1,6 @@
 
-var HTMLtoJSON = function ( html ) {
-    var json = _HTMLtoJSON( html , "json" );
+var HTMLtoJSON = function ( html , source ) {
+    var json = _HTMLtoJSON( html , "json" , source );
     return json;
 }
 
@@ -15,7 +15,6 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
             return $.trim( node.text() );
         }
     }
-
 
     $(html).each( function(i,e) {
         var total_json_nodes = 0;
@@ -54,11 +53,17 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                     switch ( type ) {
                         case "array" :
-                            json_ele = [];
+                            // decorate pre existing elements
                             if ( parent_is_array ) {
+                                json_ele = [];
                                 json_parent.push( json_ele );
                             }else{
-                                json_parent[prop_name] = json_ele;
+                                if ( json_parent[prop_name] ) {
+                                    json_ele = json_parent[prop_name];
+                                }else{
+                                    json_ele = [];
+                                    json_parent[prop_name] = json_ele;
+                                }
                             }
 
                             var e_children = $(e).children();
@@ -72,12 +77,19 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }
                             break;
                         case "object" :
-                            json_ele = {};
+                            // decorate pre existing elements
                             if ( parent_is_array ) {
+                                json_ele = {};
                                 json_parent.push( json_ele );
                             }else{
-                                json_parent[prop_name] = json_ele;
+                                if ( json_parent[prop_name] ) {
+                                    json_ele = json_parent[prop_name];
+                                }else{
+                                    json_ele = {};
+                                    json_parent[prop_name] = json_ele;
+                                }
                             }
+
                             _HTMLtoJSON( $(e).children() , set , json_ele );
                             break;
                         case "number" :

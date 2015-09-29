@@ -2,16 +2,6 @@
 <html lang="en">
 	<head>
 		<title>CatapultStudio.com</title>
-		<meta http-equiv="cache-control" content="max-age=0" />
-		<meta http-equiv="cache-control" content="no-cache" />
-		<meta http-equiv="expires" content="0" />
-		<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-		<meta http-equiv="pragma" content="no-cache" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-		<meta name="viewport" content="user-scalable=no,width=device-width,
-				initial-scale=1.0,maximum-scale=1.0" />
-
 
 		<link href='dist/phitheme.css' type='text/css' rel='stylesheet'>
 		<script src='dist/phitheme.js'></script>
@@ -21,11 +11,21 @@
 	</head>
 	<body>
 
-
         <div id="PhiModel">
 
-			<div data-json="content:object">
-				<div data-json="about:object">
+			<!-- Style Overrides -->
+			<div data-json="style:object">
+				<div data-json-logo="assets/catapultstudio_logo_large.svg"></div>
+				<div data-json-logo_mark="assets/catapultstudio_mark.svg"></div>
+				<div data-json-side_gradient="assets/cs_gradient.png"></div>
+				<div data-json-line_highlight_color="#b94ffb"></div>
+				<div data-json-text_highlight_color="#02dfdf"></div>
+			</div>
+
+			<!-- Pages (full content) -->
+			<div data-json="pages:array">
+				<div data-json="page:object">
+					<div data-json="title">About</div>
 					<div data-json="content:html">
 						<h1>About</h1>
 						<p>OpenHomes is a startup that I co-founded that was
@@ -45,14 +45,43 @@
 						(the "H").</p>
 					</div>
 				</div>
-				<div data-json="contact:object">
+				<div data-json="page:object">
+					<div data-json="title">Contact</div>
 					<div data-json="content:html">
 						<h1>Contact</h1>
 						<p>some about content</p>
 					</div>
 				</div>
+				<div data-json="page:object">
+					<div data-json="title">Whoopee</div>
+					<div data-json="content:html">
+						<h1>Whoopee</h1>
+						<p>some about content</p>
+					</div>
+				</div>
 			</div>
 
+			<!-- Product Navigation (of tag filters) -->
+			<div data-json="product_nav:array">
+				<div data-json="product:object">
+					<div data-json="title">Products</div>
+					<div data-json="filters:array">product</div>
+				</div>
+				<div data-json="product:object">
+					<div data-json="title">Designs</div>
+					<div data-json="filters:array">design</div>
+				</div>
+				<div data-json="product:object">
+					<div data-json="title">Posters</div>
+					<div data-json="filters:array">poster</div>
+				</div>
+				<div data-json="product:object">
+					<div data-json="title">Otha</div>
+					<div data-json="filters:array">ipad</div>
+				</div>
+			</div>
+
+			<!-- Tag to Title Mappings -->
 			<div data-json-tag_titles='{
 				"product":"Products",
 				"poster":"Posters",
@@ -63,8 +92,10 @@
 				"application":"Applications"
 			}'></div>
 
+			<!-- Products (mapped via tags) -->
 			<div class="projects"
 				data-json="projects:array">
+
 				<div class="project"
 					data-json="products:object">
 	                <h1 data-json="title">QuantifiedProject</h1>
@@ -74,8 +105,8 @@
 						QuantifiedProject is an application focusing on
 					</p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/products/qp/qp_logo_square.png"
-						src="/assets/content/products/qp/qp_logo_square.png" />
+						data-json-fullimage="../assets/content/products/qp/qp_logo_square.png"
+						src="../assets/content/products/qp/qp_logo_square.png" />
 	            </div>
 	            <div class="project"
 					data-json="project:object">
@@ -84,8 +115,8 @@
 					<div data-json="tags:array">product,web,application</div>
 					<p data-json="description"></p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/products/parking_app/icon_1024x1024.png"
-						src="/assets/content/products/parking_app/icon_1024x1024.png" />
+						data-json-fullimage="../assets/content/products/parking_app/icon_1024x1024.png"
+						src="../assets/content/products/parking_app/icon_1024x1024.png" />
 	            </div>
 				<div class="project"
 					data-json="project:object">
@@ -94,8 +125,8 @@
 					<div data-json="tags:array">product,web, application,open source</div>
 					<p data-json="description"></p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/products/csstagged/CSSTagged_logo_vert.png"
-						src="/assets/content/products/csstagged/CSSTagged_logo_vert.png" />
+						data-json-fullimage="../assets/content/products/csstagged/CSSTagged_logo_vert.png"
+						src="../assets/content/products/csstagged/CSSTagged_logo_vert.png" />
 	            </div>
 				<div class="project"
 					data-json="project:object">
@@ -122,33 +153,33 @@
 						(the "H").
 					</p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/designs/oh/images/home.png"
-						src="/assets/content/designs/oh/images/home.png" />
+						data-json-fullimage="../assets/content/designs/oh/images/home.png"
+						src="../assets/content/designs/oh/images/home.png" />
 					<div class="project_images"
 						data-json="images:array">
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/oh/images/home.png" />
+								src="../assets/content/designs/oh/images/home.png" />
 							<p data-json="title">Home 1</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/oh/images/cal.png" />
+								src="../assets/content/designs/oh/images/cal.png" />
 							<p data-json="title">Home 1</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/oh/images/listing.png" />
+								src="../assets/content/designs/oh/images/listing.png" />
 							<p data-json="title">Home 2</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/oh/images/map.png" />
+								src="../assets/content/designs/oh/images/map.png" />
 							<p data-json="title">Home 2</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/oh/images/photos.png" />
+								src="../assets/content/designs/oh/images/photos.png" />
 							<p data-json="title">Home 2</p>
 						</div>
 					</div>
@@ -168,37 +199,37 @@
 						graph manipulation.
 					</p>
 					<img data-json="image"
-						src="/assets/content/designs/math_sense/images/home.png" />
+						src="../assets/content/designs/math_sense/images/home.png" />
 					<div class="project_images"
 						data-json="images:array">
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/math_sense/images/home.png" />
+								src="../assets/content/designs/math_sense/images/home.png" />
 							<p data-json="title">Home</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/math_sense/images/lessons.png" />
+								src="../assets/content/designs/math_sense/images/lessons.png" />
 							<p data-json="title">Lessons</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/math_sense/images/line.png" />
+								src="../assets/content/designs/math_sense/images/line.png" />
 							<p data-json="title">Line</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/math_sense/images/equation.png" />
+								src="../assets/content/designs/math_sense/images/equation.png" />
 							<p data-json="title">Equations</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/math_sense/images/input.png" />
+								src="../assets/content/designs/math_sense/images/input.png" />
 							<p data-json="title">Input</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/math_sense/images/logo.png" />
+								src="../assets/content/designs/math_sense/images/logo.png" />
 							<p data-json="title">Logo</p>
 						</div>
 					</div>
@@ -212,32 +243,32 @@
 
 					</p>
 					<img data-json="image"
-						src="/assets/content/designs/ee/images/home.png" />
+						src="../assets/content/designs/ee/images/home.png" />
 					<div class="project_images"
 						data-json="images:array">
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/ee/images/home.png" />
+								src="../assets/content/designs/ee/images/home.png" />
 							<p data-json="title">Home</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/ee/images/deck_page.png" />
+								src="../assets/content/designs/ee/images/deck_page.png" />
 							<p data-json="title">Deck Page</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/ee/images/time_periods.png" />
+								src="../assets/content/designs/ee/images/time_periods.png" />
 							<p data-json="title">Time Periods</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/ee/images/flip_unslipped.png" />
+								src="../assets/content/designs/ee/images/flip_unslipped.png" />
 							<p data-json="title">Flip Unslipped</p>
 						</div>
 						<div class="project_image" data-json="image:object">
 							<img data-json="image_url"
-								src="/assets/content/designs/ee/images/flip_up.png" />
+								src="../assets/content/designs/ee/images/flip_up.png" />
 							<p data-json="title">Flip Up</p>
 						</div>
 					</div>
@@ -258,8 +289,8 @@
 						(the "H").
 					</p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/posters/oh_poster/oh_full.png"
-						src="/assets/content/posters/oh_poster/oh.png" />
+						data-json-fullimage="../assets/content/posters/oh_poster/oh_full.png"
+						src="../assets/content/posters/oh_poster/oh.png" />
 	            </div>
 				<div class="project"
 					data-json="project:object">
@@ -268,18 +299,8 @@
 					<div data-json="tags:array">poster,iphone,application</div>
 					<p data-json="description"></p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/posters/asth_iphone/full_asth_iphone.png"
-						src="/assets/content/posters/asth_iphone/full_asth_iphone.png" />
-
-	            </div>
-				<div class="project"
-					data-json="project:object">
-	                <h1 data-json="title">+ncrement Sitetree</h1>
-					<h2 data-json="medium">24" x 28" giclee</h2>
-					<p data-json="description"></p>
-					<img data-json="image"
-						data-json-fullimage="/assets/content/posters/increment_sitetree/increment_sitetree.png"
-						src="/assets/content/posters/increment_sitetree/increment_sitetree.png" />
+						data-json-fullimage="../assets/content/posters/asth_iphone/full_asth_iphone.png"
+						src="../assets/content/posters/asth_iphone/full_asth_iphone.png" />
 
 	            </div>
 				<div class="project"
@@ -289,8 +310,8 @@
 					<div data-json="tags:array">poster,iphone,application</div>
 					<p data-json="description"></p>
 					<img data-json="image"
-						data-json-fullimage="/assets/content/posters/parking_app/parkingapp_poster.png"
-						src="/assets/content/posters/parking_app/parkingapp_poster.png" />
+						data-json-fullimage="../assets/content/posters/parking_app/parkingapp_poster.png"
+						src="../assets/content/posters/parking_app/parkingapp_poster.png" />
 
 	            </div>
 

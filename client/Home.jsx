@@ -12,7 +12,15 @@ var Home = React.createClass({
         }
 
         if ( RouteState.route.page ) {
-            PhiModel.page = PhiModel.content[ RouteState.route.page ];
+            PhiModel.page = false;//PhiModel.pages[ RouteState.route.page ];
+            var page;
+            for ( var p=0; p<PhiModel.pages.length; p++ ) {
+                page = PhiModel.pages[p];
+                if ( page.title.slugify() == RouteState.route.page ) {
+                    PhiModel.page = page;
+                    break;
+                }
+            }
             if ( !PhiModel.page ) {
                 PhiModel.page = {};
                 RouteState.merge(
@@ -41,6 +49,7 @@ var Home = React.createClass({
             PhiModel.tags["design"],
             PhiModel.tags["poster"]
         ];
+        console.log( list );
         if ( list && list != "" ) {
             if ( list instanceof Array && list.length > 0 ) {
                 if ( PhiModel.project_list.length > 0 ) {
@@ -61,6 +70,8 @@ var Home = React.createClass({
                 }
             }
         }
+
+        this.forceUpdate();
     },
 
     componentWillMount: function(){
@@ -109,6 +120,30 @@ var Home = React.createClass({
     },
 
     render: function() {
+
+        // bottom links are dynamic...
+        var page_links = [];
+        if ( PhiModel.pages ) {
+            var page,style,page_str;
+
+            for ( var p=0; p<PhiModel.pages.length; p++ ) {
+                page = PhiModel.pages[p];
+                page_str = page.title.slugify();
+                style = {"width":(100/PhiModel.pages.length) + "%"};
+                if ( RouteState.route.page == page_str ) {
+                    style.color = PhiModel.style.text_highlight_color;
+                }
+                page_links.push(
+                    <div className="identityNav_bottomNavLink"
+                        style={ style }
+                        onClick={ this.gotoPage.bind( this , page_str ) }>
+                        { page.title }
+                    </div>
+                );
+            }
+
+        }
+
         return  <div className="catapultStudio">
                     <IdentityNav />
                     <div className="contentArea">
@@ -121,14 +156,7 @@ var Home = React.createClass({
                     { /*needed here for layering*/ }
                     <div className="catapultStudio_copyrightNav">
                         <div className="identityNav_bottomNav">
-                            <div className="identityNav_aboutNavLink"
-                                onClick={ this.gotoPage.bind( this , "about" ) }>
-                                About
-                            </div>
-                            <div className="identityNav_contactNavLink"
-                                onClick={ this.gotoPage.bind( this , "contact" ) }>
-                                Contact
-                            </div>
+                            { page_links }
                             <div className="identityNav_copyright">
                                 copyright 2015, CatapultStudio.com
                             </div>

@@ -162,7 +162,7 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
     },
 
     componentDidUpdate: function () {
-        //$(".nano").nanoScroller();
+        $(".nano").nanoScroller();
     },
 
     renderRows: function( list , rows ) {
@@ -240,7 +240,15 @@ var Home = React.createClass({displayName: "Home",
         }
 
         if ( RouteState.route.page ) {
-            PhiModel.page = PhiModel.content[ RouteState.route.page ];
+            PhiModel.page = false;//PhiModel.pages[ RouteState.route.page ];
+            var page;
+            for ( var p=0; p<PhiModel.pages.length; p++ ) {
+                page = PhiModel.pages[p];
+                if ( page.title.slugify() == RouteState.route.page ) {
+                    PhiModel.page = page;
+                    break;
+                }
+            }
             if ( !PhiModel.page ) {
                 PhiModel.page = {};
                 RouteState.merge(
@@ -269,6 +277,7 @@ var Home = React.createClass({displayName: "Home",
             PhiModel.tags["design"],
             PhiModel.tags["poster"]
         ];
+        console.log( list );
         if ( list && list != "" ) {
             if ( list instanceof Array && list.length > 0 ) {
                 if ( PhiModel.project_list.length > 0 ) {
@@ -289,6 +298,8 @@ var Home = React.createClass({displayName: "Home",
                 }
             }
         }
+
+        this.forceUpdate();
     },
 
     componentWillMount: function(){
@@ -337,6 +348,30 @@ var Home = React.createClass({displayName: "Home",
     },
 
     render: function() {
+
+        // bottom links are dynamic...
+        var page_links = [];
+        if ( PhiModel.pages ) {
+            var page,style,page_str;
+
+            for ( var p=0; p<PhiModel.pages.length; p++ ) {
+                page = PhiModel.pages[p];
+                page_str = page.title.slugify();
+                style = {"width":(100/PhiModel.pages.length) + "%"};
+                if ( RouteState.route.page == page_str ) {
+                    style.color = PhiModel.style.text_highlight_color;
+                }
+                page_links.push(
+                    React.createElement("div", {className: "identityNav_bottomNavLink", 
+                        style:  style, 
+                        onClick:  this.gotoPage.bind( this , page_str) }, 
+                         page.title
+                    )
+                );
+            }
+
+        }
+
         return  React.createElement("div", {className: "catapultStudio"}, 
                     React.createElement(IdentityNav, null), 
                     React.createElement("div", {className: "contentArea"}, 
@@ -349,14 +384,7 @@ var Home = React.createClass({displayName: "Home",
                     /*needed here for layering*/ 
                     React.createElement("div", {className: "catapultStudio_copyrightNav"}, 
                         React.createElement("div", {className: "identityNav_bottomNav"}, 
-                            React.createElement("div", {className: "identityNav_aboutNavLink", 
-                                onClick:  this.gotoPage.bind( this , "about") }, 
-                                "About"
-                            ), 
-                            React.createElement("div", {className: "identityNav_contactNavLink", 
-                                onClick:  this.gotoPage.bind( this , "contact") }, 
-                                "Contact"
-                            ), 
+                             page_links, 
                             React.createElement("div", {className: "identityNav_copyright"}, 
                                 "copyright 2015, CatapultStudio.com"
                             )
@@ -375,7 +403,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
     gotoTag: function ( tag ) {
         RouteState.replace(
             {
-                list:[tag],
+                list:tag,
                 project:'',
                 image:''
             },
@@ -384,24 +412,80 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
     },
 
     render: function() {
-        return  React.createElement("div", {className: "identityNav"}, 
+
+        var gradient_style = "";
+        if ( PhiModel.style.side_gradient ) {
+            gradient_style = {
+                backgroundImage:
+                "url('" + PhiModel.style.side_gradient + "');"
+            };
+        }
+
+        var logo_style = "";
+        if ( PhiModel.style.logo ) {
+            logo_style = {
+                backgroundImage:
+                "url('" + PhiModel.style.logo + "');"
+            };
+        }
+
+        var logo_small_style = "";
+        if ( PhiModel.style.logo_mark ) {
+            logo_small_style = {
+                backgroundImage:
+                "url('" + PhiModel.style.logo_mark + "');"
+            };
+        }
+
+        var project_links = [];
+        if ( PhiModel.product_nav ) {
+            var product,style;
+
+            var list_arr;
+            if ( RouteState.route.list instanceof Array ) {
+                list_arr = RouteState.route.list;
+            }else{
+                list_arr = [RouteState.route.list];
+            }
+
+            for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
+                product = PhiModel.product_nav[p];
+                style = {"width":(100/PhiModel.product_nav.length) + "%"};
+                var filter;
+                var color_style = PhiModel.style.text_highlight_color;
+                for ( var f=0; f<product.filters.length; f++ ) {
+                    filter = product.filters[f];
+                    if ( list_arr.indexOf( filter ) == -1 ) {
+                        color_style = false;
+                        break;
+                    }
+                }
+                if ( color_style ) {
+                    style.color = color_style;
+                }
+                project_links.push(
+                    React.createElement("div", {className: "identityNav_link", 
+                        style:  style, key:  product.title, 
+                        onClick:  this.gotoTag.bind( this , product.filters) }, 
+                         product.title
+                    )
+                );
+            }
+
+        }
+
+        return  React.createElement("div", {className: "identityNav", 
+                    style:  gradient_style }, 
                     React.createElement("div", {className: "identityNav_gradOffset"}, 
                         React.createElement("div", {className: "identityNav_logo", 
+                            style:  logo_style, 
+                            onClick:  this.gotoTag.bind( this , "") }), 
+                        React.createElement("div", {className: "identityNav_logo_small", 
+                            style:  logo_small_style, 
                             onClick:  this.gotoTag.bind( this , "") }), 
 
                         React.createElement("div", {className: "identityNav_centerNav"}, 
-                            React.createElement("div", {className: "identityNav_productsLink", 
-                                onClick:  this.gotoTag.bind( this , "product") }, 
-                                "Products"
-                            ), 
-                            React.createElement("div", {className: "identityNav_designsLink", 
-                                onClick:  this.gotoTag.bind( this , "design") }, 
-                                "Designs"
-                            ), 
-                            React.createElement("div", {className: "identityNav_postersLink", 
-                                onClick:  this.gotoTag.bind( this , "poster") }, 
-                                "Posters"
-                            )
+                             project_links 
                         )
                     )
                 );

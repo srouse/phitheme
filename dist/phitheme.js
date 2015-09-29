@@ -21560,7 +21560,7 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
     },
 
     componentDidUpdate: function () {
-        //$(".nano").nanoScroller();
+        $(".nano").nanoScroller();
     },
 
     renderRows: function( list , rows ) {
@@ -21638,7 +21638,15 @@ var Home = React.createClass({displayName: "Home",
         }
 
         if ( RouteState.route.page ) {
-            PhiModel.page = PhiModel.content[ RouteState.route.page ];
+            PhiModel.page = false;//PhiModel.pages[ RouteState.route.page ];
+            var page;
+            for ( var p=0; p<PhiModel.pages.length; p++ ) {
+                page = PhiModel.pages[p];
+                if ( page.title.slugify() == RouteState.route.page ) {
+                    PhiModel.page = page;
+                    break;
+                }
+            }
             if ( !PhiModel.page ) {
                 PhiModel.page = {};
                 RouteState.merge(
@@ -21667,6 +21675,7 @@ var Home = React.createClass({displayName: "Home",
             PhiModel.tags["design"],
             PhiModel.tags["poster"]
         ];
+        console.log( list );
         if ( list && list != "" ) {
             if ( list instanceof Array && list.length > 0 ) {
                 if ( PhiModel.project_list.length > 0 ) {
@@ -21687,6 +21696,8 @@ var Home = React.createClass({displayName: "Home",
                 }
             }
         }
+
+        this.forceUpdate();
     },
 
     componentWillMount: function(){
@@ -21735,6 +21746,30 @@ var Home = React.createClass({displayName: "Home",
     },
 
     render: function() {
+
+        // bottom links are dynamic...
+        var page_links = [];
+        if ( PhiModel.pages ) {
+            var page,style,page_str;
+
+            for ( var p=0; p<PhiModel.pages.length; p++ ) {
+                page = PhiModel.pages[p];
+                page_str = page.title.slugify();
+                style = {"width":(100/PhiModel.pages.length) + "%"};
+                if ( RouteState.route.page == page_str ) {
+                    style.color = PhiModel.style.text_highlight_color;
+                }
+                page_links.push(
+                    React.createElement("div", {className: "identityNav_bottomNavLink", 
+                        style:  style, 
+                        onClick:  this.gotoPage.bind( this , page_str) }, 
+                         page.title
+                    )
+                );
+            }
+
+        }
+
         return  React.createElement("div", {className: "catapultStudio"}, 
                     React.createElement(IdentityNav, null), 
                     React.createElement("div", {className: "contentArea"}, 
@@ -21747,14 +21782,7 @@ var Home = React.createClass({displayName: "Home",
                     /*needed here for layering*/ 
                     React.createElement("div", {className: "catapultStudio_copyrightNav"}, 
                         React.createElement("div", {className: "identityNav_bottomNav"}, 
-                            React.createElement("div", {className: "identityNav_aboutNavLink", 
-                                onClick:  this.gotoPage.bind( this , "about") }, 
-                                "About"
-                            ), 
-                            React.createElement("div", {className: "identityNav_contactNavLink", 
-                                onClick:  this.gotoPage.bind( this , "contact") }, 
-                                "Contact"
-                            ), 
+                             page_links, 
                             React.createElement("div", {className: "identityNav_copyright"}, 
                                 "copyright 2015, CatapultStudio.com"
                             )
@@ -21773,7 +21801,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
     gotoTag: function ( tag ) {
         RouteState.replace(
             {
-                list:[tag],
+                list:tag,
                 project:'',
                 image:''
             },
@@ -21782,24 +21810,80 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
     },
 
     render: function() {
-        return  React.createElement("div", {className: "identityNav"}, 
+
+        var gradient_style = "";
+        if ( PhiModel.style.side_gradient ) {
+            gradient_style = {
+                backgroundImage:
+                "url('" + PhiModel.style.side_gradient + "');"
+            };
+        }
+
+        var logo_style = "";
+        if ( PhiModel.style.logo ) {
+            logo_style = {
+                backgroundImage:
+                "url('" + PhiModel.style.logo + "');"
+            };
+        }
+
+        var logo_small_style = "";
+        if ( PhiModel.style.logo_mark ) {
+            logo_small_style = {
+                backgroundImage:
+                "url('" + PhiModel.style.logo_mark + "');"
+            };
+        }
+
+        var project_links = [];
+        if ( PhiModel.product_nav ) {
+            var product,style;
+
+            var list_arr;
+            if ( RouteState.route.list instanceof Array ) {
+                list_arr = RouteState.route.list;
+            }else{
+                list_arr = [RouteState.route.list];
+            }
+
+            for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
+                product = PhiModel.product_nav[p];
+                style = {"width":(100/PhiModel.product_nav.length) + "%"};
+                var filter;
+                var color_style = PhiModel.style.text_highlight_color;
+                for ( var f=0; f<product.filters.length; f++ ) {
+                    filter = product.filters[f];
+                    if ( list_arr.indexOf( filter ) == -1 ) {
+                        color_style = false;
+                        break;
+                    }
+                }
+                if ( color_style ) {
+                    style.color = color_style;
+                }
+                project_links.push(
+                    React.createElement("div", {className: "identityNav_link", 
+                        style:  style, key:  product.title, 
+                        onClick:  this.gotoTag.bind( this , product.filters) }, 
+                         product.title
+                    )
+                );
+            }
+
+        }
+
+        return  React.createElement("div", {className: "identityNav", 
+                    style:  gradient_style }, 
                     React.createElement("div", {className: "identityNav_gradOffset"}, 
                         React.createElement("div", {className: "identityNav_logo", 
+                            style:  logo_style, 
+                            onClick:  this.gotoTag.bind( this , "") }), 
+                        React.createElement("div", {className: "identityNav_logo_small", 
+                            style:  logo_small_style, 
                             onClick:  this.gotoTag.bind( this , "") }), 
 
                         React.createElement("div", {className: "identityNav_centerNav"}, 
-                            React.createElement("div", {className: "identityNav_productsLink", 
-                                onClick:  this.gotoTag.bind( this , "product") }, 
-                                "Products"
-                            ), 
-                            React.createElement("div", {className: "identityNav_designsLink", 
-                                onClick:  this.gotoTag.bind( this , "design") }, 
-                                "Designs"
-                            ), 
-                            React.createElement("div", {className: "identityNav_postersLink", 
-                                onClick:  this.gotoTag.bind( this , "poster") }, 
-                                "Posters"
-                            )
+                             project_links 
                         )
                     )
                 );
@@ -21980,14 +22064,24 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
 
 
-var PhiModel;
+var PhiModelSingleton = function () {
+
+    var model = {};
+
+    return model;
+};
+
+
+
+
+var PhiModel = PhiModelSingleton();
 var PhiTheme = function () {};
 
 PhiTheme.run = function ( data_dom ) {
 
-
     $(window).ready(function () {
-        PhiModel = HTMLtoJSON( $(data_dom) );
+
+        HTMLtoJSON( $(data_dom) , PhiModel );
         // some defaults...
         PhiModel.project = {};
         PhiModel.page = {};
@@ -22031,6 +22125,18 @@ PhiTheme.run = function ( data_dom ) {
 
         console.log( PhiModel );
 
+        //inject CSS here...only want this to happen once...
+        var styles = {};
+        if ( PhiModel.style.line_highlight_color ) {
+            styles[".page .page_content h1"] = {
+                "border-bottom-color":PhiModel.style.line_highlight_color
+            };
+            styles[".examplesList .examplesList_header"] = {
+                "border-bottom-color":PhiModel.style.line_highlight_color
+            };
+        }
+        $.injectCSS( styles );
+
         RouteState.listenToHash();
         React.render(
             React.createElement(
@@ -22045,8 +22151,8 @@ PhiTheme.run = function ( data_dom ) {
 }
 
 
-var HTMLtoJSON = function ( html ) {
-    var json = _HTMLtoJSON( html , "json" );
+var HTMLtoJSON = function ( html , source ) {
+    var json = _HTMLtoJSON( html , "json" , source );
     return json;
 }
 
@@ -22061,7 +22167,6 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
             return $.trim( node.text() );
         }
     }
-
 
     $(html).each( function(i,e) {
         var total_json_nodes = 0;
@@ -22100,11 +22205,17 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                     switch ( type ) {
                         case "array" :
-                            json_ele = [];
+                            // decorate pre existing elements
                             if ( parent_is_array ) {
+                                json_ele = [];
                                 json_parent.push( json_ele );
                             }else{
-                                json_parent[prop_name] = json_ele;
+                                if ( json_parent[prop_name] ) {
+                                    json_ele = json_parent[prop_name];
+                                }else{
+                                    json_ele = [];
+                                    json_parent[prop_name] = json_ele;
+                                }
                             }
 
                             var e_children = $(e).children();
@@ -22118,12 +22229,19 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }
                             break;
                         case "object" :
-                            json_ele = {};
+                            // decorate pre existing elements
                             if ( parent_is_array ) {
+                                json_ele = {};
                                 json_parent.push( json_ele );
                             }else{
-                                json_parent[prop_name] = json_ele;
+                                if ( json_parent[prop_name] ) {
+                                    json_ele = json_parent[prop_name];
+                                }else{
+                                    json_ele = {};
+                                    json_parent[prop_name] = json_ele;
+                                }
                             }
+
                             _HTMLtoJSON( $(e).children() , set , json_ele );
                             break;
                         case "number" :
@@ -22364,6 +22482,187 @@ if (md5('hello') != '5d41402abc4b2a76b9719d911017c592') {
         return (msw << 16) | (lsw & 0xFFFF);
     }
 }
+
+/*
+ * jquery.injectCSS.js - jquery css injection plugin
+ * Copyright (C) 2013, Robert Kajic (robert@kajic.com)
+ * http://kajic.com
+ *
+ * https://github.com/kajic/jquery-injectCSS
+ * Allows for injection of CSS defined as javascript JSS objects.
+ *
+ * Based on JSS (http://jss-lang.org/).
+ *
+ * Licensed under the MIT License.
+ *
+ * Date: 2013-01-08
+ * Version: 0.1
+ */
+
+(function (jQuery) {
+    'use strict';
+
+    function toCSS(jss, options) {
+        function jsonToCSS(scope, css) {
+            if (scope && !result[scope]) {
+                result[scope] = {};
+            }
+            for (var property in css) {
+                var value = css[property];
+                if (value instanceof Array) {
+                    var values = value;
+                    for (var i = 0; i < values.length; i++) {
+                        addProperty(scope, property, values[i]);
+                    }
+                }
+                else {
+                    switch (typeof(value)) {
+                        case "number":
+                        case "string":
+                            addProperty(scope, property, value);
+                            break;
+                        case "object":
+                            var endChar = property.charAt(property.length - 1);
+                            if (scope && (endChar === "_" || endChar === "-")) {
+                                var variants = value;
+                                for (var key in variants) {
+                                    // key may be a comma separted list
+                                    var list = key.split(/\s*,\s*/);
+                                    for (var j = 0; j < list.length; j++) {
+                                        var valueVariant = variants[key];
+                                        if (valueVariant instanceof Array) {
+                                            var valuesVariant = valueVariant;
+                                            for (var k = 0; k < valuesVariant.length; k++) {
+                                                addProperty(scope, property + list[j], valuesVariant[k]);
+                                            }
+                                        }
+                                        else {
+                                            addProperty(scope, property + list[j], variants[key]);
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                jsonToCSS(makeSelectorName(scope, property), value);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        function makePropertyName(n) {
+            return n.replace(/_/g, "-");
+        }
+
+        function makeSelectorName(scope, name) {
+            var snames = [];
+            var names = name.split(/\s*,\s*/);
+            var scopes = scope.split(/\s*,\s*/);
+            for (var s = 0; s < scopes.length; s++) {
+                var currentScope = scopes[s];
+                for (var i = 0; i < names.length; i++) {
+                    var currentName = names[i];
+                    if (currentName.charAt(0) === "&") {
+                        snames.push(currentScope + currentName.substr(1));
+                    } else {
+                        snames.push(currentScope ? currentScope + " " + currentName : currentName);
+                    }
+                }
+            }
+            return snames.join(", ");
+        }
+
+        function addProperty(scope, property, value) {
+
+            if (typeof(value) === "number" && !options.useRawValues) {
+                value = value + "px";
+            }
+
+            var properties = property.split(/\s*,\s*/);
+            for (var i = 0; i < properties.length; i++) {
+                var currentProperty = makePropertyName(properties[i]);
+
+                if (result[scope][currentProperty]) {
+                    result[scope][currentProperty].push(value);
+                } else {
+                    result[scope][currentProperty] = [value];
+                }
+            }
+        }
+
+        // --------------
+
+
+        var result = {};
+
+        if (typeof(jss) === "string") {
+            // evaluate the JSS object:
+            try {
+                eval("var jss = {" + jss + "}");
+            }
+            catch (e) {
+                return "/*\nUnable to parse JSS: " + e + "\n*/";
+            }
+        }
+
+        jsonToCSS("", jss);
+
+        // output result:
+        var ret = "";
+        for (var a in result) {
+            var css = result[a];
+            ret += a + " {\n";
+            for (var i in css) {
+                var values = css[i];    // this is an array !
+                for (var j = 0; j < values.length; j++) {
+                    ret += "\t" + i + ": " + values[j] + ";\n";
+                }
+            }
+            ret += "}\n";
+        }
+        return ret;
+    }
+
+    var defaults = {
+        truncateFirst: false,
+        container: null,
+        containerName: "injectCSSContainer",
+        useRawValues: false
+    };
+
+    jQuery.injectCSS = function (jss, options) {
+        options = jQuery.extend({}, defaults, options);
+
+        options.media = options.media || 'all';
+
+        var container = (options.container && jQuery(options.container)) || jQuery("#" + options.containerName);
+        if (!container.length) {
+            container = jQuery("<style></style>").appendTo('head').attr({
+                media: options.media,
+                id: options.containerName,
+                type: 'text/css'
+            });
+        }
+
+        var containerDomElem = container[0];
+        var isIeStylesheet = containerDomElem.styleSheet !== undefined && containerDomElem.styleSheet.cssText !== undefined;
+
+        var css = "";
+        if (!options.truncateFirst) {
+            css += isIeStylesheet ? containerDomElem.styleSheet.cssText : container.text();
+        }
+        css += toCSS(jss, options);
+
+        if (isIeStylesheet) {
+            containerDomElem.styleSheet.cssText = css;
+        } else {
+            container.text(css); //Others
+        }
+
+        return container;
+    };
+}(jQuery));
 
 
 

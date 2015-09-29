@@ -26,7 +26,7 @@ var ExamplesList = React.createClass({
     },
 
     componentDidUpdate: function () {
-        //$(".nano").nanoScroller();
+        $(".nano").nanoScroller();
     },
 
     renderRows: function( list , rows ) {

@@ -1,14 +1,14 @@
 
 
 
-var PhiModel;
+var PhiModel = PhiModelSingleton();
 var PhiTheme = function () {};
 
 PhiTheme.run = function ( data_dom ) {
 
-
     $(window).ready(function () {
-        PhiModel = HTMLtoJSON( $(data_dom) );
+
+        HTMLtoJSON( $(data_dom) , PhiModel );
         // some defaults...
         PhiModel.project = {};
         PhiModel.page = {};
@@ -51,6 +51,18 @@ PhiTheme.run = function ( data_dom ) {
         }
 
         console.log( PhiModel );
+
+        //inject CSS here...only want this to happen once...
+        var styles = {};
+        if ( PhiModel.style.line_highlight_color ) {
+            styles[".page .page_content h1"] = {
+                "border-bottom-color":PhiModel.style.line_highlight_color
+            };
+            styles[".examplesList .examplesList_header"] = {
+                "border-bottom-color":PhiModel.style.line_highlight_color
+            };
+        }
+        $.injectCSS( styles );
 
         RouteState.listenToHash();
         React.render(

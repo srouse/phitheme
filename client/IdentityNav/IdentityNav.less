@@ -6,7 +6,7 @@
         </div>
     </csstag>*/
     width: 100%; height: 100%;
-    background-image: url("/assets/cs_gradient.png");
+    background-image: url("../assets/cs_gradient.png");
     background-position: left;
     background-size: 6px 100%;
     background-color: #fff;
@@ -21,6 +21,7 @@
 		width: 100%; height: 100vh; top: 0px;
         position: relative;
         border-bottom: 1px solid #eee;
+        transition: none;
 	}
 
     body.s_project & {
@@ -35,6 +36,7 @@
         @media ( max-width: @screen-sm-min ) {
     		width: 100%; height: 80px;
             position: relative;
+            transition: none;
     	}
     }
 
@@ -56,6 +58,7 @@
         body.s_page & {
             @media ( max-width: @screen-sm-min ) {
         		margin-left: 6px;
+                transition: none;
         	}
         }
     }
@@ -65,10 +68,14 @@
             <div ...></div>
         </csstag>*/
         width: 100%; height: 80%;
-        background-image: url("/assets/catapultstudio_logo_large.svg");
+        background-image: url("../assets/catapultstudio_logo_large.svg");
         background-size: auto 50%;
         transition: all .3s;
         .hand();
+
+        @media ( max-width: @screen-sm-min ) {
+            transition: none;
+        }
 
         body.s_project &,
         body.s_list &,
@@ -77,12 +84,38 @@
             background-size: 50% auto;
 
             @media ( max-width: @screen-sm-min ) {
-        		height: 100%; width: 75px;
-                background-image: url("/assets/catapultstudio_mark.svg");
-                background-size: 56%;
+                display: none;
+                transition: none;
         	}
         }
     }
+
+    .identityNav_logo_small {
+        /*<csstag tag="graphic,logo">
+            <div ...></div>
+        </csstag>*/
+        display: none;
+
+        height: 100%; width: 75px;
+        background-image: url("../assets/catapultstudio_mark.svg");
+        background-size: 56%;
+        transition: all .3s;
+        .hand();
+
+        @media ( max-width: @screen-sm-min ) {
+            transition: none;
+        }
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            @media ( max-width: @screen-sm-min ) {
+        		display: block;
+                transition: none;
+        	}
+        }
+    }
+
 
     .identityNav_centerNav {
         /*<csstag tag="navigation">
@@ -149,6 +182,7 @@
             @media ( max-width: @screen-sm-min ) {
                 font-size: 16px;
                 padding-top: 32px;
+                transition: none;
             }
 
             body.s_project &,
@@ -158,51 +192,6 @@
                     font-size: 14px;
                     padding-top: 32px;
                 }
-            }
-        }
-
-        .identityNav_productsLink {
-            /*<csstag tag="link">
-                <div ...>Products</div>
-            </csstag>*/
-            &:extend(
-                .identityNav
-                .identityNav_centerNav
-                .identityNav_link all
-            );
-
-            body.s_list_product & {
-                color: @cs_blue;
-            }
-        }
-
-        .identityNav_designsLink {
-            /*<csstag tag="link">
-                <div ...>Designs</div>
-            </csstag>*/
-            &:extend(
-                .identityNav
-                .identityNav_centerNav
-                .identityNav_link all
-            );
-
-            body.s_list_design & {
-                color: @cs_blue;
-            }
-        }
-
-        .identityNav_postersLink {
-            /*<csstag tag="link">
-                <div ...>Posters</div>
-            </csstag>*/
-            &:extend(
-                .identityNav
-                .identityNav_centerNav
-                .identityNav_link all
-            );
-
-            body.s_list_poster & {
-                color: @cs_blue;
             }
         }
     }

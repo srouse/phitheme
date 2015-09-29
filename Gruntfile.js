@@ -75,7 +75,8 @@ module.exports = function(grunt) {
     configObj.watch["react"] = {
         files:[
             'client/**/*.jsx',
-            'client/**/*.less'
+            'client/**/*.less',
+            'client/**/*.js'
         ],
         tasks: ["default"]
     };
