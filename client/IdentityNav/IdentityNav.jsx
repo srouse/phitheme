@@ -15,7 +15,7 @@ var IdentityNav = React.createClass({
 
     render: function() {
 
-        var gradient_style = "";
+        var gradient_style = {};
         if ( PhiModel.style.side_gradient ) {
             gradient_style = {
                 backgroundImage:
@@ -23,7 +23,7 @@ var IdentityNav = React.createClass({
             };
         }
 
-        var logo_style = "";
+        var logo_style = {};
         if ( PhiModel.style.logo ) {
             logo_style = {
                 backgroundImage:
@@ -31,7 +31,7 @@ var IdentityNav = React.createClass({
             };
         }
 
-        var logo_small_style = "";
+        var logo_small_style = {};
         if ( PhiModel.style.logo_mark ) {
             logo_small_style = {
                 backgroundImage:

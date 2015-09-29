@@ -372,7 +372,7 @@ var Home = React.createClass({displayName: "Home",
 
         }
 
-        return  React.createElement("div", {className: "catapultStudio"}, 
+        return  React.createElement("div", {className: "phiTheme"}, 
                     React.createElement(IdentityNav, null), 
                     React.createElement("div", {className: "contentArea"}, 
                         React.createElement(ProjectPage, null), 
@@ -382,11 +382,11 @@ var Home = React.createClass({displayName: "Home",
                     React.createElement(ContentTitleSection, null), 
 
                     /*needed here for layering*/ 
-                    React.createElement("div", {className: "catapultStudio_copyrightNav"}, 
+                    React.createElement("div", {className: "phitheme_copyrightNav"}, 
                         React.createElement("div", {className: "identityNav_bottomNav"}, 
                              page_links, 
                             React.createElement("div", {className: "identityNav_copyright"}, 
-                                "copyright 2015, CatapultStudio.com"
+                                 PhiModel.copyright
                             )
                         )
                     )
@@ -413,7 +413,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
 
     render: function() {
 
-        var gradient_style = "";
+        var gradient_style = {};
         if ( PhiModel.style.side_gradient ) {
             gradient_style = {
                 backgroundImage:
@@ -421,7 +421,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
             };
         }
 
-        var logo_style = "";
+        var logo_style = {};
         if ( PhiModel.style.logo ) {
             logo_style = {
                 backgroundImage:
@@ -429,7 +429,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
             };
         }
 
-        var logo_small_style = "";
+        var logo_small_style = {};
         if ( PhiModel.style.logo_mark ) {
             logo_small_style = {
                 backgroundImage:

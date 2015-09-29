@@ -320,7 +320,7 @@ Mixin's
 }
 .examplesList.nano > .nano-pane > .nano-slider {
   border-radius: 0px;
-  background-image: url("../assets/cs_gradient.png");
+  background-image: url("../assets/gradient.png");
   background-size: 5px 100%;
 }
 @media (max-width: 768px) {
@@ -352,7 +352,7 @@ body.s_page .examplesList {
   padding-bottom: 28px;
   margin-bottom: 0px;
   color: #777;
-  border-bottom: 7px solid #B94FFB;
+  border-bottom: 7px solid #999;
 }
 @media (max-width: 768px) {
   .examplesList .examplesList_header {
@@ -474,7 +474,7 @@ body.s_page .examplesList {
     margin-left: 30.901699%;
   }
 }
-.catapultStudio {
+.phiTheme {
   /*<csstag tag="app">
         <div ...>
             { .contentTitleSection }
@@ -489,11 +489,11 @@ body.s_page .examplesList {
   /*needed here for layering*/
 }
 @media (max-width: 768px) {
-  .catapultStudio {
+  .phiTheme {
     height: auto;
   }
 }
-.catapultStudio .contentArea {
+.phiTheme .contentArea {
   /*<csstag tag="section">
             <div ...>
                 { .examplesList }
@@ -509,23 +509,23 @@ body.s_page .examplesList {
   background-color: #fff;
   display: none;
 }
-body.s_project .catapultStudio .contentArea {
+body.s_project .phiTheme .contentArea {
   z-index: 5000;
 }
-body.s_project .catapultStudio .contentArea,
-body.s_list .catapultStudio .contentArea,
-body.s_page .catapultStudio .contentArea {
+body.s_project .phiTheme .contentArea,
+body.s_list .phiTheme .contentArea,
+body.s_page .phiTheme .contentArea {
   display: block;
 }
 @media (max-width: 768px) {
-  .catapultStudio .contentArea {
+  .phiTheme .contentArea {
     width: 100%;
     height: auto;
     position: relative;
     z-index: 2500;
   }
 }
-.catapultStudio .catapultStudio_copyrightNav {
+.phiTheme .phitheme_copyrightNav {
   /*<csstag tag="container">
             <div ...>
                 { .identityNav_bottomNav }
@@ -539,21 +539,21 @@ body.s_page .catapultStudio .contentArea {
   transition: height .3s, width .3s, left .3s;
   z-index: 4000;
 }
-body.s_project .catapultStudio .catapultStudio_copyrightNav,
-body.s_list .catapultStudio .catapultStudio_copyrightNav,
-body.s_page .catapultStudio .catapultStudio_copyrightNav {
+body.s_project .phiTheme .phitheme_copyrightNav,
+body.s_list .phiTheme .phitheme_copyrightNav,
+body.s_page .phiTheme .phitheme_copyrightNav {
   left: 0px;
   width: 38.196602%;
 }
 @media (max-width: 768px) {
-  body.s_project .catapultStudio .catapultStudio_copyrightNav,
-  body.s_list .catapultStudio .catapultStudio_copyrightNav,
-  body.s_page .catapultStudio .catapultStudio_copyrightNav {
+  body.s_project .phiTheme .phitheme_copyrightNav,
+  body.s_list .phiTheme .phitheme_copyrightNav,
+  body.s_page .phiTheme .phitheme_copyrightNav {
     width: 100%;
     position: relative;
   }
 }
-.catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav {
+.phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   /*<csstag tag="link">
                 <div ...>
                     { .identityNav_bottomNavLink }
@@ -572,21 +572,21 @@ body.s_page .catapultStudio .catapultStudio_copyrightNav {
   padding: 0px 20px;
 }
 @media (max-width: 768px) {
-  .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav {
+  .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
     width: 80%;
     left: 10%;
   }
 }
-body.s_project .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav,
-body.s_list .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav,
-body.s_page .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav {
+body.s_project .phiTheme .phitheme_copyrightNav .identityNav_bottomNav,
+body.s_list .phiTheme .phitheme_copyrightNav .identityNav_bottomNav,
+body.s_page .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   left: 19.098301%;
   width: 61.803398%;
 }
-body.s_project .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav {
+body.s_project .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   height: 0px;
 }
-.catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink {
+.phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink {
   /*<csstag tag="link">
                     <div ...>Contact</div>
                 </csstag>*/
@@ -599,12 +599,12 @@ body.s_project .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomN
   cursor: pointer;
   cursor: hand;
 }
-.catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink:hover {
+.phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink:hover {
   color: #777;
 }
-.catapultStudio .catapultStudio_copyrightNav .identityNav_bottomNav .identityNav_copyright {
+.phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_copyright {
   /*<csstag tag="link">
-                    <div ...>copyright 2015, CatapultStudio.com</div>
+                    <div ...>copyright 2015, Your Company...</div>
                 </csstag>*/
   width: 100%;
   font-size: 9px;
@@ -622,7 +622,7 @@ body.s_project .catapultStudio .catapultStudio_copyrightNav .identityNav_bottomN
     </csstag>*/
   width: 100%;
   height: 100%;
-  background-image: url("../assets/cs_gradient.png");
+  background-image: url("../assets/gradient.png");
   background-position: left;
   background-size: 6px 100%;
   background-color: #fff;
@@ -689,7 +689,7 @@ body.s_page .identityNav {
         </csstag>*/
   width: 100%;
   height: 80%;
-  background-image: url("../assets/catapultstudio_logo_large.svg");
+  background-image: url("../assets/logo_large.svg");
   background-size: auto 50%;
   transition: all .3s;
   cursor: pointer;
@@ -721,7 +721,7 @@ body.s_page .identityNav .identityNav_logo {
   display: none;
   height: 100%;
   width: 75px;
-  background-image: url("../assets/catapultstudio_mark.svg");
+  background-image: url("../assets/mark.svg");
   background-size: 56%;
   transition: all .3s;
   cursor: pointer;
@@ -805,7 +805,7 @@ body.s_page .identityNav .identityNav_centerNav {
   transition: all .2s;
 }
 .identityNav .identityNav_centerNav .identityNav_link:hover {
-  color: #02DFDF;
+  color: #999;
 }
 @media (max-width: 768px) {
   .identityNav .identityNav_centerNav .identityNav_link {
@@ -865,7 +865,7 @@ body.s_page .page {
   padding-bottom: 28px;
   margin-bottom: 0px;
   color: #777;
-  border-bottom: 7px solid #B94FFB;
+  border-bottom: 7px solid #999;
 }
 @media (max-width: 768px) {
   .page .page_content h1 {

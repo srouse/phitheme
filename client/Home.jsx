@@ -144,7 +144,7 @@ var Home = React.createClass({
 
         }
 
-        return  <div className="catapultStudio">
+        return  <div className="phiTheme">
                     <IdentityNav />
                     <div className="contentArea">
                         <ProjectPage />
@@ -154,11 +154,11 @@ var Home = React.createClass({
                     <ContentTitleSection />
 
                     { /*needed here for layering*/ }
-                    <div className="catapultStudio_copyrightNav">
+                    <div className="phitheme_copyrightNav">
                         <div className="identityNav_bottomNav">
                             { page_links }
                             <div className="identityNav_copyright">
-                                copyright 2015, CatapultStudio.com
+                                { PhiModel.copyright }
                             </div>
                         </div>
                     </div>

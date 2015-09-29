@@ -125,8 +125,8 @@ Mixin's
 
 
 
-@cs_blue: #02DFDF;
-@cs_purple: #B94FFB;
+@cs_blue: #999;// #02DFDF;
+@cs_purple: #999;// #B94FFB;
 
 //PHI (yeah, that's not really phi)
 @phi: 61.803398%;
@@ -229,7 +229,7 @@ Mixin's
 			z-index: 100;
 		}
 
-.zIndex( @loc ) when ( @loc = "catapultStudio_copyrightNav" )
+.zIndex( @loc ) when ( @loc = "phitheme_copyrightNav" )
 {
 	z-index: 4000;
 }
@@ -463,7 +463,7 @@ Mixin's
     &.nano > .nano-pane > .nano-slider {
         // background: @cs_purple;
         border-radius: 0px;
-        background-image: url("../assets/cs_gradient.png");
+        background-image: url("../assets/gradient.png");
         background-size: 5px 100%;
         background-size: 5px 100%;
     }
@@ -616,7 +616,7 @@ Mixin's
 }
 
 
-.catapultStudio {
+.phiTheme {
     /*<csstag tag="app">
         <div ...>
             { .contentTitleSection }
@@ -664,7 +664,7 @@ Mixin's
     }
 
     /*needed here for layering*/
-    .catapultStudio_copyrightNav {
+    .phitheme_copyrightNav {
         /*<csstag tag="container">
             <div ...>
                 { .identityNav_bottomNav }
@@ -674,7 +674,7 @@ Mixin's
         left: 0px; bottom: 0px;
         width: 100%; height: 62px;
         transition: height .3s, width .3s, left .3s;
-        .zIndex( "catapultStudio_copyrightNav" );
+        .zIndex( "phitheme_copyrightNav" );
 
         @media ( max-width: @screen-sm-min ) {
     	}
@@ -741,7 +741,7 @@ Mixin's
 
             .identityNav_copyright {
                 /*<csstag tag="link">
-                    <div ...>copyright 2015, CatapultStudio.com</div>
+                    <div ...>copyright 2015, Your Company...</div>
                 </csstag>*/
                 width: 100%;
                 font-size: 9px; color: #ccc;
@@ -762,7 +762,7 @@ Mixin's
         </div>
     </csstag>*/
     width: 100%; height: 100%;
-    background-image: url("../assets/cs_gradient.png");
+    background-image: url("../assets/gradient.png");
     background-position: left;
     background-size: 6px 100%;
     background-color: #fff;
@@ -824,7 +824,7 @@ Mixin's
             <div ...></div>
         </csstag>*/
         width: 100%; height: 80%;
-        background-image: url("../assets/catapultstudio_logo_large.svg");
+        background-image: url("../assets/logo_large.svg");
         background-size: auto 50%;
         transition: all .3s;
         .hand();
@@ -853,7 +853,7 @@ Mixin's
         display: none;
 
         height: 100%; width: 75px;
-        background-image: url("../assets/catapultstudio_mark.svg");
+        background-image: url("../assets/mark.svg");
         background-size: 56%;
         transition: all .3s;
         .hand();

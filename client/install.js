@@ -62,6 +62,38 @@ PhiTheme.run = function ( data_dom ) {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
         }
+        if ( PhiModel.style.text_highlight_color ) {
+            styles[".identityNav .identityNav_centerNav .identityNav_link:hover"] = {
+                "color":PhiModel.style.text_highlight_color
+            };
+        }
+        if ( PhiModel.style.side_gradient ) {
+            styles[".examplesList.nano > .nano-pane > .nano-slider"] = {
+                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
+            };
+        }
+        if ( PhiModel.style.home_background_color ) {
+            styles[".identityNav"] = {
+                "background-color":PhiModel.style.home_background_color
+            };
+        }
+        if ( PhiModel.style.home_main_nav_text_color ) {
+            styles[".identityNav .identityNav_centerNav .identityNav_link"] = {
+                "color":PhiModel.style.home_main_nav_text_color
+            };
+        }
+        if ( PhiModel.style.home_secondary_nav_text_color ) {
+            styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink"] = {
+                "color":PhiModel.style.home_secondary_nav_text_color
+            };
+            styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_copyright"] = {
+                "color":PhiModel.style.home_secondary_nav_text_color
+            };
+            //styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav"] = {
+            //    "border-top-color":PhiModel.style.home_secondary_nav_text_color
+            //};
+        }
+
         $.injectCSS( styles );
 
         RouteState.listenToHash();

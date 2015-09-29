@@ -21770,7 +21770,7 @@ var Home = React.createClass({displayName: "Home",
 
         }
 
-        return  React.createElement("div", {className: "catapultStudio"}, 
+        return  React.createElement("div", {className: "phiTheme"}, 
                     React.createElement(IdentityNav, null), 
                     React.createElement("div", {className: "contentArea"}, 
                         React.createElement(ProjectPage, null), 
@@ -21780,11 +21780,11 @@ var Home = React.createClass({displayName: "Home",
                     React.createElement(ContentTitleSection, null), 
 
                     /*needed here for layering*/ 
-                    React.createElement("div", {className: "catapultStudio_copyrightNav"}, 
+                    React.createElement("div", {className: "phitheme_copyrightNav"}, 
                         React.createElement("div", {className: "identityNav_bottomNav"}, 
                              page_links, 
                             React.createElement("div", {className: "identityNav_copyright"}, 
-                                "copyright 2015, CatapultStudio.com"
+                                 PhiModel.copyright
                             )
                         )
                     )
@@ -21811,7 +21811,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
 
     render: function() {
 
-        var gradient_style = "";
+        var gradient_style = {};
         if ( PhiModel.style.side_gradient ) {
             gradient_style = {
                 backgroundImage:
@@ -21819,7 +21819,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
             };
         }
 
-        var logo_style = "";
+        var logo_style = {};
         if ( PhiModel.style.logo ) {
             logo_style = {
                 backgroundImage:
@@ -21827,7 +21827,7 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
             };
         }
 
-        var logo_small_style = "";
+        var logo_small_style = {};
         if ( PhiModel.style.logo_mark ) {
             logo_small_style = {
                 backgroundImage:
@@ -22066,7 +22066,12 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
 var PhiModelSingleton = function () {
 
-    var model = {};
+    var model = {
+        style:{
+            text_highlight_color:"#999"// need for runtime...
+        },
+        copyright:"copyright 2015, PhiTheme.com"
+    };
 
     return model;
 };
@@ -22135,6 +22140,38 @@ PhiTheme.run = function ( data_dom ) {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
         }
+        if ( PhiModel.style.text_highlight_color ) {
+            styles[".identityNav .identityNav_centerNav .identityNav_link:hover"] = {
+                "color":PhiModel.style.text_highlight_color
+            };
+        }
+        if ( PhiModel.style.side_gradient ) {
+            styles[".examplesList.nano > .nano-pane > .nano-slider"] = {
+                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
+            };
+        }
+        if ( PhiModel.style.home_background_color ) {
+            styles[".identityNav"] = {
+                "background-color":PhiModel.style.home_background_color
+            };
+        }
+        if ( PhiModel.style.home_main_nav_text_color ) {
+            styles[".identityNav .identityNav_centerNav .identityNav_link"] = {
+                "color":PhiModel.style.home_main_nav_text_color
+            };
+        }
+        if ( PhiModel.style.home_secondary_nav_text_color ) {
+            styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink"] = {
+                "color":PhiModel.style.home_secondary_nav_text_color
+            };
+            styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_copyright"] = {
+                "color":PhiModel.style.home_secondary_nav_text_color
+            };
+            //styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav"] = {
+            //    "border-top-color":PhiModel.style.home_secondary_nav_text_color
+            //};
+        }
+
         $.injectCSS( styles );
 
         RouteState.listenToHash();
