@@ -413,30 +413,6 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
 
     render: function() {
 
-        var gradient_style = {};
-        if ( PhiModel.style.side_gradient ) {
-            gradient_style = {
-                backgroundImage:
-                "url('" + PhiModel.style.side_gradient + "');"
-            };
-        }
-
-        var logo_style = {};
-        if ( PhiModel.style.logo ) {
-            logo_style = {
-                backgroundImage:
-                "url('" + PhiModel.style.logo + "');"
-            };
-        }
-
-        var logo_small_style = {};
-        if ( PhiModel.style.logo_mark ) {
-            logo_small_style = {
-                backgroundImage:
-                "url('" + PhiModel.style.logo_mark + "');"
-            };
-        }
-
         var project_links = [];
         if ( PhiModel.product_nav ) {
             var product,style;
@@ -474,20 +450,17 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
 
         }
 
-        return  React.createElement("div", {className: "identityNav", 
-                    style:  gradient_style }, 
+        return  React.createElement("div", {className: "identityNav"}, 
                     React.createElement("div", {className: "identityNav_gradOffset"}, 
                         React.createElement("div", {className: "identityNav_logo", 
-                            style:  logo_style, 
                             onClick:  this.gotoTag.bind( this , "") }), 
                         React.createElement("div", {className: "identityNav_logo_small", 
-                            style:  logo_small_style, 
                             onClick:  this.gotoTag.bind( this , "") }), 
-
                         React.createElement("div", {className: "identityNav_centerNav"}, 
                              project_links 
                         )
-                    )
+                    ), 
+                    React.createElement("div", {className: "identityNav_rightGradient"})
                 );
     }
 

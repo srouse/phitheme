@@ -71,11 +71,17 @@ PhiTheme.run = function ( data_dom ) {
             styles[".examplesList.nano > .nano-pane > .nano-slider"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
+            styles[".identityNav .identityNav_rightGradient"] = {
+                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
+            };
+            styles[".identityNav"] = {
+                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
+            };
         }
         if ( PhiModel.style.home_background_color ) {
-            styles[".identityNav"] = {
-                "background-color":PhiModel.style.home_background_color
-            };
+            styles[".identityNav"] = styles[".identityNav"] || {};
+            styles[".identityNav"]['background-color']
+                = PhiModel.style.home_background_color;
         }
         if ( PhiModel.style.home_main_nav_text_color ) {
             styles[".identityNav .identityNav_centerNav .identityNav_link"] = {
@@ -89,11 +95,17 @@ PhiTheme.run = function ( data_dom ) {
             styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_copyright"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
-            //styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav"] = {
-            //    "border-top-color":PhiModel.style.home_secondary_nav_text_color
-            //};
         }
-
+        if ( PhiModel.style.logo ) {
+            styles[".identityNav .identityNav_logo"] = {
+                "background-image":"url('"+ PhiModel.style.logo + "')"
+            };
+        }
+        if ( PhiModel.style.logo_mark ) {
+            styles[".identityNav .identityNav_logo_small"] = {
+                "background-image":"url('"+ PhiModel.style.logo_mark + "')"
+            };
+        }
         $.injectCSS( styles );
 
         RouteState.listenToHash();

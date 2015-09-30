@@ -622,7 +622,6 @@ body.s_project .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
     </csstag>*/
   width: 100%;
   height: 100%;
-  background-image: url("../assets/gradient.png");
   background-position: left;
   background-size: 6px 100%;
   background-color: #fff;
@@ -630,7 +629,6 @@ body.s_project .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   left: 0px;
   top: 0px;
   transition: height .3s, top .3s, width .3s;
-  border-right: 1px solid #eee;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
   z-index: 3000;
 }
@@ -651,6 +649,7 @@ body.s_project .identityNav,
 body.s_list .identityNav,
 body.s_page .identityNav {
   width: 38.196602%;
+  border-right: 1px solid #eee;
 }
 @media (max-width: 768px) {
   body.s_project .identityNav,
@@ -661,6 +660,19 @@ body.s_page .identityNav {
     position: relative;
     transition: none;
   }
+}
+.identityNav .identityNav_rightGradient {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  background-size: 6px 100%;
+  width: 6px;
+  height: 100%;
+}
+body.s_project .identityNav .identityNav_rightGradient,
+body.s_list .identityNav .identityNav_rightGradient,
+body.s_page .identityNav .identityNav_rightGradient {
+  display: none;
 }
 .identityNav .identityNav_gradOffset {
   /*<csstag tag="shim">
@@ -687,10 +699,11 @@ body.s_page .identityNav {
   /*<csstag tag="graphic,logo">
             <div ...></div>
         </csstag>*/
-  width: 100%;
   height: 80%;
+  width: 50%;
+  margin-left: 25%;
   background-image: url("../assets/logo_large.svg");
-  background-size: auto 50%;
+  background-size: 50% auto;
   transition: all .3s;
   cursor: pointer;
   cursor: hand;
@@ -704,7 +717,9 @@ body.s_project .identityNav .identityNav_logo,
 body.s_list .identityNav .identityNav_logo,
 body.s_page .identityNav .identityNav_logo {
   height: 80%;
+  width: 100%;
   background-size: 50% auto;
+  margin-left: 0px;
 }
 @media (max-width: 768px) {
   body.s_project .identityNav .identityNav_logo,
