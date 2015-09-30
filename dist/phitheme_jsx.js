@@ -272,20 +272,14 @@ var Home = React.createClass({displayName: "Home",
         }
 
         var list = RouteState.route.list;
-        PhiModel.project_list = [
-            PhiModel.tags["product"],
-            PhiModel.tags["design"],
-            PhiModel.tags["poster"]
-        ];
-        console.log( list );
+        PhiModel.project_list = [];
+
         if ( list && list != "" ) {
             if ( list instanceof Array && list.length > 0 ) {
-                if ( PhiModel.project_list.length > 0 ) {
-                    PhiModel.project_list = [];
-                    for ( var l=0; l<list.length; l++ ) {
-                        if ( PhiModel.tags[list[l]] )
-                            PhiModel.project_list.push( PhiModel.tags[list[l]] );
-                    }
+                PhiModel.project_list = [];
+                for ( var l=0; l<list.length; l++ ) {
+                    if ( PhiModel.tags[list[l]] )
+                        PhiModel.project_list.push( PhiModel.tags[list[l]] );
                 }
             }else{
                 if ( PhiModel.tags[list] ) {
