@@ -10,6 +10,10 @@ var PhiModelSingleton = function () {
         },
         copyright:"copyright 2015, PhiTheme.com",
         tag_titles:[],
+        pages:[],
+        product_nav:[],
+        projects:[]
+        /*
         pages:[
             {
                 title:"About",
@@ -36,6 +40,7 @@ var PhiModelSingleton = function () {
                 fullimage:"../content/products/qp/qp_logo_square.png"
             }
         ]
+        */
     };
 
     return model;
