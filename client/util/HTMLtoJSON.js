@@ -23,6 +23,8 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
             // data-att="value"
             // j = att
             // f = value
+
+
             if ( j.substring( 0 , set.length ) == set ) {
                 total_json_nodes++;
                 var json_ele;
@@ -31,15 +33,27 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                 var data_prop_name = j.substring( set.length ).toLowerCase();
                 if ( data_prop_name ) {
-                    prop_name = data_prop_name;
-                    if ( parent_is_array ) {
-                        json_parent.push( f );
-                    }else{
-                        json_parent[prop_name] = f;
-                    }
 
+                    prop_name = data_prop_name;
+
+                    if ( String(f).indexOf( ":attr" ) != -1 ) {
+                        var name_split = String(f).split( ":attr" );
+                        var value = $(e).attr( name_split[0] );
+                        if ( parent_is_array ) {
+                            json_parent.push( value );
+                        }else{
+                            json_parent[prop_name] = value;
+                        }
+                    }else{
+                        if ( parent_is_array ) {
+                            json_parent.push( f );
+                        }else{
+                            json_parent[prop_name] = f;
+                        }
+                    }
                 }else{
                     prop_name = f;
+
                     if ( !f.split )// its an object
                         return;
 
@@ -92,6 +106,33 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                             _HTMLtoJSON( $(e).children() , set , json_ele );
                             break;
+                        /*
+                        // and attempt to read a node as an object...too confusing
+                        case "self" :
+                            if ( parent_is_array ) {
+                                json_ele = {};
+                                json_parent.push( json_ele );
+                            }else{
+                                if ( json_parent[prop_name] ) {
+                                    json_ele = json_parent[prop_name];
+                                }else{
+                                    json_ele = {};
+                                    json_parent[prop_name] = json_ele;
+                                }
+                            }
+
+
+                            $.each( $(e)[0].attributes , function(i, attrib) {
+                                var name = attrib.name;
+                                if ( name != "data-json") {
+                                    json_ele[ name ] = attrib.value;
+                                }
+                            });
+
+                            // just jam the text into a text variable...
+                            json_ele.text = $(e).text();
+                            break;
+                        */
                         case "number" :
                             if ( parent_is_array ) {
                                 json_parent.push( Number( $(e).text() ) );

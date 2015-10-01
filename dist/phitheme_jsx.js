@@ -85,7 +85,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         var project = this.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
     },
 
@@ -93,7 +93,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         var project = this.getNextProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
     },
 
@@ -334,9 +334,12 @@ var Home = React.createClass({displayName: "Home",
     },
 
     gotoPage: function ( page ) {
-        RouteState.replace(
+        RouteState.merge(
             {
-                page:page
+                page:page,
+                list:"",
+                image:"",
+                project:""
             }
         );
     },
@@ -395,11 +398,12 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
 
 
     gotoTag: function ( tag ) {
-        RouteState.replace(
+        RouteState.merge(
             {
                 list:tag,
                 project:'',
-                image:''
+                image:'',
+                page:''
             },
             true
         );
@@ -584,6 +588,38 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         e.nativeEvent.stopImmediatePropagation();
     },
 
+    getExternalLink: function ( link_name ) {
+        if ( PhiModel.project.external_links ) {
+            if (
+                PhiModel.project.external_links[ link_name ]
+            ) {
+                var do_show = false;
+                if ( PhiModel.project.external_links[ link_name ].private == true ) {
+                    if ( RouteState.route.private == "private" ) {
+                        do_show = true;
+                    }
+                }else{
+                    do_show = true;
+                }
+
+                var className = "projectPage_leftLink";
+                if ( link_name == "link_right" )
+                    className = "projectPage_rightLink"
+
+                if ( do_show ) {
+                    return React.createElement("div", {className:  className }, 
+                        React.createElement("a", {href:  PhiModel.project.external_links[ link_name ].location, 
+                            onClick:  this.stopPropagation, 
+                             className: "projectPage_link", target: "_new_left"}, 
+                             PhiModel.project.external_links[ link_name ].title
+                        )
+                    );
+                }
+            }
+        }
+        return "";
+    },
+
     render: function() {
 
         var fullimage = PhiModel.project.fullimage;
@@ -614,6 +650,10 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             );
         }
 
+        var links = [];
+        links.push( this.getExternalLink( "link_left" ) );
+        links.push( this.getExternalLink( "link_right" ) );
+
         return  React.createElement("div", {className: "projectPage", 
                     onClick:  this.closeProject}, 
                     React.createElement("div", {className: "projectPage_title"}, 
@@ -623,6 +663,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                         className: "projectPage_img", 
                         onClick:  this.imageToFullscreen}), 
                      images, 
+                     links, 
                     React.createElement("div", {className: "projectPage_close", 
                         onClick:  this.closeProject})
                 );

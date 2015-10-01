@@ -85,7 +85,7 @@ var ContentTitleSection = React.createClass({
         var project = this.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
     },
 
@@ -93,7 +93,7 @@ var ContentTitleSection = React.createClass({
         var project = this.getNextProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
     },
 

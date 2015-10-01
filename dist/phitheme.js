@@ -21483,7 +21483,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         var project = this.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
     },
 
@@ -21491,7 +21491,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         var project = this.getNextProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
     },
 
@@ -21732,9 +21732,12 @@ var Home = React.createClass({displayName: "Home",
     },
 
     gotoPage: function ( page ) {
-        RouteState.replace(
+        RouteState.merge(
             {
-                page:page
+                page:page,
+                list:"",
+                image:"",
+                project:""
             }
         );
     },
@@ -21793,11 +21796,12 @@ var IdentityNav = React.createClass({displayName: "IdentityNav",
 
 
     gotoTag: function ( tag ) {
-        RouteState.replace(
+        RouteState.merge(
             {
                 list:tag,
                 project:'',
-                image:''
+                image:'',
+                page:''
             },
             true
         );
@@ -21982,6 +21986,38 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         e.nativeEvent.stopImmediatePropagation();
     },
 
+    getExternalLink: function ( link_name ) {
+        if ( PhiModel.project.external_links ) {
+            if (
+                PhiModel.project.external_links[ link_name ]
+            ) {
+                var do_show = false;
+                if ( PhiModel.project.external_links[ link_name ].private == true ) {
+                    if ( RouteState.route.private == "private" ) {
+                        do_show = true;
+                    }
+                }else{
+                    do_show = true;
+                }
+
+                var className = "projectPage_leftLink";
+                if ( link_name == "link_right" )
+                    className = "projectPage_rightLink"
+
+                if ( do_show ) {
+                    return React.createElement("div", {className:  className }, 
+                        React.createElement("a", {href:  PhiModel.project.external_links[ link_name ].location, 
+                            onClick:  this.stopPropagation, 
+                             className: "projectPage_link", target: "_new_left"}, 
+                             PhiModel.project.external_links[ link_name ].title
+                        )
+                    );
+                }
+            }
+        }
+        return "";
+    },
+
     render: function() {
 
         var fullimage = PhiModel.project.fullimage;
@@ -22012,6 +22048,10 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             );
         }
 
+        var links = [];
+        links.push( this.getExternalLink( "link_left" ) );
+        links.push( this.getExternalLink( "link_right" ) );
+
         return  React.createElement("div", {className: "projectPage", 
                     onClick:  this.closeProject}, 
                     React.createElement("div", {className: "projectPage_title"}, 
@@ -22021,6 +22061,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                         className: "projectPage_img", 
                         onClick:  this.imageToFullscreen}), 
                      images, 
+                     links, 
                     React.createElement("div", {className: "projectPage_close", 
                         onClick:  this.closeProject})
                 );
@@ -22224,6 +22265,8 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
             // data-att="value"
             // j = att
             // f = value
+
+
             if ( j.substring( 0 , set.length ) == set ) {
                 total_json_nodes++;
                 var json_ele;
@@ -22232,15 +22275,27 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                 var data_prop_name = j.substring( set.length ).toLowerCase();
                 if ( data_prop_name ) {
-                    prop_name = data_prop_name;
-                    if ( parent_is_array ) {
-                        json_parent.push( f );
-                    }else{
-                        json_parent[prop_name] = f;
-                    }
 
+                    prop_name = data_prop_name;
+
+                    if ( String(f).indexOf( ":attr" ) != -1 ) {
+                        var name_split = String(f).split( ":attr" );
+                        var value = $(e).attr( name_split[0] );
+                        if ( parent_is_array ) {
+                            json_parent.push( value );
+                        }else{
+                            json_parent[prop_name] = value;
+                        }
+                    }else{
+                        if ( parent_is_array ) {
+                            json_parent.push( f );
+                        }else{
+                            json_parent[prop_name] = f;
+                        }
+                    }
                 }else{
                     prop_name = f;
+
                     if ( !f.split )// its an object
                         return;
 
@@ -22293,6 +22348,33 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                             _HTMLtoJSON( $(e).children() , set , json_ele );
                             break;
+                        /*
+                        // and attempt to read a node as an object...too confusing
+                        case "self" :
+                            if ( parent_is_array ) {
+                                json_ele = {};
+                                json_parent.push( json_ele );
+                            }else{
+                                if ( json_parent[prop_name] ) {
+                                    json_ele = json_parent[prop_name];
+                                }else{
+                                    json_ele = {};
+                                    json_parent[prop_name] = json_ele;
+                                }
+                            }
+
+
+                            $.each( $(e)[0].attributes , function(i, attrib) {
+                                var name = attrib.name;
+                                if ( name != "data-json") {
+                                    json_ele[ name ] = attrib.value;
+                                }
+                            });
+
+                            // just jam the text into a text variable...
+                            json_ele.text = $(e).text();
+                            break;
+                        */
                         case "number" :
                             if ( parent_is_array ) {
                                 json_parent.push( Number( $(e).text() ) );

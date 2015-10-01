@@ -3,11 +3,12 @@ var IdentityNav = React.createClass({
 
 
     gotoTag: function ( tag ) {
-        RouteState.replace(
+        RouteState.merge(
             {
                 list:tag,
                 project:'',
-                image:''
+                image:'',
+                page:''
             },
             true
         );

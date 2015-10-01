@@ -106,9 +106,12 @@ var Home = React.createClass({
     },
 
     gotoPage: function ( page ) {
-        RouteState.replace(
+        RouteState.merge(
             {
-                page:page
+                page:page,
+                list:"",
+                image:"",
+                project:""
             }
         );
     },

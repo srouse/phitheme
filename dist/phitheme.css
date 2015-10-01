@@ -992,6 +992,30 @@ body.s_fullscreen .projectPage .projectPage_img {
   max-height: calc(100% - 80px);
   max-width: calc(100% - 40px);
 }
+.projectPage .projectPage_leftLink {
+  height: 40px;
+  position: absolute;
+  left: 0px;
+  bottom: 0px;
+  padding: 10px 20px;
+}
+.projectPage .projectPage_rightLink {
+  height: 40px;
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  padding: 10px 20px;
+}
+.projectPage .projectPage_link {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+}
+@media (max-width: 768px) {
+  .projectPage .projectPage_link {
+    font-size: 14px;
+  }
+}
 .projectPage .projectPage_imgNav {
   /*<csstag tag="navigation">
             <div ...>

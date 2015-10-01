@@ -90,6 +90,38 @@ var ProjectPage = React.createClass({
         e.nativeEvent.stopImmediatePropagation();
     },
 
+    getExternalLink: function ( link_name ) {
+        if ( PhiModel.project.external_links ) {
+            if (
+                PhiModel.project.external_links[ link_name ]
+            ) {
+                var do_show = false;
+                if ( PhiModel.project.external_links[ link_name ].private == true ) {
+                    if ( RouteState.route.private == "private" ) {
+                        do_show = true;
+                    }
+                }else{
+                    do_show = true;
+                }
+
+                var className = "projectPage_leftLink";
+                if ( link_name == "link_right" )
+                    className = "projectPage_rightLink"
+
+                if ( do_show ) {
+                    return <div className={ className }>
+                        <a href={ PhiModel.project.external_links[ link_name ].location }
+                            onClick={ this.stopPropagation }
+                             className="projectPage_link" target="_new_left">
+                            { PhiModel.project.external_links[ link_name ].title }
+                        </a>
+                    </div>;
+                }
+            }
+        }
+        return "";
+    },
+
     render: function() {
 
         var fullimage = PhiModel.project.fullimage;
@@ -120,6 +152,10 @@ var ProjectPage = React.createClass({
             </div>;
         }
 
+        var links = [];
+        links.push( this.getExternalLink( "link_left" ) );
+        links.push( this.getExternalLink( "link_right" ) );
+
         return  <div className="projectPage"
                     onClick={ this.closeProject }>
                     <div className="projectPage_title">
@@ -129,6 +165,7 @@ var ProjectPage = React.createClass({
                         className="projectPage_img"
                         onClick={ this.imageToFullscreen } />
                     { images }
+                    { links }
                     <div className="projectPage_close"
                         onClick={ this.closeProject }></div>
                 </div>;

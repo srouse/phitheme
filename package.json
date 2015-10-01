@@ -2,7 +2,7 @@
     "name" : "phitheme",
     "description" : "www.phitheme.com",
     "author" : "srouse",
-    "version" : "0.1.8",
+    "version" : "0.1.9",
     "dependencies": {
         "grunt":"0.4.5",
         "grunt-contrib-watch": "0.6.1",
