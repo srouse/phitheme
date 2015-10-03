@@ -3,16 +3,25 @@ var ContentTitleSection = React.createClass({
 
     componentDidMount: function() {
         var me = this;
-        this.route_listener = RouteState.addDiffListener(
+        RouteState.addDiffListener(
     		"project",
     		function ( route , prev_route ) {
                 me.forceUpdate();
-    		}
+    		},
+            "contenttitle_listeners"
+    	);
+
+        RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "contenttitle_listeners"
     	);
     },
 
     componentWillUnmount: function(){
-        RouteState.removeDiffListener( this.route_listener );
+        RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
     },
 
     closeProject: function () {
@@ -98,37 +107,68 @@ var ContentTitleSection = React.createClass({
     },
 
     render: function() {
+
+        var project = PhiModel.project;
+        var nav_links_dom = "";
+        if ( project.navigation_links ) {
+            var nav_link;
+
+            // filter for private
+            var filtered_children = [];
+            var total_links = project.navigation_links.length;
+            for ( var p=0; p<total_links; p++ ) {
+                nav_link = project.navigation_links[p];
+                if (
+                    nav_link.private === false &&
+                    RouteState.route.private != "private"
+                ) {
+                    continue;
+                }
+                filtered_children.push( nav_link );
+            }
+
+            // put links together with filtered list
+            var total_filtered_links = filtered_children.length;
+            var nav_links_children = [];
+            for ( var p=0; p<total_filtered_links; p++ ) {
+                nav_link = filtered_children[p];
+                nav_links_children.push(
+                    <div className="contentTitleSection_navLinkContainer"
+                        style={{width: 100/total_filtered_links + "%" }}
+                        key={ "nav_link_" + p }>
+                        <a className="contentTitleSection_navLinkButton"
+                            href={ nav_link.location } target="nav_link">
+                            { nav_link.title }
+                        </a>
+                    </div>
+                );
+            }
+
+            nav_links_dom = <div className="contentTitleSection_navLinks">
+                                { nav_links_children }
+                            </div>;
+        }
+
+
         return  <div className="contentTitleSection">
                     <div className="contentTitleSection_titleSection">
                         <div className="titleSection_titles">
                             <div className="titleSection_title">
-                                { PhiModel.project.title }
+                                { project.title }
                             </div>
                             <div className="titleSection_subTitle">
-                                { PhiModel.project.medium }
+                                { project.medium }
                             </div>
                         </div>
-                        { /* <div className="titleSection_close"
-                            onClick={ this.closeProject }></div>
-
-                            */ }
-
                         <div className="titleSection_next"
                             onClick={ this.nextProject }></div>
                         <div className="titleSection_prev"
                             onClick={ this.prevProject }></div>
-
                     </div>
                     <div className="contentTitleSection_summarySection">
-                        { PhiModel.project.description }
-
-                        {/*
-                        <div className="titleSection_next"
-                            onClick={ this.nextPage }></div>
-                        <div className="titleSection_prev"
-                            onClick={ this.prevPage }></div>
-                        */ }
+                        { project.description }
                     </div>
+                    { nav_links_dom }
                 </div>;
     }
 

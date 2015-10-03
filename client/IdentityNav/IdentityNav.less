@@ -24,7 +24,7 @@
 	}
 
     body.s_project & {
-        height: @phi;
+        height: @phi_inv;
     }
 
     body.s_project &,
@@ -82,7 +82,6 @@
         </csstag>*/
         height: 80%;
         width: 50%; margin-left: 25%;
-
         background-image: url("../assets/logo_large.svg");
         background-size: 50% auto;
         transition: all .3s;
@@ -92,13 +91,25 @@
             transition: none;
         }
 
-        body.s_project &,
         body.s_list &,
         body.s_page & {
             height: 80%;
             width: 100%;
             background-size: 50% auto;
             margin-left: 0px;
+
+            @media ( max-width: @screen-sm-min ) {
+                display: none;
+                transition: none;
+        	}
+        }
+
+        body.s_project & {
+            height: 80%;
+            width: 70%;
+
+            background-size: 50% auto;
+            margin-left: 15%;
 
             @media ( max-width: @screen-sm-min ) {
                 display: none;
@@ -133,7 +144,6 @@
         }
     }
 
-
     .identityNav_centerNav {
         /*<csstag tag="navigation">
             <div ...>
@@ -162,7 +172,7 @@
         }
 
         body.s_project & {
-            bottom: 16px;
+            bottom: 6px;
         }
 
         body.s_project &,
@@ -209,6 +219,10 @@
                     font-size: 14px;
                     padding-top: 32px;
                 }
+            }
+
+            body.s_project & {
+                font-size: 16px;
             }
         }
     }

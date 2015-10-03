@@ -21401,16 +21401,25 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
 
     componentDidMount: function() {
         var me = this;
-        this.route_listener = RouteState.addDiffListener(
+        RouteState.addDiffListener(
     		"project",
     		function ( route , prev_route ) {
                 me.forceUpdate();
-    		}
+    		},
+            "contenttitle_listeners"
+    	);
+
+        RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "contenttitle_listeners"
     	);
     },
 
     componentWillUnmount: function(){
-        RouteState.removeDiffListener( this.route_listener );
+        RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
     },
 
     closeProject: function () {
@@ -21496,37 +21505,68 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
     },
 
     render: function() {
+
+        var project = PhiModel.project;
+        var nav_links_dom = "";
+        if ( project.navigation_links ) {
+            var nav_link;
+
+            // filter for private
+            var filtered_children = [];
+            var total_links = project.navigation_links.length;
+            for ( var p=0; p<total_links; p++ ) {
+                nav_link = project.navigation_links[p];
+                if (
+                    nav_link.private === false &&
+                    RouteState.route.private != "private"
+                ) {
+                    continue;
+                }
+                filtered_children.push( nav_link );
+            }
+
+            // put links together with filtered list
+            var total_filtered_links = filtered_children.length;
+            var nav_links_children = [];
+            for ( var p=0; p<total_filtered_links; p++ ) {
+                nav_link = filtered_children[p];
+                nav_links_children.push(
+                    React.createElement("div", {className: "contentTitleSection_navLinkContainer", 
+                        style: {width: 100/total_filtered_links + "%"}, 
+                        key:  "nav_link_" + p}, 
+                        React.createElement("a", {className: "contentTitleSection_navLinkButton", 
+                            href:  nav_link.location, target: "nav_link"}, 
+                             nav_link.title
+                        )
+                    )
+                );
+            }
+
+            nav_links_dom = React.createElement("div", {className: "contentTitleSection_navLinks"}, 
+                                 nav_links_children 
+                            );
+        }
+
+
         return  React.createElement("div", {className: "contentTitleSection"}, 
                     React.createElement("div", {className: "contentTitleSection_titleSection"}, 
                         React.createElement("div", {className: "titleSection_titles"}, 
                             React.createElement("div", {className: "titleSection_title"}, 
-                                 PhiModel.project.title
+                                 project.title
                             ), 
                             React.createElement("div", {className: "titleSection_subTitle"}, 
-                                 PhiModel.project.medium
+                                 project.medium
                             )
                         ), 
-                        /* <div className="titleSection_close"
-                            onClick={ this.closeProject }></div>
-
-                            */ 
-
                         React.createElement("div", {className: "titleSection_next", 
                             onClick:  this.nextProject}), 
                         React.createElement("div", {className: "titleSection_prev", 
                             onClick:  this.prevProject})
-
                     ), 
                     React.createElement("div", {className: "contentTitleSection_summarySection"}, 
-                         PhiModel.project.description
-
-                        /*
-                        <div className="titleSection_next"
-                            onClick={ this.nextPage }></div>
-                        <div className="titleSection_prev"
-                            onClick={ this.prevPage }></div>
-                        */ 
-                    )
+                         project.description
+                    ), 
+                     nav_links_dom 
                 );
     }
 
@@ -22137,8 +22177,13 @@ PhiTheme.run = function ( data_dom ) {
 
         //some post processing...
         var project,tag,tag_hash;
+        var new_projects = [];
         for ( var p=0; p<PhiModel.projects.length; p++ ) {
             project = PhiModel.projects[p];
+            if ( project.private === true ) {
+                continue;
+            }
+
             project.slug = project.title.slugify();
             PhiModel.slugs[project.slug] = project;
 
@@ -22309,6 +22354,7 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                     switch ( type ) {
                         case "array" :
+                        case "arr" :
                             // decorate pre existing elements
                             if ( parent_is_array ) {
                                 json_ele = [];
@@ -22333,6 +22379,7 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }
                             break;
                         case "object" :
+                        case "obj" :
                             // decorate pre existing elements
                             if ( parent_is_array ) {
                                 json_ele = {};
@@ -22376,13 +22423,24 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             break;
                         */
                         case "number" :
+                        case "num" :
                             if ( parent_is_array ) {
                                 json_parent.push( Number( $(e).text() ) );
                             }else{
                                 json_parent[prop_name] = Number( $(e).text() );
                             }
                             break;
+                        case "boolean" :
+                        case "bool" :
+                            var bool_value = ( $(e).text().toLowerCase() === "true" );
+                            if ( parent_is_array ) {
+                                json_parent.push( bool_value );
+                            }else{
+                                json_parent[prop_name] = bool_value;
+                            }
+                            break;
                         case "string" :
+                        case "str" :
                             if ( parent_is_array ) {
                                 json_parent.push( getNodeText( e ) );//$.trim( $(e).text() ) );
                             }else{

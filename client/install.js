@@ -18,8 +18,13 @@ PhiTheme.run = function ( data_dom ) {
 
         //some post processing...
         var project,tag,tag_hash;
+        var new_projects = [];
         for ( var p=0; p<PhiModel.projects.length; p++ ) {
             project = PhiModel.projects[p];
+            if ( project.private === true ) {
+                continue;
+            }
+
             project.slug = project.title.slugify();
             PhiModel.slugs[project.slug] = project;
 

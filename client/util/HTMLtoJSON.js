@@ -67,6 +67,7 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
 
                     switch ( type ) {
                         case "array" :
+                        case "arr" :
                             // decorate pre existing elements
                             if ( parent_is_array ) {
                                 json_ele = [];
@@ -91,6 +92,7 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }
                             break;
                         case "object" :
+                        case "obj" :
                             // decorate pre existing elements
                             if ( parent_is_array ) {
                                 json_ele = {};
@@ -134,13 +136,24 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             break;
                         */
                         case "number" :
+                        case "num" :
                             if ( parent_is_array ) {
                                 json_parent.push( Number( $(e).text() ) );
                             }else{
                                 json_parent[prop_name] = Number( $(e).text() );
                             }
                             break;
+                        case "boolean" :
+                        case "bool" :
+                            var bool_value = ( $(e).text().toLowerCase() === "true" );
+                            if ( parent_is_array ) {
+                                json_parent.push( bool_value );
+                            }else{
+                                json_parent[prop_name] = bool_value;
+                            }
+                            break;
                         case "string" :
+                        case "str" :
                             if ( parent_is_array ) {
                                 json_parent.push( getNodeText( e ) );//$.trim( $(e).text() ) );
                             }else{

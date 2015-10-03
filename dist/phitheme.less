@@ -240,9 +240,10 @@ Mixin's
         <div ...>
             { .contentTitleSection_titleSection }
             { .contentTitleSection_summarySection }
+            { .contentTitleSection_navLinks }
         </div>
     </csstag>*/
-    width: @phi_inv; height:@phi_inv;
+    width: @phi_inv; height:@phi;
     position: absolute;
     left: 0px; bottom: 0px;
     border-right: 1px solid #eee;
@@ -376,7 +377,7 @@ Mixin's
             </div>
         </csstag>*/
         width: 100%;
-        .calc( height , 100% , -80px );
+        .calc( height , 100% , -( 80px + 70px ) );
         padding: 0px 20px;
         overflow: auto;
         font-size: 14px; color: #777;
@@ -398,6 +399,7 @@ Mixin's
             left: 0px; height: 60px;
             background-image: url("../assets/prev_icon.png");
         }
+
         .titleSection_next {
             /*<csstag tag="button">
                 <div ...></div>
@@ -413,6 +415,52 @@ Mixin's
             bottom: 0px; width: 50%;
             right: 0px; height: 60px;
             background-image: url("../assets/next_icon.png");
+        }
+    }
+
+    .contentTitleSection_navLinks {
+        /*<csstag tag="navigation">
+            <div ...>
+                { .contentTitleSection_navLinkContainer }
+            </div>
+        </csstag>*/
+        width: 100%; height: 60px;
+        position: absolute;
+        bottom: 0px; left: 0px;
+        padding-right: 10px;
+
+        .contentTitleSection_navLinkContainer {
+            /*<csstag tag="section">
+                <div ...>
+                    { .contentTitleSection_navLinkButton }
+                </div>
+            </csstag>*/
+            float: left;
+            width: 100%;
+            padding-left: 10px;
+
+            .contentTitleSection_navLinkButton {
+                /*<csstag tag="button">
+                    <a ...>Prototype</a>
+                </csstag>*/
+                display: block;
+                text-decoration: none;
+                color: #777;
+                font-size: 14px;
+                text-align: center;
+                border: 1px solid #ddd;
+                padding: 16px 0px;
+                border-radius: 4px;
+                height: 50px;
+                .hand();
+                &:hover {
+                    background-color: #eee;
+                }
+
+                @media ( max-width: @screen-sm-min ) {
+
+                }
+            }
         }
     }
 }
@@ -675,6 +723,7 @@ Mixin's
         width: 100%; height: 62px;
         transition: height .3s, width .3s, left .3s;
         .zIndex( "phitheme_copyrightNav" );
+        overflow: hidden;
 
         @media ( max-width: @screen-sm-min ) {
     	}
@@ -691,6 +740,10 @@ Mixin's
         	}
         }
 
+        body.s_project & {
+            height: 0px;
+        }
+
         .identityNav_bottomNav {
             /*<csstag tag="link">
                 <div ...>
@@ -704,7 +757,7 @@ Mixin's
             width: 30%; height: 100%;
             border-top: 1px solid #eee;
             transition: height .3s, width .3s, left .3s;
-            overflow: hidden;
+
             padding: 0px 20px;
 
             @media ( max-width: @screen-sm-min ) {
@@ -718,9 +771,7 @@ Mixin's
                 width: @phi;
             }
 
-            body.s_project & {
-                height: 0px;
-            }
+
 
             .identityNav_bottomNavLink {
                 /*<csstag tag="link">
@@ -780,7 +831,7 @@ Mixin's
 	}
 
     body.s_project & {
-        height: @phi;
+        height: @phi_inv;
     }
 
     body.s_project &,
@@ -838,7 +889,6 @@ Mixin's
         </csstag>*/
         height: 80%;
         width: 50%; margin-left: 25%;
-
         background-image: url("../assets/logo_large.svg");
         background-size: 50% auto;
         transition: all .3s;
@@ -848,13 +898,25 @@ Mixin's
             transition: none;
         }
 
-        body.s_project &,
         body.s_list &,
         body.s_page & {
             height: 80%;
             width: 100%;
             background-size: 50% auto;
             margin-left: 0px;
+
+            @media ( max-width: @screen-sm-min ) {
+                display: none;
+                transition: none;
+        	}
+        }
+
+        body.s_project & {
+            height: 80%;
+            width: 70%;
+
+            background-size: 50% auto;
+            margin-left: 15%;
 
             @media ( max-width: @screen-sm-min ) {
                 display: none;
@@ -889,7 +951,6 @@ Mixin's
         }
     }
 
-
     .identityNav_centerNav {
         /*<csstag tag="navigation">
             <div ...>
@@ -918,7 +979,7 @@ Mixin's
         }
 
         body.s_project & {
-            bottom: 16px;
+            bottom: 6px;
         }
 
         body.s_project &,
@@ -965,6 +1026,10 @@ Mixin's
                     font-size: 14px;
                     padding-top: 32px;
                 }
+            }
+
+            body.s_project & {
+                font-size: 16px;
             }
         }
     }

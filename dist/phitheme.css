@@ -114,10 +114,11 @@ Mixin's
         <div ...>
             { .contentTitleSection_titleSection }
             { .contentTitleSection_summarySection }
+            { .contentTitleSection_navLinks }
         </div>
     </csstag>*/
   width: 38.196602%;
-  height: 38.196602%;
+  height: 61.803398%;
   position: absolute;
   left: 0px;
   bottom: 0px;
@@ -248,7 +249,7 @@ Mixin's
             </div>
         </csstag>*/
   width: 100%;
-  height: calc(100% + -80px);
+  height: calc(100% + -150px);
   padding: 0px 20px;
   overflow: auto;
   font-size: 14px;
@@ -276,6 +277,48 @@ Mixin's
   right: 0px;
   height: 60px;
   background-image: url("../assets/next_icon.png");
+}
+.contentTitleSection .contentTitleSection_navLinks {
+  /*<csstag tag="navigation">
+            <div ...>
+                { .contentTitleSection_navLinkContainer }
+            </div>
+        </csstag>*/
+  width: 100%;
+  height: 60px;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  padding-right: 10px;
+}
+.contentTitleSection .contentTitleSection_navLinks .contentTitleSection_navLinkContainer {
+  /*<csstag tag="section">
+                <div ...>
+                    { .contentTitleSection_navLinkButton }
+                </div>
+            </csstag>*/
+  float: left;
+  width: 100%;
+  padding-left: 10px;
+}
+.contentTitleSection .contentTitleSection_navLinks .contentTitleSection_navLinkContainer .contentTitleSection_navLinkButton {
+  /*<csstag tag="button">
+                    <a ...>Prototype</a>
+                </csstag>*/
+  display: block;
+  text-decoration: none;
+  color: #777;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 16px 0px;
+  border-radius: 4px;
+  height: 50px;
+  cursor: pointer;
+  cursor: hand;
+}
+.contentTitleSection .contentTitleSection_navLinks .contentTitleSection_navLinkContainer .contentTitleSection_navLinkButton:hover {
+  background-color: #eee;
 }
 .examplesList {
   /*<csstag tag="section,list">
@@ -538,6 +581,7 @@ body.s_page .phiTheme .contentArea {
   height: 62px;
   transition: height .3s, width .3s, left .3s;
   z-index: 4000;
+  overflow: hidden;
 }
 body.s_project .phiTheme .phitheme_copyrightNav,
 body.s_list .phiTheme .phitheme_copyrightNav,
@@ -552,6 +596,9 @@ body.s_page .phiTheme .phitheme_copyrightNav {
     width: 100%;
     position: relative;
   }
+}
+body.s_project .phiTheme .phitheme_copyrightNav {
+  height: 0px;
 }
 .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   /*<csstag tag="link">
@@ -568,7 +615,6 @@ body.s_page .phiTheme .phitheme_copyrightNav {
   height: 100%;
   border-top: 1px solid #eee;
   transition: height .3s, width .3s, left .3s;
-  overflow: hidden;
   padding: 0px 20px;
 }
 @media (max-width: 768px) {
@@ -582,9 +628,6 @@ body.s_list .phiTheme .phitheme_copyrightNav .identityNav_bottomNav,
 body.s_page .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   left: 19.098301%;
   width: 61.803398%;
-}
-body.s_project .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
-  height: 0px;
 }
 .phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink {
   /*<csstag tag="link">
@@ -643,7 +686,7 @@ body.s_project .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   }
 }
 body.s_project .identityNav {
-  height: 61.803398%;
+  height: 38.196602%;
 }
 body.s_project .identityNav,
 body.s_list .identityNav,
@@ -713,7 +756,6 @@ body.s_page .identityNav .identityNav_rightGradient {
     transition: none;
   }
 }
-body.s_project .identityNav .identityNav_logo,
 body.s_list .identityNav .identityNav_logo,
 body.s_page .identityNav .identityNav_logo {
   height: 80%;
@@ -722,9 +764,20 @@ body.s_page .identityNav .identityNav_logo {
   margin-left: 0px;
 }
 @media (max-width: 768px) {
-  body.s_project .identityNav .identityNav_logo,
   body.s_list .identityNav .identityNav_logo,
   body.s_page .identityNav .identityNav_logo {
+    display: none;
+    transition: none;
+  }
+}
+body.s_project .identityNav .identityNav_logo {
+  height: 80%;
+  width: 70%;
+  background-size: 50% auto;
+  margin-left: 15%;
+}
+@media (max-width: 768px) {
+  body.s_project .identityNav .identityNav_logo {
     display: none;
     transition: none;
   }
@@ -785,7 +838,7 @@ body.s_page .identityNav .identityNav_centerNav {
   bottom: 80px;
 }
 body.s_project .identityNav .identityNav_centerNav {
-  bottom: 16px;
+  bottom: 6px;
 }
 body.s_project .identityNav .identityNav_centerNav,
 body.s_list .identityNav .identityNav_centerNav,
@@ -836,6 +889,9 @@ body.s_page .identityNav .identityNav_centerNav {
     font-size: 14px;
     padding-top: 32px;
   }
+}
+body.s_project .identityNav .identityNav_centerNav .identityNav_link {
+  font-size: 16px;
 }
 .page {
   /*<csstag tag="page">
