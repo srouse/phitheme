@@ -18,6 +18,14 @@ var ProjectPage = React.createClass({
     		},
             "project_listeners"
     	);
+
+        RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "project_listeners"
+    	);
     },
 
     componentWillUnmount: function(){

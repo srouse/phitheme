@@ -721,7 +721,7 @@ Mixin's
         position: absolute;
         left: 0px; bottom: 0px;
         width: 100%; height: 62px;
-        transition: height .3s, width .3s, left .3s;
+        transition: bottom .3s, width .3s, left .3s;
         .zIndex( "phitheme_copyrightNav" );
         overflow: hidden;
 
@@ -741,7 +741,8 @@ Mixin's
         }
 
         body.s_project & {
-            height: 0px;
+            bottom: -70px;
+            background-color: #fff;
         }
 
         .identityNav_bottomNav {

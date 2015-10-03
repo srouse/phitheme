@@ -119,7 +119,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
             for ( var p=0; p<total_links; p++ ) {
                 nav_link = project.navigation_links[p];
                 if (
-                    nav_link.private === false &&
+                    nav_link.private === true &&
                     RouteState.route.private != "private"
                 ) {
                     continue;
@@ -551,6 +551,14 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
         RouteState.addDiffListener(
     		"image",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "project_listeners"
+    	);
+
+        RouteState.addDiffListener(
+    		"private",
     		function ( route , prev_route ) {
                 me.forceUpdate();
     		},

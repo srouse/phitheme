@@ -21,9 +21,13 @@ PhiTheme.run = function ( data_dom ) {
         var new_projects = [];
         for ( var p=0; p<PhiModel.projects.length; p++ ) {
             project = PhiModel.projects[p];
-            if ( project.private === true ) {
+            /* needs to be relative to route...
+            if (
+                project.private === true &&
+                RouteState.route.private != "private"
+            ) {
                 continue;
-            }
+            }*/
 
             project.slug = project.title.slugify();
             PhiModel.slugs[project.slug] = project;

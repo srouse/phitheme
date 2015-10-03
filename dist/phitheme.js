@@ -21517,7 +21517,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
             for ( var p=0; p<total_links; p++ ) {
                 nav_link = project.navigation_links[p];
                 if (
-                    nav_link.private === false &&
+                    nav_link.private === true &&
                     RouteState.route.private != "private"
                 ) {
                     continue;
@@ -21954,6 +21954,14 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
     		},
             "project_listeners"
     	);
+
+        RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "project_listeners"
+    	);
     },
 
     componentWillUnmount: function(){
@@ -22180,9 +22188,13 @@ PhiTheme.run = function ( data_dom ) {
         var new_projects = [];
         for ( var p=0; p<PhiModel.projects.length; p++ ) {
             project = PhiModel.projects[p];
-            if ( project.private === true ) {
+            /* needs to be relative to route...
+            if (
+                project.private === true &&
+                RouteState.route.private != "private"
+            ) {
                 continue;
-            }
+            }*/
 
             project.slug = project.title.slugify();
             PhiModel.slugs[project.slug] = project;

@@ -579,7 +579,7 @@ body.s_page .phiTheme .contentArea {
   bottom: 0px;
   width: 100%;
   height: 62px;
-  transition: height .3s, width .3s, left .3s;
+  transition: bottom .3s, width .3s, left .3s;
   z-index: 4000;
   overflow: hidden;
 }
@@ -598,7 +598,8 @@ body.s_page .phiTheme .phitheme_copyrightNav {
   }
 }
 body.s_project .phiTheme .phitheme_copyrightNav {
-  height: 0px;
+  bottom: -70px;
+  background-color: #fff;
 }
 .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   /*<csstag tag="link">

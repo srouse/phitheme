@@ -119,7 +119,7 @@ var ContentTitleSection = React.createClass({
             for ( var p=0; p<total_links; p++ ) {
                 nav_link = project.navigation_links[p];
                 if (
-                    nav_link.private === false &&
+                    nav_link.private === true &&
                     RouteState.route.private != "private"
                 ) {
                     continue;
