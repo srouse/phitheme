@@ -11,22 +11,39 @@ var ExamplesList = React.createClass({
 
     componentDidMount: function() {
         var me = this;
-        this.route_listener = RouteState.addDiffListener(
+        RouteState.addDiffListener(
     		"list",
     		function ( route , prev_route ) {
                 me.forceUpdate();
-    		}
+    		},
+            "examples_list"
+    	);
+
+        RouteState.addDiffListener(
+    		"thumbs",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "examples_list"
     	);
 
         $(".nano").nanoScroller();
     },
 
     componentWillUnmount: function(){
-        RouteState.removeDiffListener( this.route_listener );
+        RouteState.removeDiffListenersViaClusterId( "examples_list" );
     },
 
     componentDidUpdate: function () {
         $(".nano").nanoScroller();
+    },
+
+    toggleThumbs: function () {
+        RouteState.toggle({
+            thumbs:"thumbs"
+        },{
+            thumbs:""
+        });
     },
 
     renderRows: function( list , rows ) {
@@ -48,11 +65,17 @@ var ExamplesList = React.createClass({
 
             image = "";
             if ( item.image )
-                image = <img className="examplesList_rowImage"
-                                src={ item.image } />
+                image = <div className="examplesList_rowImage">
+                    <div className="examplesList_rowImageChild"
+                        style={{
+                            backgroundImage:
+                                "url('"+item.image+"')"
+                        }}></div>
+                </div>
 
+            var className = "examplesList_row index_" + i%3;
             rows.push(
-                <div className="examplesList_row"
+                <div className={ className }
                     onClick={ this.openProject.bind( this , item.slug ) }>
                     <div className="examplesList_rowText">
                         <div className="examplesList_rowTitle">
@@ -83,8 +106,12 @@ var ExamplesList = React.createClass({
 
         return  <div className="nano examplesList">
                     <div className="nano-content">
-                        { rows }
+                        <div className="examplesList_rowContainer">
+                            { rows }
+                        </div>
                     </div>
+                    <div className="examplesList_typeToggle"
+                        onClick={ this.toggleThumbs }></div>
                 </div>;
     }
 

@@ -21585,22 +21585,39 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 
     componentDidMount: function() {
         var me = this;
-        this.route_listener = RouteState.addDiffListener(
+        RouteState.addDiffListener(
     		"list",
     		function ( route , prev_route ) {
                 me.forceUpdate();
-    		}
+    		},
+            "examples_list"
+    	);
+
+        RouteState.addDiffListener(
+    		"thumbs",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "examples_list"
     	);
 
         $(".nano").nanoScroller();
     },
 
     componentWillUnmount: function(){
-        RouteState.removeDiffListener( this.route_listener );
+        RouteState.removeDiffListenersViaClusterId( "examples_list" );
     },
 
     componentDidUpdate: function () {
         $(".nano").nanoScroller();
+    },
+
+    toggleThumbs: function () {
+        RouteState.toggle({
+            thumbs:"thumbs"
+        },{
+            thumbs:""
+        });
     },
 
     renderRows: function( list , rows ) {
@@ -21622,11 +21639,17 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 
             image = "";
             if ( item.image )
-                image = React.createElement("img", {className: "examplesList_rowImage", 
-                                src:  item.image})
+                image = React.createElement("div", {className: "examplesList_rowImage"}, 
+                    React.createElement("div", {className: "examplesList_rowImageChild", 
+                        style: {
+                            backgroundImage:
+                                "url('"+item.image+"')"
+                        }})
+                )
 
+            var className = "examplesList_row index_" + i%3;
             rows.push(
-                React.createElement("div", {className: "examplesList_row", 
+                React.createElement("div", {className:  className, 
                     onClick:  this.openProject.bind( this , item.slug) }, 
                     React.createElement("div", {className: "examplesList_rowText"}, 
                         React.createElement("div", {className: "examplesList_rowTitle"}, 
@@ -21657,8 +21680,12 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 
         return  React.createElement("div", {className: "nano examplesList"}, 
                     React.createElement("div", {className: "nano-content"}, 
-                         rows 
-                    )
+                        React.createElement("div", {className: "examplesList_rowContainer"}, 
+                             rows 
+                        )
+                    ), 
+                    React.createElement("div", {className: "examplesList_typeToggle", 
+                        onClick:  this.toggleThumbs})
                 );
     }
 

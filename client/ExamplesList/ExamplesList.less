@@ -68,23 +68,27 @@
         clear: both;
     }
 
-    .examplesList_header {
-        /*<csstag tag="row,header">
-            <div ...>
-                Header
-            </div>
-        </csstag>*/
-        float: left;
+    .examplesList_typeToggle {
+        width: 50px; height: 50px;
+        position: fixed;
+        bottom: 0px; right: 7px;
+        background-image: url("../assets/thumbs_icon.png");
+        .hand();
+        &:hover {
+            background-color: #eee;
+        }
+
+        body.s_thumbs & {
+            background-image: url("../assets/list_icon.png");
+        }
+    }
+
+    .examplesList_rowContainer {
         width: @phi;
         margin-left: @phi_inv/2;
-        font-size: 26px;
-        padding-bottom: 28px;
-        margin-bottom: 0px;
-        color: #777;
-        border-bottom: 7px solid @cs_purple;
 
         @media ( max-width: @screen-sm-min ) {
-            width: 90%; font-size: 26px;
+            width: 90%;
             margin-left: 5%;
             text-align: center;
         }
@@ -92,105 +96,189 @@
         @media ( max-width: @screen-md-min ) {
             text-align: center;
         }
-    }
 
-    .examplesList_row {
-        /*<csstag tag="row">
-            <div ...>
-                { .examplesList_rowText }
-                { .examplesList_rowImage }
-            </div>
-        </csstag>*/
-        float: left;
-        width: @phi;
-        border-bottom: 1px solid #eee;
-        padding: 30px 0px;
-        margin-left: @phi_inv/2;
-        .hand();
-
-        &:hover {
-            // border-bottom: 1px solid #aaa;
-        }
-
-        @media ( max-width: @screen-sm-min ) {
-            width: 90%;
-            margin-left: 5%;
-        }
-
-        .examplesList_rowText {
-            /*<csstag tag="row">
+        .examplesList_header {
+            /*<csstag tag="row,header">
                 <div ...>
-                    { .examplesList_rowTitle }
-                    { .examplesList_rowSubTitle }
+                    Header
                 </div>
             </csstag>*/
-            width: @phi;
-            float: left; clear: left;
-            margin-bottom: 20px;
-
-            @media ( max-width: @screen-sm-min ) {
-                width: 100%;
-            }
-
-            @media ( max-width: @screen-md-min ) {
-                width: 100%;
-            }
-
-            .examplesList_rowTitle {
-                /*<csstag tag="label">
-                    <div ...>
-                        Project Title
-                    </div>
-                </csstag>*/
-                font-size: 18px;
-                color: #555;
-
-                @media ( max-width: @screen-sm-min ) {
-                    font-size: 20px;
-                    text-align: center;
-                }
-
-                @media ( max-width: @screen-md-min ) {
-                    text-align: center;
-                }
-            }
-            .examplesList_rowSubTitle {
-                /*<csstag tag="label">
-                    <div ...>
-                        Project Sub Title
-                    </div>
-                </csstag>*/
-                font-size: 12px;
-                margin-top: 4px;
-                color: #999;
-
-                @media ( max-width: @screen-sm-min ) {
-                    font-size: 14px;
-                    text-align: center;
-                }
-
-                @media ( max-width: @screen-md-min ) {
-                    text-align: center;
-                }
-            }
+            float: left;
+            width: 100%;//@phi;
+            //margin-left: @phi_inv/2;
+            font-size: 26px;
+            padding-bottom: 28px;
+            margin-bottom: 0px;
+            color: #777;
+            border-bottom: 7px solid @cs_purple;
         }
 
-        .examplesList_rowImage {
+        .examplesList_row {
             /*<csstag tag="row">
-                <img ... src="../assets/content/posters/oh_poster/oh.png" />
+                <div ...>
+                    { .examplesList_rowText }
+                    { .examplesList_rowImage }
+                </div>
             </csstag>*/
-            float: right; clear: right;
-            box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .2 );
-            max-width: @phi_inv;
+            float: left;
+            width: 100%;
+            border-bottom: 1px solid #eee;
+            padding: 30px 0px;
+            position: relative;
 
-            @media ( max-width: @screen-sm-min ) {
-                float: left; clear: left;
-                margin-left: @phi/2;
+            //margin-left: @phi_inv/2;
+            .hand();
+
+            body.s_thumbs & {
+                .calc( width , 33.3333% , -(40px/3) );
+                //width: 33.333%;
+                padding: 0px;
+                margin: 0px;
+                margin-bottom: 10px;
+                margin-top: 30px;
+                margin-left: 20px;
+                //.calc( padding-bottom , 25% , -10px );
+                //padding-bottom: 25%;
+                border: none;
+
+                &.index_0 {
+                    margin-left: 0px;
+                }
             }
 
-            @media ( max-width: @screen-md-min ) {
+            &:hover {
+                // border-bottom: 1px solid #aaa;
+            }
+
+            .examplesList_rowText {
+                /*<csstag tag="row">
+                    <div ...>
+                        { .examplesList_rowTitle }
+                        { .examplesList_rowSubTitle }
+                    </div>
+                </csstag>*/
+                width: @phi;
                 float: left; clear: left;
-                margin-left: @phi/2;
+                margin-bottom: 20px;
+
+                body.s_thumbs & {
+                    margin-bottom: 0px;
+                    position: absolute;
+                    width: 100%;
+                    bottom: -26px; left: 0px;
+                    font-size: 12px;
+                }
+
+                @media ( max-width: @screen-sm-min ) {
+                    width: 100%;
+                }
+
+                @media ( max-width: @screen-md-min ) {
+                    width: 100%;
+                }
+
+                .examplesList_rowTitle {
+                    /*<csstag tag="label">
+                        <div ...>
+                            Project Title
+                        </div>
+                    </csstag>*/
+                    font-size: 18px;
+                    color: #555;
+
+                    body.s_thumbs & {
+                        height: 20px;
+                        width: 100%;
+                        margin-left: 0px;
+                        font-size: 11px;
+                        overflow: hidden;
+                        color: #999;
+                        white-space: nowrap;
+                    }
+
+                    @media ( max-width: @screen-sm-min ) {
+                        font-size: 20px;
+                        text-align: center;
+
+                        body.s_thumbs & {
+                            font-size: 11px;
+                        }
+                    }
+
+                    @media ( max-width: @screen-md-min ) {
+                        text-align: center;
+                    }
+                }
+                .examplesList_rowSubTitle {
+                    /*<csstag tag="label">
+                        <div ...>
+                            Project Sub Title
+                        </div>
+                    </csstag>*/
+                    font-size: 12px;
+                    margin-top: 4px;
+                    color: #999;
+
+                    body.s_thumbs & {
+                        display: none;
+                    }
+
+                    @media ( max-width: @screen-sm-min ) {
+                        font-size: 14px;
+                        text-align: center;
+                    }
+
+                    @media ( max-width: @screen-md-min ) {
+                        text-align: center;
+                    }
+                }
+            }
+
+            .examplesList_rowImage {
+                /*<csstag tag="row">
+                    <img ... src="../assets/content/posters/oh_poster/oh.png" />
+                </csstag>*/
+                float: right; clear: right;
+                box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .2 );
+                width: @phi_inv;
+            	padding-bottom: @phi_inv;// @phinv-phi; /* 16:9 */
+            	position: relative;
+
+                body.s_thumbs & {
+                    width: 100%;
+                    padding-bottom: 100%;
+                    width: 100%;
+                    float: left;
+                }
+
+               .examplesList_rowImageChild {
+                	position: absolute;
+                	top: 0; bottom: 0; left: 0; right: 0;
+                    background-size: cover;
+
+                    body.s_thumbs & {
+                        top: 0px; bottom: 0px;
+                        left: 0px; right: 0px;
+                    }
+                }
+
+                @media ( max-width: @screen-sm-min ) {
+                    float: left; clear: left;
+                    margin-left: @phi/2;
+
+                    body.s_thumbs & {
+                        margin-left: 0px;
+                    }
+                }
+
+                @media ( max-width: @screen-md-min ) {
+                    float: left; clear: left;
+                    margin-left: @phi/2;
+
+                    body.s_thumbs & {
+                        margin-left: 0px;
+                    }
+                }
             }
         }
     }

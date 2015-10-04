@@ -382,139 +382,213 @@ body.s_page .examplesList {
   width: 10px;
   clear: both;
 }
-.examplesList .examplesList_header {
-  /*<csstag tag="row,header">
-            <div ...>
-                Header
-            </div>
-        </csstag>*/
-  float: left;
+.examplesList .examplesList_typeToggle {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 0px;
+  right: 7px;
+  background-image: url("../assets/thumbs_icon.png");
+  cursor: pointer;
+  cursor: hand;
+}
+.examplesList .examplesList_typeToggle:hover {
+  background-color: #eee;
+}
+body.s_thumbs .examplesList .examplesList_typeToggle {
+  background-image: url("../assets/list_icon.png");
+}
+.examplesList .examplesList_rowContainer {
   width: 61.803398%;
   margin-left: 19.098301%;
+}
+@media (max-width: 768px) {
+  .examplesList .examplesList_rowContainer {
+    width: 90%;
+    margin-left: 5%;
+    text-align: center;
+  }
+}
+@media (max-width: 992px) {
+  .examplesList .examplesList_rowContainer {
+    text-align: center;
+  }
+}
+.examplesList .examplesList_rowContainer .examplesList_header {
+  /*<csstag tag="row,header">
+                <div ...>
+                    Header
+                </div>
+            </csstag>*/
+  float: left;
+  width: 100%;
   font-size: 26px;
   padding-bottom: 28px;
   margin-bottom: 0px;
   color: #777;
   border-bottom: 7px solid #999;
 }
-@media (max-width: 768px) {
-  .examplesList .examplesList_header {
-    width: 90%;
-    font-size: 26px;
-    margin-left: 5%;
-    text-align: center;
-  }
-}
-@media (max-width: 992px) {
-  .examplesList .examplesList_header {
-    text-align: center;
-  }
-}
-.examplesList .examplesList_row {
+.examplesList .examplesList_rowContainer .examplesList_row {
   /*<csstag tag="row">
-            <div ...>
-                { .examplesList_rowText }
-                { .examplesList_rowImage }
-            </div>
-        </csstag>*/
+                <div ...>
+                    { .examplesList_rowText }
+                    { .examplesList_rowImage }
+                </div>
+            </csstag>*/
   float: left;
-  width: 61.803398%;
+  width: 100%;
   border-bottom: 1px solid #eee;
   padding: 30px 0px;
-  margin-left: 19.098301%;
+  position: relative;
   cursor: pointer;
   cursor: hand;
 }
-@media (max-width: 768px) {
-  .examplesList .examplesList_row {
-    width: 90%;
-    margin-left: 5%;
-  }
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row {
+  width: calc(33.3333% + -13.33333333px);
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 10px;
+  margin-top: 30px;
+  margin-left: 20px;
+  border: none;
 }
-.examplesList .examplesList_row .examplesList_rowText {
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row.index_0 {
+  margin-left: 0px;
+}
+.examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
   /*<csstag tag="row">
-                <div ...>
-                    { .examplesList_rowTitle }
-                    { .examplesList_rowSubTitle }
-                </div>
-            </csstag>*/
+                    <div ...>
+                        { .examplesList_rowTitle }
+                        { .examplesList_rowSubTitle }
+                    </div>
+                </csstag>*/
   width: 61.803398%;
   float: left;
   clear: left;
   margin-bottom: 20px;
 }
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
+  margin-bottom: 0px;
+  position: absolute;
+  width: 100%;
+  bottom: -26px;
+  left: 0px;
+  font-size: 12px;
+}
 @media (max-width: 768px) {
-  .examplesList .examplesList_row .examplesList_rowText {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
     width: 100%;
   }
 }
 @media (max-width: 992px) {
-  .examplesList .examplesList_row .examplesList_rowText {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
     width: 100%;
   }
 }
-.examplesList .examplesList_row .examplesList_rowText .examplesList_rowTitle {
+.examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowTitle {
   /*<csstag tag="label">
-                    <div ...>
-                        Project Title
-                    </div>
-                </csstag>*/
+                        <div ...>
+                            Project Title
+                        </div>
+                    </csstag>*/
   font-size: 18px;
   color: #555;
 }
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowTitle {
+  height: 20px;
+  width: 100%;
+  margin-left: 0px;
+  font-size: 11px;
+  overflow: hidden;
+  color: #999;
+  white-space: nowrap;
+}
 @media (max-width: 768px) {
-  .examplesList .examplesList_row .examplesList_rowText .examplesList_rowTitle {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowTitle {
     font-size: 20px;
     text-align: center;
   }
+  body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowTitle {
+    font-size: 11px;
+  }
 }
 @media (max-width: 992px) {
-  .examplesList .examplesList_row .examplesList_rowText .examplesList_rowTitle {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowTitle {
     text-align: center;
   }
 }
-.examplesList .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
+.examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
   /*<csstag tag="label">
-                    <div ...>
-                        Project Sub Title
-                    </div>
-                </csstag>*/
+                        <div ...>
+                            Project Sub Title
+                        </div>
+                    </csstag>*/
   font-size: 12px;
   margin-top: 4px;
   color: #999;
 }
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
+  display: none;
+}
 @media (max-width: 768px) {
-  .examplesList .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
     font-size: 14px;
     text-align: center;
   }
 }
 @media (max-width: 992px) {
-  .examplesList .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
     text-align: center;
   }
 }
-.examplesList .examplesList_row .examplesList_rowImage {
+.examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
   /*<csstag tag="row">
-                <img ... src="../assets/content/posters/oh_poster/oh.png" />
-            </csstag>*/
+                    <img ... src="../assets/content/posters/oh_poster/oh.png" />
+                </csstag>*/
   float: right;
   clear: right;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
-  max-width: 38.196602%;
+  width: 38.196602%;
+  padding-bottom: 38.196602%;
+  position: relative;
+}
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
+  padding-bottom: 100%;
+  width: 100%;
+  float: left;
+}
+.examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage .examplesList_rowImageChild {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-size: cover;
+}
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage .examplesList_rowImageChild {
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
 }
 @media (max-width: 768px) {
-  .examplesList .examplesList_row .examplesList_rowImage {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
     float: left;
     clear: left;
     margin-left: 30.901699%;
   }
+  body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
+    margin-left: 0px;
+  }
 }
 @media (max-width: 992px) {
-  .examplesList .examplesList_row .examplesList_rowImage {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
     float: left;
     clear: left;
     margin-left: 30.901699%;
+  }
+  body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
+    margin-left: 0px;
   }
 }
 .phiTheme {
