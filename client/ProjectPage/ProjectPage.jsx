@@ -50,6 +50,24 @@ var ProjectPage = React.createClass({
         return image_index;
     },
 
+    prevProject: function ( e ) {
+        var project = PhiModel.getPrevProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug}
+        );
+        this.stopPropagation( e );
+    },
+
+    nextProject: function ( e ) {
+        var project = PhiModel.getNextProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug}
+        );
+        this.stopPropagation( e );
+    },
+
     nextImage: function ( e ) {
         var image_index = this._getImageIndex();
 
@@ -176,6 +194,11 @@ var ProjectPage = React.createClass({
                     { links }
                     <div className="projectPage_close"
                         onClick={ this.closeProject }></div>
+
+                    <div className="projectPage_nextProject"
+                        onClick={ this.nextProject }></div>
+                    <div className="projectPage_prevProject"
+                        onClick={ this.prevProject }></div>
                 </div>;
     }
 

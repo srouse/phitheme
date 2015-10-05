@@ -9,6 +9,12 @@ Mixin's
 	cursor: pointer;
 	cursor: hand;
 }
+.handover( @color : #eee ) {
+	.hand();
+	&:hover {
+		background-color: @color;
+	}
+}
 
 .unhand() {
 	cursor: default;

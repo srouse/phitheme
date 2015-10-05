@@ -81,15 +81,8 @@
         }
 
         body.s_fullscreen & {
-            /*max-width: none;
-            max-height: none;
-            transform: none;
-            position: relative;
-            left: auto; top: auto;
-            margin: 50px;*/
-
             max-height: ~"calc(100% - 80px)";
-            max-width: ~"calc(100% - 40px)";
+            max-width: ~"calc(100% - 100px)";
         }
     }
 
@@ -281,6 +274,39 @@
 
         &:hover {
             background-color: rgba( 30,30,30,.2);
+        }
+    }
+
+    .projectPage_nextProject {
+        /*<csstag tag="button">
+            <div ...></div>
+        </csstag>*/
+        position: absolute;
+        width: 60px; height: 60px;
+        left: 0px;
+        .calc( top , 50% , -25px );
+        .handover( rgba( 0,0,0,.2) );
+        background-image: url("../assets/prev_icon_white.png");
+        display: none;
+
+        body.s_fullscreen & {
+            display: block;
+        }
+    }
+    .projectPage_prevProject {
+        /*<csstag tag="button">
+            <div ...></div>
+        </csstag>*/
+        position: absolute;
+        width: 50px; height: 60px;
+        right: 0px;
+        .calc( top , 50% , -25px );
+        .handover( rgba( 0,0,0,.2) );
+        background-image: url("../assets/next_icon_white.png");
+        display: none;
+
+        body.s_fullscreen & {
+            display: block;
         }
     }
 }

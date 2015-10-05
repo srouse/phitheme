@@ -36,6 +36,11 @@ var ExamplesList = React.createClass({
 
     componentDidUpdate: function () {
         $(".nano").nanoScroller();
+
+        // compensate for animation...
+        setTimeout( function () {
+            $(".nano").nanoScroller();
+        },400);
     },
 
     toggleThumbs: function () {

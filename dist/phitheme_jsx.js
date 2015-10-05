@@ -28,7 +28,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         RouteState.merge({project:''})
     },
 
-    getProjectIndex: function ( project_slug ) {
+    /*getProjectIndex: function ( project_slug ) {
         var list,project;
         for ( var i=0; i<PhiModel.project_list.length; i++ ) {
             list = PhiModel.project_list[i];
@@ -88,10 +88,10 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         }
 
         return flat_list[0];
-    },
+    },*/
 
     prevProject: function () {
-        var project = this.getPrevProject( RouteState.route.project );
+        var project = PhiModel.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
             {project:project.slug,image:""}
@@ -99,7 +99,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
     },
 
     nextProject: function () {
-        var project = this.getNextProject( RouteState.route.project );
+        var project = PhiModel.getNextProject( RouteState.route.project );
 
         RouteState.merge(
             {project:project.slug,image:""}
@@ -212,6 +212,11 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 
     componentDidUpdate: function () {
         $(".nano").nanoScroller();
+
+        // compensate for animation...
+        setTimeout( function () {
+            $(".nano").nanoScroller();
+        },400);
     },
 
     toggleThumbs: function () {
@@ -297,6 +302,8 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 var Home = React.createClass({displayName: "Home",
 
     refreshPhiModelState: function () {
+
+
 
         // mobile opens new projects/list half way down...
         if (
@@ -386,6 +393,15 @@ var Home = React.createClass({displayName: "Home",
         this.route_listener_list = RouteState.addDiffListener(
     		"page",
     		function ( route , prev_route ) {
+                me.refreshPhiModelState();
+    		},
+            "home"
+    	);
+
+        this.route_listener_list = RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                PhiModel.reprocessProjects();
                 me.refreshPhiModelState();
     		},
             "home"
@@ -615,6 +631,24 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         return image_index;
     },
 
+    prevProject: function ( e ) {
+        var project = PhiModel.getPrevProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug}
+        );
+        this.stopPropagation( e );
+    },
+
+    nextProject: function ( e ) {
+        var project = PhiModel.getNextProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug}
+        );
+        this.stopPropagation( e );
+    },
+
     nextImage: function ( e ) {
         var image_index = this._getImageIndex();
 
@@ -740,7 +774,12 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                      images, 
                      links, 
                     React.createElement("div", {className: "projectPage_close", 
-                        onClick:  this.closeProject})
+                        onClick:  this.closeProject}), 
+
+                    React.createElement("div", {className: "projectPage_nextProject", 
+                        onClick:  this.nextProject}), 
+                    React.createElement("div", {className: "projectPage_prevProject", 
+                        onClick:  this.prevProject})
                 );
     }
 

@@ -21426,7 +21426,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         RouteState.merge({project:''})
     },
 
-    getProjectIndex: function ( project_slug ) {
+    /*getProjectIndex: function ( project_slug ) {
         var list,project;
         for ( var i=0; i<PhiModel.project_list.length; i++ ) {
             list = PhiModel.project_list[i];
@@ -21486,10 +21486,10 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         }
 
         return flat_list[0];
-    },
+    },*/
 
     prevProject: function () {
-        var project = this.getPrevProject( RouteState.route.project );
+        var project = PhiModel.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
             {project:project.slug,image:""}
@@ -21497,7 +21497,7 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
     },
 
     nextProject: function () {
-        var project = this.getNextProject( RouteState.route.project );
+        var project = PhiModel.getNextProject( RouteState.route.project );
 
         RouteState.merge(
             {project:project.slug,image:""}
@@ -21610,6 +21610,11 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 
     componentDidUpdate: function () {
         $(".nano").nanoScroller();
+
+        // compensate for animation...
+        setTimeout( function () {
+            $(".nano").nanoScroller();
+        },400);
     },
 
     toggleThumbs: function () {
@@ -21695,6 +21700,8 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 var Home = React.createClass({displayName: "Home",
 
     refreshPhiModelState: function () {
+
+
 
         // mobile opens new projects/list half way down...
         if (
@@ -21784,6 +21791,15 @@ var Home = React.createClass({displayName: "Home",
         this.route_listener_list = RouteState.addDiffListener(
     		"page",
     		function ( route , prev_route ) {
+                me.refreshPhiModelState();
+    		},
+            "home"
+    	);
+
+        this.route_listener_list = RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                PhiModel.reprocessProjects();
                 me.refreshPhiModelState();
     		},
             "home"
@@ -22013,6 +22029,24 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         return image_index;
     },
 
+    prevProject: function ( e ) {
+        var project = PhiModel.getPrevProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug}
+        );
+        this.stopPropagation( e );
+    },
+
+    nextProject: function ( e ) {
+        var project = PhiModel.getNextProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug}
+        );
+        this.stopPropagation( e );
+    },
+
     nextImage: function ( e ) {
         var image_index = this._getImageIndex();
 
@@ -22138,7 +22172,12 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                      images, 
                      links, 
                     React.createElement("div", {className: "projectPage_close", 
-                        onClick:  this.closeProject})
+                        onClick:  this.closeProject}), 
+
+                    React.createElement("div", {className: "projectPage_nextProject", 
+                        onClick:  this.nextProject}), 
+                    React.createElement("div", {className: "projectPage_prevProject", 
+                        onClick:  this.prevProject})
                 );
     }
 
@@ -22158,7 +22197,7 @@ var PhiModelSingleton = function () {
         tag_titles:[],
         pages:[],
         product_nav:[],
-        projects:[]
+        projects:[],
         /*
         pages:[
             {
@@ -22187,6 +22226,132 @@ var PhiModelSingleton = function () {
             }
         ]
         */
+
+        reprocessProjects: function () {
+            this.processProjects( this.all_projects );
+        },
+
+        processProjects: function ( all_projects ) {
+            this.all_projects = all_projects;
+
+            // filter out privates
+            this.projects = [];
+            var project;
+            for ( var p=0; p<this.all_projects.length; p++ ) {
+                project = this.all_projects[p];
+                // needs to be relative to route...
+                if (
+                    project.private === true &&
+                    RouteState.route.private != "private"
+                ) {
+
+                }else{
+                    this.projects.push( project );
+                }
+            }
+
+            //some post processing...
+            var project,tag,tag_hash;
+            var new_projects = [];
+            this.tags = {};
+            this.tags_hashed = {};
+            this.slugs = {};
+
+            for ( var p=0; p<this.projects.length; p++ ) {
+                project = this.projects[p];
+
+                project.slug = project.title.slugify();
+                this.slugs[project.slug] = project;
+
+                if ( project.tags ) {
+                    for ( var t=0; t<project.tags.length; t++ ) {
+                        tag = project.tags[t].slugify();
+                        project.tags[t] = tag;//replace with cleaned up tag
+                        tag_hash = tag.hashCodeStr();
+                        if ( !this.tags[ tag ] ) {
+                            this.tags[ tag ] = {
+                                title:tag,
+                                tag:tag,
+                                tag_hash:tag_hash,
+                                projects:[]
+                            }
+                        }
+                        if ( !this.tags_hashed[ tag_hash ] ) {
+                            this.tags_hashed[ tag_hash ] = {
+                                title:tag,
+                                tag:tag,
+                                tag_hash:tag_hash,
+                                projects:[]
+                            }
+                        }
+                        this.tags[ tag ].projects.push( project );
+                        this.tags_hashed[ tag_hash ].projects.push( project );
+                    }
+                }
+            }
+        },
+
+        getProjectIndex: function ( project_slug ) {
+            var list,project;
+            for ( var i=0; i<this.project_list.length; i++ ) {
+                list = this.project_list[i];
+                for ( var p=0; p<list.projects.length; p++ ) {
+                    project = list.projects[p];
+
+                    if ( project.slug == project_slug ) {
+                        return {list:i,project:p};
+                    }
+                }
+            }
+            return {list:-1,project:-1};
+        },
+
+        getFlatProjectList: function () {
+            var flat_list = [];
+            for ( var i=0; i<this.project_list.length; i++ ) {
+                list = this.project_list[i];
+                for ( var p=0; p<list.projects.length; p++ ) {
+                    project = list.projects[p];
+                    flat_list.push( project );
+                }
+            }
+
+            return flat_list;
+        },
+
+        getPrevProject: function ( project_slug ) {
+            var flat_list = this.getFlatProjectList();
+
+            for ( var i=0; i<flat_list.length; i++ ) {
+                project = flat_list[i];
+                if ( project.slug == project_slug ) {
+                    if ( i == 0 ) {
+                        return flat_list[flat_list.length-1];
+                    }else{
+                        return flat_list[i-1];
+                    }
+                }
+            }
+
+            return flat_list[0];
+        },
+
+        getNextProject: function ( project_slug ) {
+            var flat_list = this.getFlatProjectList();
+
+            for ( var i=0; i<flat_list.length; i++ ) {
+                project = flat_list[i];
+                if ( project.slug == project_slug ) {
+                    if ( i == flat_list.length-1 ) {
+                        return flat_list[0];
+                    }else{
+                        return flat_list[i+1];
+                    }
+                }
+            }
+
+            return flat_list[0];
+        }
     };
 
     return model;
@@ -22206,52 +22371,9 @@ PhiTheme.run = function ( data_dom ) {
         // some defaults...
         PhiModel.project = {};
         PhiModel.page = {};
-        PhiModel.tags = {};
-        PhiModel.tags_hashed = {};
-        PhiModel.slugs = {};
 
-        //some post processing...
-        var project,tag,tag_hash;
-        var new_projects = [];
-        for ( var p=0; p<PhiModel.projects.length; p++ ) {
-            project = PhiModel.projects[p];
-            /* needs to be relative to route...
-            if (
-                project.private === true &&
-                RouteState.route.private != "private"
-            ) {
-                continue;
-            }*/
-
-            project.slug = project.title.slugify();
-            PhiModel.slugs[project.slug] = project;
-
-            if ( project.tags ) {
-                for ( var t=0; t<project.tags.length; t++ ) {
-                    tag = project.tags[t].slugify();
-                    project.tags[t] = tag;//replace with cleaned up tag
-                    tag_hash = tag.hashCodeStr();
-                    if ( !PhiModel.tags[ tag ] ) {
-                        PhiModel.tags[ tag ] = {
-                            title:tag,
-                            tag:tag,
-                            tag_hash:tag_hash,
-                            projects:[]
-                        }
-                    }
-                    if ( !PhiModel.tags_hashed[ tag_hash ] ) {
-                        PhiModel.tags_hashed[ tag_hash ] = {
-                            title:tag,
-                            tag:tag,
-                            tag_hash:tag_hash,
-                            projects:[]
-                        }
-                    }
-                    PhiModel.tags[ tag ].projects.push( project );
-                    PhiModel.tags_hashed[ tag_hash ].projects.push( project );
-                }
-            }
-        }
+        RouteState.listenToHash();
+        PhiModel.processProjects( PhiModel.projects );
 
         console.log( PhiModel );
 
@@ -22311,7 +22433,7 @@ PhiTheme.run = function ( data_dom ) {
         }
         $.injectCSS( styles );
 
-        RouteState.listenToHash();
+
         React.render(
             React.createElement(
                 Home,

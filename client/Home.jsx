@@ -3,6 +3,8 @@ var Home = React.createClass({
 
     refreshPhiModelState: function () {
 
+
+
         // mobile opens new projects/list half way down...
         if (
             RouteState.route.project == "" ||
@@ -91,6 +93,15 @@ var Home = React.createClass({
         this.route_listener_list = RouteState.addDiffListener(
     		"page",
     		function ( route , prev_route ) {
+                me.refreshPhiModelState();
+    		},
+            "home"
+    	);
+
+        this.route_listener_list = RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                PhiModel.reprocessProjects();
                 me.refreshPhiModelState();
     		},
             "home"

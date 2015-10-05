@@ -28,7 +28,7 @@ var ContentTitleSection = React.createClass({
         RouteState.merge({project:''})
     },
 
-    getProjectIndex: function ( project_slug ) {
+    /*getProjectIndex: function ( project_slug ) {
         var list,project;
         for ( var i=0; i<PhiModel.project_list.length; i++ ) {
             list = PhiModel.project_list[i];
@@ -88,10 +88,10 @@ var ContentTitleSection = React.createClass({
         }
 
         return flat_list[0];
-    },
+    },*/
 
     prevProject: function () {
-        var project = this.getPrevProject( RouteState.route.project );
+        var project = PhiModel.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
             {project:project.slug,image:""}
@@ -99,7 +99,7 @@ var ContentTitleSection = React.createClass({
     },
 
     nextProject: function () {
-        var project = this.getNextProject( RouteState.route.project );
+        var project = PhiModel.getNextProject( RouteState.route.project );
 
         RouteState.merge(
             {project:project.slug,image:""}
