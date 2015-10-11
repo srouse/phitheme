@@ -28,68 +28,6 @@ var ContentTitleSection = React.createClass({
         RouteState.merge({project:''})
     },
 
-    /*getProjectIndex: function ( project_slug ) {
-        var list,project;
-        for ( var i=0; i<PhiModel.project_list.length; i++ ) {
-            list = PhiModel.project_list[i];
-            for ( var p=0; p<list.projects.length; p++ ) {
-                project = list.projects[p];
-
-                if ( project.slug == project_slug ) {
-                    return {list:i,project:p};
-                }
-            }
-        }
-        return {list:-1,project:-1};
-    },
-
-    getFlatProjectList: function () {
-        var flat_list = [];
-        for ( var i=0; i<PhiModel.project_list.length; i++ ) {
-            list = PhiModel.project_list[i];
-            for ( var p=0; p<list.projects.length; p++ ) {
-                project = list.projects[p];
-                flat_list.push( project );
-            }
-        }
-
-        return flat_list;
-    },
-
-    getPrevProject: function ( project_slug ) {
-        var flat_list = this.getFlatProjectList();
-
-        for ( var i=0; i<flat_list.length; i++ ) {
-            project = flat_list[i];
-            if ( project.slug == project_slug ) {
-                if ( i == 0 ) {
-                    return flat_list[flat_list.length-1];
-                }else{
-                    return flat_list[i-1];
-                }
-            }
-        }
-
-        return flat_list[0];
-    },
-
-    getNextProject: function ( project_slug ) {
-        var flat_list = this.getFlatProjectList();
-
-        for ( var i=0; i<flat_list.length; i++ ) {
-            project = flat_list[i];
-            if ( project.slug == project_slug ) {
-                if ( i == flat_list.length-1 ) {
-                    return flat_list[0];
-                }else{
-                    return flat_list[i+1];
-                }
-            }
-        }
-
-        return flat_list[0];
-    },*/
-
     prevProject: function () {
         var project = PhiModel.getPrevProject( RouteState.route.project );
 
@@ -104,6 +42,13 @@ var ContentTitleSection = React.createClass({
         RouteState.merge(
             {project:project.slug,image:""}
         );
+    },
+
+    gotoProject: function ( nav_link ) {
+        RouteState.merge({
+            project:nav_link.project,
+            list:nav_link.list
+        });
     },
 
     render: function() {
@@ -132,16 +77,34 @@ var ContentTitleSection = React.createClass({
             var nav_links_children = [];
             for ( var p=0; p<total_filtered_links; p++ ) {
                 nav_link = filtered_children[p];
-                nav_links_children.push(
-                    <div className="contentTitleSection_navLinkContainer"
-                        style={{width: 100/total_filtered_links + "%" }}
-                        key={ "nav_link_" + p }>
-                        <a className="contentTitleSection_navLinkButton"
-                            href={ nav_link.location } target="nav_link">
-                            { nav_link.title }
-                        </a>
-                    </div>
-                );
+
+                if ( nav_link.internal && nav_link.internal == true ) {
+                    nav_links_children.push(
+                        <div className="contentTitleSection_navLinkContainer"
+                            style={{width: 100/total_filtered_links + "%" }}
+                            key={ "nav_link_" + p }>
+                            <div className="contentTitleSection_navLinkButton"
+                                onClick={
+                                    this.gotoProject.bind( this , nav_link )
+                                }>
+                                { nav_link.title }
+                            </div>
+                        </div>
+                    );
+                }else{
+                    nav_links_children.push(
+                        <div className="contentTitleSection_navLinkContainer"
+                            style={{width: 100/total_filtered_links + "%" }}
+                            key={ "nav_link_" + p }>
+                            <a className="contentTitleSection_navLinkButton"
+                                href={ nav_link.location } target="nav_link">
+                                { nav_link.title }
+                            </a>
+                        </div>
+                    );
+                }
+
+
             }
 
             nav_links_dom = <div className="contentTitleSection_navLinks">
@@ -149,6 +112,10 @@ var ContentTitleSection = React.createClass({
                             </div>;
         }
 
+        var pseudo_edit = "false";
+        if ( RouteState.route.edit == "edit" ) {
+            pseudo_edit = "true";
+        }
 
         return  <div className="contentTitleSection">
                     <div className="contentTitleSection_titleSection">
@@ -165,7 +132,8 @@ var ContentTitleSection = React.createClass({
                         <div className="titleSection_prev"
                             onClick={ this.prevProject }></div>
                     </div>
-                    <div className="contentTitleSection_summarySection">
+                    <div className="contentTitleSection_summarySection"
+                        contentEditable={ pseudo_edit }>
                         { project.description }
                     </div>
                     { nav_links_dom }

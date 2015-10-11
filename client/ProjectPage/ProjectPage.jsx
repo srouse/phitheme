@@ -135,13 +135,14 @@ var ProjectPage = React.createClass({
                     className = "projectPage_rightLink"
 
                 if ( do_show ) {
-                    return <div className={ className }>
-                        <a href={ PhiModel.project.external_links[ link_name ].location }
-                            onClick={ this.stopPropagation }
-                             className="projectPage_link" target="_new_left">
-                            { PhiModel.project.external_links[ link_name ].title }
-                        </a>
-                    </div>;
+                    return <div className={ className }
+                                key={ className }>
+                                <a href={ PhiModel.project.external_links[ link_name ].location }
+                                    onClick={ this.stopPropagation }
+                                     className="projectPage_link" target="_new_left">
+                                    { PhiModel.project.external_links[ link_name ].title }
+                                </a>
+                            </div>;
                 }
             }
         }
@@ -165,17 +166,17 @@ var ProjectPage = React.createClass({
             fullimage_title = PhiModel.project.images[image_index].title;
 
             images = <div className="projectPage_imgNav"
-                onClick={ this.stopPropagation }>
-                <div className="projectPage_imgNav_icons">
-                    <div className="projectPage_imgNav_prev"
-                        onClick={ this.prevImage }></div>
-                    <div className="projectPage_imgNav_text">
-                        { image_index+1 } / {  PhiModel.project.images.length }
-                    </div>
-                    <div className="projectPage_imgNav_next"
-                        onClick={ this.nextImage }></div>
-                </div>
-            </div>;
+                        onClick={ this.stopPropagation }>
+                        <div className="projectPage_imgNav_icons">
+                            <div className="projectPage_imgNav_prev"
+                                onClick={ this.prevImage }></div>
+                            <div className="projectPage_imgNav_text">
+                                { image_index+1 } / {  PhiModel.project.images.length }
+                            </div>
+                            <div className="projectPage_imgNav_next"
+                                onClick={ this.nextImage }></div>
+                        </div>
+                    </div>;
         }
 
         var links = [];

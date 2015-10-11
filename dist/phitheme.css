@@ -1,8 +1,8 @@
 html {
-  /*<csstag tag="global"
-        global="true">
-        <html ...></html>
-    </csstag>*/
+  -ctag-tag: "global";
+  -ctag-global: "true";
+  -ctag-ignore: ".nano";
+  -ctag-example: "nope";
   width: 100%;
   height: 100%;
   padding: 0px;
@@ -16,9 +16,8 @@ html {
   }
 }
 html body {
-  /*<csstag tag="body">
-            <body ...></body>
-        </csstag>*/
+  -ctag-tag: "global";
+  -ctag-example: "no example";
   width: 100%;
   height: 100%;
   padding: 0px;
@@ -34,18 +33,16 @@ html body {
   }
 }
 html * {
-  /*<csstag tag="body">
-            <div ...></div>
-        </csstag>*/
+  -ctag-tag: "global";
+  -ctag-example: "...";
   box-sizing: border-box;
   background-position: center;
   background-repeat: no-repeat;
 }
 @font-face {
-  /*<csstag tag="font"
-        global="true">
-        <div>Font that is styled</div>
-    </csstag>*/
+  -ctag-tag: "font";
+  -ctag-global: "true";
+  -ctag-example: "<div>Font that is styled</div>";
   font-family: "Avenir LT W01 35 Light";
   src: url("../assets/fonts/3511a780-31ca-4ee1-9083-89b1b7185748.eot?#iefix");
   src: url("../assets/fonts/3511a780-31ca-4ee1-9083-89b1b7185748.eot?#iefix") format("eot"), url("../assets/fonts/c4352a95-7a41-48c1-83ce-d8ffd2a3b118.woff") format("woff"), url("../assets/fonts/3e419b5b-c789-488d-84cf-a64009cc308e.ttf") format("truetype"), url("../assets/fonts/ca038835-1be3-4dc5-ba25-be1df6121499.svg#ca038835-1be3-4dc5-ba25-be1df6121499") format("svg");
@@ -321,14 +318,8 @@ Mixin's
   background-color: #eee;
 }
 .examplesList {
-  /*<csstag tag="section,list">
-        <div ...>
-            { .examplesList_header }
-            { .examplesList_row }
-            { .examplesList_row }
-            { .examplesList_row }
-        </div>
-    </csstag>*/
+  -ctag-tag: "section,list";
+  -ctag-example: "...{ .examplesList_rowContainer }{ .examplesList_typeToggle }";
   z-index: 1500;
 }
 .examplesList.nano {
@@ -375,14 +366,15 @@ body.s_page .examplesList {
   display: none;
 }
 .examplesList .examplesList_spacer {
-  /*<csstag tag="shim">
-            <div ...></div>
-        </csstag>*/
+  -ctag-tag: "shim";
+  -ctag-example: "...";
   height: 50px;
   width: 10px;
   clear: both;
 }
 .examplesList .examplesList_typeToggle {
+  -ctag-tag: "button";
+  -ctag-example: "...";
   width: 50px;
   height: 50px;
   position: fixed;
@@ -399,6 +391,8 @@ body.s_thumbs .examplesList .examplesList_typeToggle {
   background-image: url("../assets/list_icon.png");
 }
 .examplesList .examplesList_rowContainer {
+  -ctag-tag: "container";
+  -ctag-example: "<div class='nano-content'><div ...>{ .examplesList_header }{ .examplesList_row }{ .examplesList_row }{ .examplesList_row }</div></div>";
   width: 61.803398%;
   margin-left: 19.098301%;
 }
@@ -415,11 +409,8 @@ body.s_thumbs .examplesList .examplesList_typeToggle {
   }
 }
 .examplesList .examplesList_rowContainer .examplesList_header {
-  /*<csstag tag="row,header">
-                <div ...>
-                    Header
-                </div>
-            </csstag>*/
+  -ctag-tag: "row,header";
+  -ctag-example: "...Header";
   float: left;
   width: 100%;
   font-size: 26px;
@@ -543,9 +534,8 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
   }
 }
 .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage {
-  /*<csstag tag="row">
-                    <img ... src="../assets/content/posters/oh_poster/oh.png" />
-                </csstag>*/
+  -ctag-tag: "row";
+  -ctag-example: "<img ... src='../content/posters/oh_poster/oh.png' />";
   float: right;
   clear: right;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
@@ -559,6 +549,8 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
   float: left;
 }
 .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowImage .examplesList_rowImageChild {
+  -ctag-tag: "image";
+  -ctag-example: "...";
   position: absolute;
   top: 0;
   bottom: 0;
@@ -734,11 +726,8 @@ body.s_page .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   left: 0px;
 }
 .identityNav {
-  /*<csstag tag="section">
-        <div ...>
-            { .identityNav_gradOffset }
-        </div>
-    </csstag>*/
+  -ctag-tag: "section";
+  -ctag-example: "...{ .identityNav_gradOffset }";
   width: 100%;
   height: 100%;
   background-position: left;
@@ -781,6 +770,8 @@ body.s_page .identityNav {
   }
 }
 .identityNav .identityNav_rightGradient {
+  -ctag-tag: "graphic";
+  -ctag-example: "...";
   position: absolute;
   right: 0px;
   top: 0px;
@@ -794,12 +785,8 @@ body.s_page .identityNav .identityNav_rightGradient {
   display: none;
 }
 .identityNav .identityNav_gradOffset {
-  /*<csstag tag="shim">
-            <div ...>
-                { .identityNav_logo }
-                { .identityNav_centerNav }
-            </div>
-        </csstag>*/
+  -ctag-tag: "shim";
+  -ctag-example: "...{ .identityNav_logo }{ .identityNav_centerNav }";
   width: calc(90% + -6px);
   height: 100%;
   margin-left: 5px;
@@ -815,9 +802,8 @@ body.s_page .identityNav .identityNav_rightGradient {
   }
 }
 .identityNav .identityNav_logo {
-  /*<csstag tag="graphic,logo">
-            <div ...></div>
-        </csstag>*/
+  -ctag-tag: "graphic,logo";
+  -ctag-example: "...";
   height: 80%;
   width: 50%;
   margin-left: 25%;
@@ -859,9 +845,8 @@ body.s_project .identityNav .identityNav_logo {
   }
 }
 .identityNav .identityNav_logo_small {
-  /*<csstag tag="graphic,logo">
-            <div ...></div>
-        </csstag>*/
+  -ctag-tag: "graphic,logo";
+  -ctag-example: "...";
   display: none;
   height: 100%;
   width: 75px;
@@ -885,13 +870,8 @@ body.s_project .identityNav .identityNav_logo {
   }
 }
 .identityNav .identityNav_centerNav {
-  /*<csstag tag="navigation">
-            <div ...>
-                { .identityNav_productsLink }
-                { .identityNav_designsLink }
-                { .identityNav_postersLink }
-            </div>
-        </csstag>*/
+  -ctag-tag: "navigation";
+  -ctag-example: "...{ .identityNav_link }{ .identityNav_link }{ .identityNav_link }";
   width: 50%;
   height: 40px;
   position: absolute;
@@ -999,7 +979,7 @@ body.s_page .page {
     padding-top: 30px;
   }
 }
-.page .page_content h1 {
+.page .page_content > h1 {
   /*<csstag tag="header">
                 <h1>Title</h1>
             </csstag>*/
@@ -1015,12 +995,12 @@ body.s_page .page {
   border-bottom: 7px solid #999;
 }
 @media (max-width: 768px) {
-  .page .page_content h1 {
+  .page .page_content > h1 {
     font-size: 26px;
     text-align: center;
   }
 }
-.page .page_content p {
+.page .page_content > p {
   /*<csstag tag="text">
                 <p>Some Content</p>
             </csstag>*/
@@ -1030,7 +1010,7 @@ body.s_page .page {
   line-height: 26px;
 }
 @media (max-width: 768px) {
-  .page .page_content p {
+  .page .page_content > p {
     font-size: 16px;
     padding: 10px 0px;
   }
@@ -1038,8 +1018,16 @@ body.s_page .page {
 .projectPage {
   /*<csstag tag="section">
         <div ...>
+            { .projectPage_title }
             { .projectPage_img }
+
+            { .projectPage_imgNav }
+            { .projectPage_leftLink }
+            { .projectPage_rightLink }
+
+
             { .projectPage_nav }
+            { .projectPage_close }
         </div>
     </csstag>*/
   position: fixed;
@@ -1093,10 +1081,8 @@ body.s_fullscreen .projectPage .projectPage_title {
   display: block;
 }
 .projectPage .projectPage_img {
-  /*<csstag tag="image">
-            <img ... src="../assets/content/oh_full.png"
-                style="display:block;"/>
-        </csstag>*/
+  -ctag-tag: "image";
+  -ctag-example: "<img ... src='../content/designs/oh/images/home.png' />";
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
   display: block;
   left: 50%;
@@ -1105,7 +1091,6 @@ body.s_fullscreen .projectPage .projectPage_title {
   position: absolute;
   top: 50%;
   transform: translateY(-50%) translateX(-50%);
-  display: none;
   transition: all .3s;
   z-index: 100;
   cursor: pointer;
@@ -1119,6 +1104,8 @@ body.s_fullscreen .projectPage .projectPage_img {
   max-width: calc(100% - 100px);
 }
 .projectPage .projectPage_leftLink {
+  -ctag-tag: "link";
+  -ctag-example: "...";
   height: 40px;
   position: absolute;
   left: 0px;
@@ -1126,6 +1113,8 @@ body.s_fullscreen .projectPage .projectPage_img {
   padding: 10px 20px;
 }
 .projectPage .projectPage_rightLink {
+  -ctag-tag: "link";
+  -ctag-example: "...";
   height: 40px;
   position: absolute;
   right: 0px;
@@ -1133,6 +1122,8 @@ body.s_fullscreen .projectPage .projectPage_img {
   padding: 10px 20px;
 }
 .projectPage .projectPage_link {
+  -ctag-tag: "link";
+  -ctag-example: "...";
   color: #fff;
   font-size: 16px;
   text-decoration: none;

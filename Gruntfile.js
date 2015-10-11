@@ -63,7 +63,7 @@ module.exports = function(grunt) {
     configObj.css_parse = {
         dist: {
             files: {
-                'csstagged/csstagged.json':
+                'dist/csstagged.json':
                 [
                     'dist/phitheme.css'
                 ]

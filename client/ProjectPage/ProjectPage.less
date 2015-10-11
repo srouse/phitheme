@@ -2,8 +2,16 @@
 .projectPage {
     /*<csstag tag="section">
         <div ...>
+            { .projectPage_title }
             { .projectPage_img }
+
+            { .projectPage_imgNav }
+            { .projectPage_leftLink }
+            { .projectPage_rightLink }
+
+
             { .projectPage_nav }
+            { .projectPage_close }
         </div>
     </csstag>*/
     position: fixed;
@@ -41,6 +49,7 @@
         /*<csstag tag="title">
             <div ...>title</div>
         </csstag>*/
+
         position: absolute;
         top: 0px; left: 0px;
         padding: 10px;
@@ -56,12 +65,9 @@
     }
 
     .projectPage_img {
-        /*<csstag tag="image">
-            <img ... src="../assets/content/oh_full.png"
-                style="display:block;"/>
-        </csstag>*/
-        // background-color: #eee;
-        // border: 1px solid #eee;
+        -ctag-tag: "image";
+        -ctag-example: "<img ... src='../content/designs/oh/images/home.png' />";
+
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
         cursor: pointer;
         display: block;
@@ -71,7 +77,7 @@
         position: absolute;
         top: 50%;
         transform: translateY(-50%) translateX(-50%);
-        display: none;
+        // display: none;
         transition: all .3s;
         .zIndex( "page_img" );
         .hand();
@@ -87,6 +93,9 @@
     }
 
     .projectPage_leftLink {
+        -ctag-tag: "link";
+        -ctag-example: "...";
+
         height: 40px;
         position: absolute;
         left: 0px; bottom: 0px;
@@ -94,6 +103,9 @@
     }
 
     .projectPage_rightLink {
+        -ctag-tag: "link";
+        -ctag-example: "...";
+
         height: 40px;
         position: absolute;
         right: 0px; bottom: 0px;
@@ -101,6 +113,9 @@
     }
 
     .projectPage_link {
+        -ctag-tag: "link";
+        -ctag-example: "...";
+
         color: #fff;
         font-size: 16px;
         text-decoration: none;

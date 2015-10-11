@@ -1,10 +1,11 @@
 
 
 html{
-    /*<csstag tag="global"
-        global="true">
-        <html ...></html>
-    </csstag>*/
+    -ctag-tag: "global";
+    -ctag-global: "true";
+    -ctag-ignore: ".nano";
+    -ctag-example: "nope";
+
     width: 100%; height: 100%;
     padding: 0px; margin: 0px;
     overflow: hidden;
@@ -15,9 +16,9 @@ html{
     }
 
     body {
-        /*<csstag tag="body">
-            <body ...></body>
-        </csstag>*/
+        -ctag-tag: "global";
+        -ctag-example: "no example";
+
         width: 100%; height: 100%;
         padding: 0px; margin: 0px;
         font-family: "Avenir LT W01 35 Light";
@@ -31,9 +32,9 @@ html{
     }
 
     * {
-        /*<csstag tag="body">
-            <div ...></div>
-        </csstag>*/
+        -ctag-tag: "global";
+        -ctag-example: "...";
+
         box-sizing: border-box;
         background-position: center;
         background-repeat: no-repeat;
@@ -43,10 +44,10 @@ html{
 
 
 @font-face {
-    /*<csstag tag="font"
-        global="true">
-        <div>Font that is styled</div>
-    </csstag>*/
+    -ctag-tag: "font";
+    -ctag-global: "true";
+    -ctag-example: "<div>Font that is styled</div>";
+
     font-family: "Avenir LT W01 35 Light";
     src: url("../assets/fonts/3511a780-31ca-4ee1-9083-89b1b7185748.eot?#iefix");
     src: url("../assets/fonts/3511a780-31ca-4ee1-9083-89b1b7185748.eot?#iefix") format("eot"), url("../assets/fonts/c4352a95-7a41-48c1-83ce-d8ffd2a3b118.woff") format("woff"), url("../assets/fonts/3e419b5b-c789-488d-84cf-a64009cc308e.ttf") format("truetype"), url("../assets/fonts/ca038835-1be3-4dc5-ba25-be1df6121499.svg#ca038835-1be3-4dc5-ba25-be1df6121499") format("svg");

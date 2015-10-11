@@ -59,7 +59,8 @@ var ExamplesList = React.createClass({
             tagTitle = list.title.capitalizeEachWord();
 
         rows.push(
-            <div className="examplesList_header">{
+            <div className="examplesList_header"
+                key={ "examplesList_header" }>{
                 tagTitle
             }</div>
         );
@@ -81,7 +82,8 @@ var ExamplesList = React.createClass({
             var className = "examplesList_row index_" + i%3;
             rows.push(
                 <div className={ className }
-                    onClick={ this.openProject.bind( this , item.slug ) }>
+                    onClick={ this.openProject.bind( this , item.slug ) }
+                    key={ "examplesList_row_" + item.slug }>
                     <div className="examplesList_rowText">
                         <div className="examplesList_rowTitle">
                             { item.title }
@@ -95,7 +97,11 @@ var ExamplesList = React.createClass({
             );
         }
 
-        rows.push( <div className="examplesList_spacer"></div> );
+        rows.push(
+            <div className="examplesList_spacer"
+                key="examplesList_spacer">
+            </div>
+        );
         return rows;
     },
 

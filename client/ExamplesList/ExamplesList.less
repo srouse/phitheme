@@ -1,13 +1,8 @@
 
 .examplesList {
-    /*<csstag tag="section,list">
-        <div ...>
-            { .examplesList_header }
-            { .examplesList_row }
-            { .examplesList_row }
-            { .examplesList_row }
-        </div>
-    </csstag>*/
+    -ctag-tag: "section,list";
+    -ctag-example: "...{ .examplesList_rowContainer }{ .examplesList_typeToggle }";
+
     .zIndex( "examplesList" );
 
     &.nano {
@@ -60,15 +55,19 @@
     }
 
     .examplesList_spacer {
-        /*<csstag tag="shim">
-            <div ...></div>
-        </csstag>*/
+        -ctag-tag: "shim";
+        -ctag-example: "...";
+
         height: 50px;
         width: 10px;
         clear: both;
     }
 
     .examplesList_typeToggle {
+        -ctag-tag: "button";
+        -ctag-example: "...";
+
+
         width: 50px; height: 50px;
         position: fixed;
         bottom: 0px; right: 7px;
@@ -84,6 +83,9 @@
     }
 
     .examplesList_rowContainer {
+        -ctag-tag: "container";
+        -ctag-example: "<div class='nano-content'><div ...>{ .examplesList_header }{ .examplesList_row }{ .examplesList_row }{ .examplesList_row }</div></div>";
+
         width: @phi;
         margin-left: @phi_inv/2;
 
@@ -98,11 +100,9 @@
         }
 
         .examplesList_header {
-            /*<csstag tag="row,header">
-                <div ...>
-                    Header
-                </div>
-            </csstag>*/
+            -ctag-tag: "row,header";
+            -ctag-example: "...Header";
+
             float: left;
             width: 100%;//@phi;
             //margin-left: @phi_inv/2;
@@ -234,9 +234,9 @@
             }
 
             .examplesList_rowImage {
-                /*<csstag tag="row">
-                    <img ... src="../assets/content/posters/oh_poster/oh.png" />
-                </csstag>*/
+                -ctag-tag: "row";
+                -ctag-example: "<img ... src='../content/posters/oh_poster/oh.png' />";
+
                 float: right; clear: right;
                 box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .2 );
                 width: @phi_inv;
@@ -251,6 +251,9 @@
                 }
 
                .examplesList_rowImageChild {
+                   -ctag-tag: "image";
+                   -ctag-example: "...";
+
                 	position: absolute;
                 	top: 0; bottom: 0; left: 0; right: 0;
                     background-size: cover;

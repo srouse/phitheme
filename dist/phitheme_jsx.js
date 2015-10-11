@@ -28,68 +28,6 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         RouteState.merge({project:''})
     },
 
-    /*getProjectIndex: function ( project_slug ) {
-        var list,project;
-        for ( var i=0; i<PhiModel.project_list.length; i++ ) {
-            list = PhiModel.project_list[i];
-            for ( var p=0; p<list.projects.length; p++ ) {
-                project = list.projects[p];
-
-                if ( project.slug == project_slug ) {
-                    return {list:i,project:p};
-                }
-            }
-        }
-        return {list:-1,project:-1};
-    },
-
-    getFlatProjectList: function () {
-        var flat_list = [];
-        for ( var i=0; i<PhiModel.project_list.length; i++ ) {
-            list = PhiModel.project_list[i];
-            for ( var p=0; p<list.projects.length; p++ ) {
-                project = list.projects[p];
-                flat_list.push( project );
-            }
-        }
-
-        return flat_list;
-    },
-
-    getPrevProject: function ( project_slug ) {
-        var flat_list = this.getFlatProjectList();
-
-        for ( var i=0; i<flat_list.length; i++ ) {
-            project = flat_list[i];
-            if ( project.slug == project_slug ) {
-                if ( i == 0 ) {
-                    return flat_list[flat_list.length-1];
-                }else{
-                    return flat_list[i-1];
-                }
-            }
-        }
-
-        return flat_list[0];
-    },
-
-    getNextProject: function ( project_slug ) {
-        var flat_list = this.getFlatProjectList();
-
-        for ( var i=0; i<flat_list.length; i++ ) {
-            project = flat_list[i];
-            if ( project.slug == project_slug ) {
-                if ( i == flat_list.length-1 ) {
-                    return flat_list[0];
-                }else{
-                    return flat_list[i+1];
-                }
-            }
-        }
-
-        return flat_list[0];
-    },*/
-
     prevProject: function () {
         var project = PhiModel.getPrevProject( RouteState.route.project );
 
@@ -104,6 +42,13 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
         RouteState.merge(
             {project:project.slug,image:""}
         );
+    },
+
+    gotoProject: function ( nav_link ) {
+        RouteState.merge({
+            project:nav_link.project,
+            list:nav_link.list
+        });
     },
 
     render: function() {
@@ -132,16 +77,34 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
             var nav_links_children = [];
             for ( var p=0; p<total_filtered_links; p++ ) {
                 nav_link = filtered_children[p];
-                nav_links_children.push(
-                    React.createElement("div", {className: "contentTitleSection_navLinkContainer", 
-                        style: {width: 100/total_filtered_links + "%"}, 
-                        key:  "nav_link_" + p}, 
-                        React.createElement("a", {className: "contentTitleSection_navLinkButton", 
-                            href:  nav_link.location, target: "nav_link"}, 
-                             nav_link.title
+
+                if ( nav_link.internal && nav_link.internal == true ) {
+                    nav_links_children.push(
+                        React.createElement("div", {className: "contentTitleSection_navLinkContainer", 
+                            style: {width: 100/total_filtered_links + "%"}, 
+                            key:  "nav_link_" + p}, 
+                            React.createElement("div", {className: "contentTitleSection_navLinkButton", 
+                                onClick: 
+                                    this.gotoProject.bind( this , nav_link)
+                                }, 
+                                 nav_link.title
+                            )
                         )
-                    )
-                );
+                    );
+                }else{
+                    nav_links_children.push(
+                        React.createElement("div", {className: "contentTitleSection_navLinkContainer", 
+                            style: {width: 100/total_filtered_links + "%"}, 
+                            key:  "nav_link_" + p}, 
+                            React.createElement("a", {className: "contentTitleSection_navLinkButton", 
+                                href:  nav_link.location, target: "nav_link"}, 
+                                 nav_link.title
+                            )
+                        )
+                    );
+                }
+
+
             }
 
             nav_links_dom = React.createElement("div", {className: "contentTitleSection_navLinks"}, 
@@ -149,6 +112,10 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
                             );
         }
 
+        var pseudo_edit = "false";
+        if ( RouteState.route.edit == "edit" ) {
+            pseudo_edit = "true";
+        }
 
         return  React.createElement("div", {className: "contentTitleSection"}, 
                     React.createElement("div", {className: "contentTitleSection_titleSection"}, 
@@ -165,7 +132,8 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
                         React.createElement("div", {className: "titleSection_prev", 
                             onClick:  this.prevProject})
                     ), 
-                    React.createElement("div", {className: "contentTitleSection_summarySection"}, 
+                    React.createElement("div", {className: "contentTitleSection_summarySection", 
+                        contentEditable:  pseudo_edit }, 
                          project.description
                     ), 
                      nav_links_dom 
@@ -235,7 +203,8 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
             tagTitle = list.title.capitalizeEachWord();
 
         rows.push(
-            React.createElement("div", {className: "examplesList_header"}, 
+            React.createElement("div", {className: "examplesList_header", 
+                key:  "examplesList_header" }, 
                 tagTitle
             )
         );
@@ -257,7 +226,8 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
             var className = "examplesList_row index_" + i%3;
             rows.push(
                 React.createElement("div", {className:  className, 
-                    onClick:  this.openProject.bind( this , item.slug) }, 
+                    onClick:  this.openProject.bind( this , item.slug), 
+                    key:  "examplesList_row_" + item.slug}, 
                     React.createElement("div", {className: "examplesList_rowText"}, 
                         React.createElement("div", {className: "examplesList_rowTitle"}, 
                              item.title
@@ -271,7 +241,11 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
             );
         }
 
-        rows.push( React.createElement("div", {className: "examplesList_spacer"}) );
+        rows.push(
+            React.createElement("div", {className: "examplesList_spacer", 
+                key: "examplesList_spacer"}
+            )
+        );
         return rows;
     },
 
@@ -443,6 +417,7 @@ var Home = React.createClass({displayName: "Home",
                 }
                 page_links.push(
                     React.createElement("div", {className: "identityNav_bottomNavLink", 
+                        key:  "identityNav_bottomNavLink_" + p, 
                         style:  style, 
                         onClick:  this.gotoPage.bind( this , page_str) }, 
                          page.title
@@ -716,13 +691,14 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                     className = "projectPage_rightLink"
 
                 if ( do_show ) {
-                    return React.createElement("div", {className:  className }, 
-                        React.createElement("a", {href:  PhiModel.project.external_links[ link_name ].location, 
-                            onClick:  this.stopPropagation, 
-                             className: "projectPage_link", target: "_new_left"}, 
-                             PhiModel.project.external_links[ link_name ].title
-                        )
-                    );
+                    return React.createElement("div", {className:  className, 
+                                key:  className }, 
+                                React.createElement("a", {href:  PhiModel.project.external_links[ link_name ].location, 
+                                    onClick:  this.stopPropagation, 
+                                     className: "projectPage_link", target: "_new_left"}, 
+                                     PhiModel.project.external_links[ link_name ].title
+                                )
+                            );
                 }
             }
         }
@@ -746,17 +722,17 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             fullimage_title = PhiModel.project.images[image_index].title;
 
             images = React.createElement("div", {className: "projectPage_imgNav", 
-                onClick:  this.stopPropagation}, 
-                React.createElement("div", {className: "projectPage_imgNav_icons"}, 
-                    React.createElement("div", {className: "projectPage_imgNav_prev", 
-                        onClick:  this.prevImage}), 
-                    React.createElement("div", {className: "projectPage_imgNav_text"}, 
-                         image_index+1, " / ",   PhiModel.project.images.length
-                    ), 
-                    React.createElement("div", {className: "projectPage_imgNav_next", 
-                        onClick:  this.nextImage})
-                )
-            );
+                        onClick:  this.stopPropagation}, 
+                        React.createElement("div", {className: "projectPage_imgNav_icons"}, 
+                            React.createElement("div", {className: "projectPage_imgNav_prev", 
+                                onClick:  this.prevImage}), 
+                            React.createElement("div", {className: "projectPage_imgNav_text"}, 
+                                 image_index+1, " / ",   PhiModel.project.images.length
+                            ), 
+                            React.createElement("div", {className: "projectPage_imgNav_next", 
+                                onClick:  this.nextImage})
+                        )
+                    );
         }
 
         var links = [];

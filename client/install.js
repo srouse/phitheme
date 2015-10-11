@@ -24,7 +24,7 @@ PhiTheme.run = function ( data_dom ) {
             styles[".page .page_content h1"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
-            styles[".examplesList .examplesList_header"] = {
+            styles[".examplesList .examplesList_rowContainer .examplesList_header"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
         }

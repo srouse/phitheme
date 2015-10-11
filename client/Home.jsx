@@ -143,6 +143,7 @@ var Home = React.createClass({
                 }
                 page_links.push(
                     <div className="identityNav_bottomNavLink"
+                        key={ "identityNav_bottomNavLink_" + p }
                         style={ style }
                         onClick={ this.gotoPage.bind( this , page_str ) }>
                         { page.title }
