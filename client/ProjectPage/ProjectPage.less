@@ -9,7 +9,6 @@
             { .projectPage_leftLink }
             { .projectPage_rightLink }
 
-
             { .projectPage_nav }
             { .projectPage_close }
         </div>
@@ -21,7 +20,7 @@
     .zIndex( "project" );
     height: 100%; width: 0px;
     left: @phi_inv;
-    transition: width .3s, left .3s, height .3s;
+    transition: width .3s, left .3s, height .3s, background-color .3s;
 
     @media ( max-width: @screen-sm-min ) {
         position: relative;
@@ -41,7 +40,7 @@
     body.s_fullscreen & {
         // transition: none;
         width: 100%;
-        background-color: #777;
+        background-color: rgba(0, 0, 0, 0.7 );
         left: 0px;
     }
 
@@ -55,9 +54,9 @@
         padding: 10px;
         font-size: 14px;
         color: #eee;
-        display: none;
+        // display: none;
         .zIndex( "page_title" );
-        //background-color: rgba( 255,255,255,.7);
+        // background-color: rgba( 255,255,255,.7);
 
         body.s_fullscreen & {
             display: block;

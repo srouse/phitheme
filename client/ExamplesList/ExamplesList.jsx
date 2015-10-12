@@ -91,6 +91,9 @@ var ExamplesList = React.createClass({
                         <div className="examplesList_rowSubTitle">
                             { item.medium }
                         </div>
+                        <div className="examplesList_rowDescription">
+                            { item.summary }
+                        </div>
                     </div>
                     { image }
                 </div>

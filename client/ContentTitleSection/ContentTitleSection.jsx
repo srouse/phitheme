@@ -133,8 +133,8 @@ var ContentTitleSection = React.createClass({
                             onClick={ this.prevProject }></div>
                     </div>
                     <div className="contentTitleSection_summarySection"
-                        contentEditable={ pseudo_edit }>
-                        { project.description }
+                        contentEditable={ pseudo_edit }
+                        dangerouslySetInnerHTML={{__html:project.description}}>
                     </div>
                     { nav_links_dom }
                 </div>;

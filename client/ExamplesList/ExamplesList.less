@@ -154,11 +154,12 @@
                     <div ...>
                         { .examplesList_rowTitle }
                         { .examplesList_rowSubTitle }
+                        { .examplesList_rowDescription }
                     </div>
                 </csstag>*/
                 width: @phi;
                 float: left; clear: left;
-                margin-bottom: 20px;
+
 
                 body.s_thumbs & {
                     margin-bottom: 0px;
@@ -170,10 +171,12 @@
 
                 @media ( max-width: @screen-sm-min ) {
                     width: 100%;
+                    margin-bottom: 20px;
                 }
 
                 @media ( max-width: @screen-md-min ) {
                     width: 100%;
+                    margin-bottom: 20px;
                 }
 
                 .examplesList_rowTitle {
@@ -215,7 +218,8 @@
                         </div>
                     </csstag>*/
                     font-size: 12px;
-                    margin-top: 4px;
+                    margin-top: 2px;
+
                     color: #999;
 
                     body.s_thumbs & {
@@ -231,6 +235,45 @@
                         text-align: center;
                     }
                 }
+                .examplesList_rowDescription {
+                    /*<csstag tag="label">
+                        <div ...>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Mauris libero diam, placerat at maximus non,
+                            rhoncus vitae quam. Nam mollis, purus id rutrum
+                            rhoncus, risus magna suscipit ex, ac posuere
+                            mauris nisi vel elit. Aliquam fermentum egestas
+                            aliquam. Fusce eu lacinia felis. Morbi hendrerit
+                            ornare turpis, vel dictum magna facilisis ac.
+                            Proin auctor aliquam hendrerit. Phasellus finibus
+                            sem eget dui finibus laoreet. Vestibulum porttitor
+                            leo sed tortor malesuada, et ultricies sem
+                            vulputate. Praesent porta mauris ex, ac consectetur
+                            sem facilisis a. Ut pharetra sollicitudin varius.
+                            Donec dui turpis, ullamcorper sit amet nisl aliquam,
+                            tincidunt dignissim purus.
+                        </div>
+                    </csstag>*/
+                    font-size: 12px;
+                    margin-top: 10px;
+                    padding-right: 20px;
+
+                    color: #777;
+
+                    body.s_thumbs & {
+                        display: none;
+                    }
+
+                    @media ( max-width: @screen-sm-min ) {
+                        font-size: 14px;
+                        text-align: center;
+                    }
+
+                    @media ( max-width: @screen-md-min ) {
+                        text-align: center;
+                    }
+                }
+
             }
 
             .examplesList_rowImage {

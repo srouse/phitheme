@@ -133,8 +133,8 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
                             onClick:  this.prevProject})
                     ), 
                     React.createElement("div", {className: "contentTitleSection_summarySection", 
-                        contentEditable:  pseudo_edit }, 
-                         project.description
+                        contentEditable:  pseudo_edit, 
+                        dangerouslySetInnerHTML: {__html:project.description}}
                     ), 
                      nav_links_dom 
                 );
@@ -234,6 +234,9 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
                         ), 
                         React.createElement("div", {className: "examplesList_rowSubTitle"}, 
                              item.medium
+                        ), 
+                        React.createElement("div", {className: "examplesList_rowDescription"}, 
+                             item.summary
                         )
                     ), 
                      image 
@@ -742,7 +745,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         return  React.createElement("div", {className: "projectPage", 
                     onClick:  this.closeProject}, 
                     React.createElement("div", {className: "projectPage_title"}, 
-                         PhiModel.project.title, " - ",  fullimage_title 
+                         fullimage_title 
                     ), 
                     React.createElement("img", {src:  fullimage, 
                         className: "projectPage_img", 

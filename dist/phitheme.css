@@ -136,15 +136,8 @@ Mixin's
   }
 }
 .contentTitleSection .contentTitleSection_titleSection {
-  /*<csstag tag="section">
-            <div ...>
-                { .titleSection_titles }
-
-                { .titleSection_close }
-                { .titleSection_prev }
-                { .titleSection_next }
-            </div>
-        </csstag>*/
+  -ctag-tag: "section,header";
+  -ctag-example: "...{ .titleSection_titles }{ .titleSection_next }{ .titleSection_prev }";
   width: 100%;
   height: 80px;
   position: relative;
@@ -152,12 +145,9 @@ Mixin's
 .contentTitleSection .contentTitleSection_titleSection .titleSection_button,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_close,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_prev,
-.contentTitleSection .contentTitleSection_titleSection .titleSection_next,
-.contentTitleSection .contentTitleSection_summarySection .titleSection_prev,
-.contentTitleSection .contentTitleSection_summarySection .titleSection_next {
-  /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
+.contentTitleSection .contentTitleSection_titleSection .titleSection_next {
+  -ctag-tag: "button";
+  -ctag-example: "...";
   width: 60px;
   height: 100%;
   float: left;
@@ -170,39 +160,30 @@ Mixin's
 .contentTitleSection .contentTitleSection_titleSection .titleSection_button:hover,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_close:hover,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_prev:hover,
-.contentTitleSection .contentTitleSection_titleSection .titleSection_next:hover,
-.contentTitleSection .contentTitleSection_summarySection .titleSection_prev:hover,
-.contentTitleSection .contentTitleSection_summarySection .titleSection_next:hover {
+.contentTitleSection .contentTitleSection_titleSection .titleSection_next:hover {
   background-color: #eee;
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_close {
-  /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
+  -ctag-tag: "button";
+  -ctag-example: "...";
   float: right;
   background-image: url("../assets/close_icon.png");
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_prev {
-  /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
+  -ctag-tag: "button";
+  -ctag-example: "...";
   float: right;
   background-image: url("../assets/prev_icon.png");
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_next {
-  /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
+  -ctag-tag: "button";
+  -ctag-example: "...";
   float: right;
   background-image: url("../assets/next_icon.png");
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_titles {
-  /*<csstag tag="section">
-                <div ...>
-                    { .titleSection_title }
-                    { .titleSection_subTitle }
-                </div>
-            </csstag>*/
+  -ctag-tag: "section";
+  -ctag-example: "...{ .titleSection_title }{ .titleSection_subTitle }";
   width: 100%;
   height: 100%;
   position: absolute;
@@ -210,41 +191,27 @@ Mixin's
   left: 0px;
   top: 0px;
   text-align: left;
-  padding: 18px 24px;
+  padding: 18px 20px;
   color: #777;
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_titles .titleSection_title {
-  /*<csstag tag="title">
-                    <div ...>
-                        Project Title
-                    </div>
-                </csstag>*/
+  -ctag-tag: "title";
+  -ctag-example: "...Project Title";
   float: left;
   clear: left;
   font-size: 20px;
   margin-bottom: 4px;
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_titles .titleSection_subTitle {
-  /*<csstag tag="title">
-                    <div ...>
-                        Project Sub Title
-                    </div>
-                </csstag>*/
+  -ctag-tag: "title";
+  -ctag-example: "...Project Sub Title";
   float: left;
   clear: left;
   font-size: 12px;
 }
 .contentTitleSection .contentTitleSection_summarySection {
-  /*<csstag tag="title">
-            <div ...>
-                Project Summary Project Summary
-                Project Summary Project Summary
-                Project Summary Project Summary
-                Project Summary Project Summary
-                Project Summary Project Summary
-                Project Summary Project Summary
-            </div>
-        </csstag>*/
+  -ctag-tag: "title";
+  -ctag-example: "...{ .contentTitleSection .contentTitleSection_summarySection p }";
   width: 100%;
   height: calc(100% + -150px);
   padding: 0px 20px;
@@ -253,27 +220,12 @@ Mixin's
   color: #777;
   line-height: 18px;
 }
-.contentTitleSection .contentTitleSection_summarySection .titleSection_prev {
-  /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
-  position: absolute;
-  bottom: 0px;
-  width: 50%;
-  left: 0px;
-  height: 60px;
-  background-image: url("../assets/prev_icon.png");
-}
-.contentTitleSection .contentTitleSection_summarySection .titleSection_next {
-  /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
-  position: absolute;
-  bottom: 0px;
-  width: 50%;
-  right: 0px;
-  height: 60px;
-  background-image: url("../assets/next_icon.png");
+.contentTitleSection .contentTitleSection_summarySection > p {
+  -ctag-tag: "paragraph";
+  -ctag-example: "<p>here is some text</p>";
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 10px;
 }
 .contentTitleSection .contentTitleSection_navLinks {
   /*<csstag tag="navigation">
@@ -452,12 +404,12 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row.index_0
                     <div ...>
                         { .examplesList_rowTitle }
                         { .examplesList_rowSubTitle }
+                        { .examplesList_rowDescription }
                     </div>
                 </csstag>*/
   width: 61.803398%;
   float: left;
   clear: left;
-  margin-bottom: 20px;
 }
 body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
   margin-bottom: 0px;
@@ -470,11 +422,13 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
 @media (max-width: 768px) {
   .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
     width: 100%;
+    margin-bottom: 20px;
   }
 }
 @media (max-width: 992px) {
   .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText {
     width: 100%;
+    margin-bottom: 20px;
   }
 }
 .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowTitle {
@@ -516,7 +470,7 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
                         </div>
                     </csstag>*/
   font-size: 12px;
-  margin-top: 4px;
+  margin-top: 2px;
   color: #999;
 }
 body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
@@ -530,6 +484,44 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
 }
 @media (max-width: 992px) {
   .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowSubTitle {
+    text-align: center;
+  }
+}
+.examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowDescription {
+  /*<csstag tag="label">
+                        <div ...>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Mauris libero diam, placerat at maximus non,
+                            rhoncus vitae quam. Nam mollis, purus id rutrum
+                            rhoncus, risus magna suscipit ex, ac posuere
+                            mauris nisi vel elit. Aliquam fermentum egestas
+                            aliquam. Fusce eu lacinia felis. Morbi hendrerit
+                            ornare turpis, vel dictum magna facilisis ac.
+                            Proin auctor aliquam hendrerit. Phasellus finibus
+                            sem eget dui finibus laoreet. Vestibulum porttitor
+                            leo sed tortor malesuada, et ultricies sem
+                            vulputate. Praesent porta mauris ex, ac consectetur
+                            sem facilisis a. Ut pharetra sollicitudin varius.
+                            Donec dui turpis, ullamcorper sit amet nisl aliquam,
+                            tincidunt dignissim purus.
+                        </div>
+                    </csstag>*/
+  font-size: 12px;
+  margin-top: 10px;
+  padding-right: 20px;
+  color: #777;
+}
+body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowDescription {
+  display: none;
+}
+@media (max-width: 768px) {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowDescription {
+    font-size: 14px;
+    text-align: center;
+  }
+}
+@media (max-width: 992px) {
+  .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowDescription {
     text-align: center;
   }
 }
@@ -1025,7 +1017,6 @@ body.s_page .page {
             { .projectPage_leftLink }
             { .projectPage_rightLink }
 
-
             { .projectPage_nav }
             { .projectPage_close }
         </div>
@@ -1039,7 +1030,7 @@ body.s_page .page {
   height: 100%;
   width: 0px;
   left: 38.196602%;
-  transition: width .3s, left .3s, height .3s;
+  transition: width 0.3s, left 0.3s, height 0.3s, background-color 0.3s;
   /*===================*/
 }
 @media (max-width: 768px) {
@@ -1061,7 +1052,7 @@ body.s_project .projectPage {
 }
 body.s_fullscreen .projectPage {
   width: 100%;
-  background-color: #777;
+  background-color: rgba(0, 0, 0, 0.7);
   left: 0px;
 }
 .projectPage .projectPage_title {
@@ -1074,7 +1065,6 @@ body.s_fullscreen .projectPage {
   padding: 10px;
   font-size: 14px;
   color: #eee;
-  display: none;
   z-index: 200;
 }
 body.s_fullscreen .projectPage .projectPage_title {

@@ -186,7 +186,7 @@ var ProjectPage = React.createClass({
         return  <div className="projectPage"
                     onClick={ this.closeProject }>
                     <div className="projectPage_title">
-                        { PhiModel.project.title } - { fullimage_title }
+                        { fullimage_title }
                     </div>
                     <img src={ fullimage }
                         className="projectPage_img"

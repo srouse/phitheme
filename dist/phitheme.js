@@ -21544,8 +21544,8 @@ var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
                             onClick:  this.prevProject})
                     ), 
                     React.createElement("div", {className: "contentTitleSection_summarySection", 
-                        contentEditable:  pseudo_edit }, 
-                         project.description
+                        contentEditable:  pseudo_edit, 
+                        dangerouslySetInnerHTML: {__html:project.description}}
                     ), 
                      nav_links_dom 
                 );
@@ -21645,6 +21645,9 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
                         ), 
                         React.createElement("div", {className: "examplesList_rowSubTitle"}, 
                              item.medium
+                        ), 
+                        React.createElement("div", {className: "examplesList_rowDescription"}, 
+                             item.summary
                         )
                     ), 
                      image 
@@ -22153,7 +22156,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         return  React.createElement("div", {className: "projectPage", 
                     onClick:  this.closeProject}, 
                     React.createElement("div", {className: "projectPage_title"}, 
-                         PhiModel.project.title, " - ",  fullimage_title 
+                         fullimage_title 
                     ), 
                     React.createElement("img", {src:  fullimage, 
                         className: "projectPage_img", 
@@ -22456,11 +22459,11 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
     $(html).each( function(i,e) {
         var total_json_nodes = 0;
 
+        // cycle through all of the data
         $.each( $(e).data(), function( j , f ) {
             // data-att="value"
             // j = att
             // f = value
-
 
             if ( j.substring( 0 , set.length ) == set ) {
                 total_json_nodes++;
@@ -22469,10 +22472,9 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                 var type = "string";
 
                 var data_prop_name = j.substring( set.length ).toLowerCase();
+                // if it has more than just "data-json"...
                 if ( data_prop_name ) {
-
                     prop_name = data_prop_name;
-
                     if ( String(f).indexOf( ":attr" ) != -1 ) {
                         var name_split = String(f).split( ":attr" );
                         var value = $(e).attr( name_split[0] );
@@ -22592,9 +22594,15 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                         case "string" :
                         case "str" :
                             if ( parent_is_array ) {
-                                json_parent.push( getNodeText( e ) );//$.trim( $(e).text() ) );
+                                json_parent.push( getNodeText( e ) );
                             }else{
-                                json_parent[prop_name] = getNodeText( e );//$.trim( $(e).text() );
+                                json_parent[prop_name] = getNodeText( e );
+                            }
+
+                            // if some child nodes are found
+                            // attach them to the parent...
+                            if ( $(e).children().length > 0 ) {
+                                _HTMLtoJSON( $(e).children() , set , json_parent );
                             }
                             break;
                         case "html" :
@@ -22602,6 +22610,12 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                                 json_parent.push( $.trim( $(e).html() ) );
                             }else{
                                 json_parent[prop_name] = $.trim( $(e).html() );
+                            }
+                            
+                            // if some child nodes are found
+                            // attach them to the parent...
+                            if ( $(e).children().length > 0 ) {
+                                _HTMLtoJSON( $(e).children() , set , json_parent );
                             }
                             break;
                     }
