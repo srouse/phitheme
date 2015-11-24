@@ -157,9 +157,10 @@ var Home = React.createClass({
                     <IdentityNav />
                     <div className="contentArea">
                         <ProjectPage />
-                        <ExamplesList />
                         <Page />
                     </div>
+
+                    <ExamplesList />
                     <ContentTitleSection />
 
                     { /*needed here for layering*/ }

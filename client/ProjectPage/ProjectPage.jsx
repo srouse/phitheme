@@ -153,9 +153,9 @@ var ProjectPage = React.createClass({
 
         var fullimage = PhiModel.project.fullimage;
         var fullimage_title = "";
-        var images = "";
+        var image_context = "";
 
-        if ( PhiModel.project.images ) {
+        if ( PhiModel.project && PhiModel.project.images ) {
             var image_index = 0;
 
             if ( RouteState.route.image ) {
@@ -165,41 +165,28 @@ var ProjectPage = React.createClass({
             fullimage = PhiModel.project.images[image_index].image_url;
             fullimage_title = PhiModel.project.images[image_index].title;
 
-            images = <div className="projectPage_imgNav"
-                        onClick={ this.stopPropagation }>
-                        <div className="projectPage_imgNav_icons">
-                            <div className="projectPage_imgNav_prev"
-                                onClick={ this.prevImage }></div>
-                            <div className="projectPage_imgNav_text">
-                                { image_index+1 } / {  PhiModel.project.images.length }
-                            </div>
-                            <div className="projectPage_imgNav_next"
-                                onClick={ this.nextImage }></div>
-                        </div>
-                    </div>;
+            image_context = image_index+1 + " / " + PhiModel.project.images.length;
         }
 
         var links = [];
         links.push( this.getExternalLink( "link_left" ) );
         links.push( this.getExternalLink( "link_right" ) );
 
-        return  <div className="projectPage"
-                    onClick={ this.closeProject }>
+        return  <div className="projectPage">
                     <div className="projectPage_title">
                         { fullimage_title }
+                        <span className="imageIndex">{ image_context }</span>
                     </div>
                     <img src={ fullimage }
-                        className="projectPage_img"
-                        onClick={ this.imageToFullscreen } />
-                    { images }
+                        className="projectPage_img" />
                     { links }
                     <div className="projectPage_close"
                         onClick={ this.closeProject }></div>
 
                     <div className="projectPage_nextProject"
-                        onClick={ this.nextProject }></div>
+                        onClick={ this.nextImage }></div>
                     <div className="projectPage_prevProject"
-                        onClick={ this.prevProject }></div>
+                        onClick={ this.prevImage }></div>
                 </div>;
     }
 

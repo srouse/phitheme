@@ -124,8 +124,8 @@ var ExamplesList = React.createClass({
                             { rows }
                         </div>
                     </div>
-                    <div className="examplesList_typeToggle"
-                        onClick={ this.toggleThumbs }></div>
+                    { /*<div className="examplesList_typeToggle"
+                        onClick={ this.toggleThumbs }></div>*/ }
                 </div>;
     }
 

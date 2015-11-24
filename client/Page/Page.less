@@ -12,7 +12,9 @@
         display: block;
     }
 
-
+    @media ( max-width: @screen-sm-min ) {
+        margin-top: 80px;
+    }
 
     .page_content {
         /*<csstag tag="section">
@@ -22,7 +24,7 @@
             </div>
         </csstag>*/
         width: @phi;
-        margin-left: @phi_inv/2;
+        margin-left: @phi-inv/2;
         padding-top: 50px;
 
         @media ( max-width: @screen-sm-min ) {

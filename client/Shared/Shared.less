@@ -27,27 +27,19 @@ Mixin's
 
 //PHI (yeah, that's not really phi)
 @phi: 61.803398%;
-@phi_rec: 161.8033%;
-@phi_inv: 100 - ( @phi );
+@phi-inv: 100 - ( @phi );
+@phi-inv-half: @phi-inv / 2;
+@phi-inv-quarter: @phi-inv / 4;
 
-@phi-phi: @phi * .618033;
-@phi-phinv: @phi * .381967;
+@vh-phi: 61.8033vh;
+@vh-phi-inv: 100 - ( @vh-phi );
+@vh-phi-inv-half: @vh-phi-inv / 2;
+@vh-phi-inv-quarter: @vh-phi-inv / 4;
 
-@phi-phi-phi: @phi * .618033 * .618033;
-@phi-phi-phinv: @phi * .618033 * .381967;
-
-@phi-phinv-phi: @phi * .381967 * .618033;
-@phi-phinv-phinv: @phi * .381967 * .381967;
-
-@phinv-phi: @phi_inv * .618033;
-@phinv-phinv: @phi_inv * .381967;
-
-@phinv-phi-phi: @phi_inv * .618033 * .618033;
-@phinv-phi-phinv: @phi_inv * .618033 * .381967;
-
-@phinv-phinv-phi: @phi_inv * .381967 * .618033;
-@phinv-phinv-phinv: @phi_inv * .381967 * .381967;
-
+@vw-phi: 61.8033vw;
+@vw-phi-inv: 100 - ( @vw-phi );
+@vw-phi-inv-half: @vw-phi-inv / 2;
+@vw-phi-inv-quarter: @vw-phi-inv / 4;
 
 //FROM BOOTSTRAP
 //== Media queries breakpoints

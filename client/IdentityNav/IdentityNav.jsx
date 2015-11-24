@@ -3,9 +3,30 @@ var IdentityNav = React.createClass({
 
 
     gotoTag: function ( tag ) {
+        if ( PhiModel.getBreakpoint() == "smartphone" ) {
+            RouteState.merge(
+                {
+                    list:tag,
+                    project:'',
+                    image:'',
+                    page:''
+                },
+                true
+            );
+        }else{
+            RouteState.merge(
+                {
+                    list:tag
+                },
+                true
+            );
+        }
+    },
+
+    gotoHome: function ( ) {
         RouteState.merge(
             {
-                list:tag,
+                list:'',
                 project:'',
                 image:'',
                 page:''
@@ -56,9 +77,9 @@ var IdentityNav = React.createClass({
         return  <div className="identityNav">
                     <div className="identityNav_gradOffset">
                         <div className="identityNav_logo"
-                            onClick={ this.gotoTag.bind( this , "") }></div>
+                            onClick={ this.gotoHome }></div>
                         <div className="identityNav_logo_small"
-                            onClick={ this.gotoTag.bind( this , "") }></div>
+                            onClick={ this.gotoHome }></div>
                         <div className="identityNav_centerNav">
                             { project_links }
                         </div>

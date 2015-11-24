@@ -1,3 +1,62 @@
+/** initial setup **/
+.nano {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.nano > .nano-content {
+  position: absolute;
+  overflow: scroll;
+  overflow-x: hidden;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.nano > .nano-content:focus {
+  outline: thin dotted;
+}
+.nano > .nano-content::-webkit-scrollbar {
+  display: none;
+}
+.has-scrollbar > .nano-content::-webkit-scrollbar {
+  display: block;
+}
+.nano > .nano-pane {
+  background: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  width: 10px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  visibility: hidden\9;
+  /* Target only IE7 and IE8 with this hack */
+  opacity: .01;
+  -webkit-transition: .2s;
+  -moz-transition: .2s;
+  -o-transition: .2s;
+  transition: .2s;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.nano > .nano-pane > .nano-slider {
+  background: #444;
+  background: rgba(0, 0, 0, 0.5);
+  position: relative;
+  margin: 0 1px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+.nano:hover > .nano-pane,
+.nano-pane.active,
+.nano-pane.flashed {
+  visibility: visible\9;
+  /* Target only IE7 and IE8 with this hack */
+  opacity: 0.99;
+}
 html {
   -ctag-tag: "global";
   -ctag-global: "true";
@@ -7,13 +66,16 @@ html {
   height: 100%;
   padding: 0px;
   margin: 0px;
-  overflow: hidden;
-}
-@media (max-width: 768px) {
-  html {
-    overflow: visible;
-    height: auto;
-  }
+  /*
+    @media ( max-width: @screen-sm-min ) {
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            overflow: visible;
+            height: auto;
+        }
+    }
+    */
 }
 html body {
   -ctag-tag: "global";
@@ -25,11 +87,34 @@ html body {
   font-family: "Avenir LT W01 35 Light";
   color: #555;
   overflow: hidden;
+  /**
+         * These values will not show up in content, but can be
+         * queried by JavaScript to know which breakpoint is active.
+         * Add or remove as many breakpoints as you like.
+         * https://www.lullabot.com/articles/importing-css-breakpoints-into-javascript
+         */
 }
 @media (max-width: 768px) {
-  html body {
+  html body.s_project,
+  html body.s_list,
+  html body.s_page {
     overflow: visible;
     height: auto;
+  }
+}
+html body:before {
+  content: "smartphone";
+  display: none;
+  /* Prevent from displaying. */
+}
+@media (min-width: 768px) {
+  html body:before {
+    content: "tablet";
+  }
+}
+@media (min-width: 992px) {
+  html body:before {
+    content: "desktop";
   }
 }
 html * {
@@ -114,45 +199,60 @@ Mixin's
             { .contentTitleSection_navLinks }
         </div>
     </csstag>*/
-  width: 38.196602%;
-  height: 61.803398%;
+  width: 61.803398%;
+  height: auto;
   position: absolute;
-  left: 0px;
-  bottom: 0px;
-  border-right: 1px solid #eee;
-  z-index: 500;
+  left: 38.196602%;
+  top: 0px;
+  background-color: #fff;
+  padding-top: 20px;
+  display: none;
+  z-index: 2000;
 }
 @media (max-width: 768px) {
   .contentTitleSection {
     width: 100%;
-    height: 300px;
     position: relative;
+    left: 0px;
     display: none;
   }
+}
+body.s_project .contentTitleSection {
+  display: block;
 }
 @media (max-width: 768px) {
   body.s_project .contentTitleSection {
     display: block;
+    margin-top: 80px;
   }
 }
+body.s_fullscreen .contentTitleSection {
+  display: none;
+}
 .contentTitleSection .contentTitleSection_titleSection {
-  -ctag-tag: "section,header";
   -ctag-example: "...{ .titleSection_titles }{ .titleSection_next }{ .titleSection_prev }";
-  width: 100%;
+  width: 61.803398%;
+  margin-left: 19.098301%;
   height: 80px;
   position: relative;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+@media (max-width: 768px) {
+  .contentTitleSection .contentTitleSection_titleSection {
+    width: 90%;
+    margin-left: 5%;
+  }
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_button,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_close,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_prev,
 .contentTitleSection .contentTitleSection_titleSection .titleSection_next {
-  -ctag-tag: "button";
   -ctag-example: "...";
   width: 60px;
   height: 100%;
   float: left;
   position: relative;
-  z-index: 20;
   background-color: #fff;
   cursor: pointer;
   cursor: hand;
@@ -164,7 +264,6 @@ Mixin's
   background-color: #eee;
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_close {
-  -ctag-tag: "button";
   -ctag-example: "...";
   float: right;
   background-image: url("../assets/close_icon.png");
@@ -176,49 +275,88 @@ Mixin's
   background-image: url("../assets/prev_icon.png");
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_next {
-  -ctag-tag: "button";
   -ctag-example: "...";
   float: right;
   background-image: url("../assets/next_icon.png");
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_titles {
-  -ctag-tag: "section";
   -ctag-example: "...{ .titleSection_title }{ .titleSection_subTitle }";
   width: 100%;
   height: 100%;
   position: absolute;
-  z-index: 10;
   left: 0px;
   top: 0px;
   text-align: left;
-  padding: 18px 20px;
   color: #777;
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_titles .titleSection_title {
-  -ctag-tag: "title";
   -ctag-example: "...Project Title";
   float: left;
   clear: left;
-  font-size: 20px;
+  font-size: 28px;
   margin-bottom: 4px;
 }
 .contentTitleSection .contentTitleSection_titleSection .titleSection_titles .titleSection_subTitle {
-  -ctag-tag: "title";
   -ctag-example: "...Project Sub Title";
   float: left;
   clear: left;
   font-size: 12px;
 }
-.contentTitleSection .contentTitleSection_summarySection {
-  -ctag-tag: "title";
-  -ctag-example: "...{ .contentTitleSection .contentTitleSection_summarySection p }";
+.contentTitleSection .contentTitleSection_titleSection .titleSection_totalImgs {
+  width: 60px;
+  height: 60px;
+  border: 1px solid #eee;
+  position: relative;
+  text-align: center;
+  float: right;
+  cursor: pointer;
+  cursor: hand;
+}
+.contentTitleSection .contentTitleSection_titleSection .titleSection_totalImgs:hover {
+  background-color: #eee;
+}
+.contentTitleSection .contentTitleSection_titleSection .titleSection_totalImgs__num {
+  font-size: 24px;
   width: 100%;
-  height: calc(100% + -150px);
-  padding: 0px 20px;
-  overflow: auto;
-  font-size: 14px;
+  color: #999;
+  position: absolute;
+  top: 8px;
+}
+.contentTitleSection .contentTitleSection_titleSection .titleSection_totalImgs__images {
+  font-size: 12px;
+  width: 100%;
+  color: #aaa;
+  position: absolute;
+  bottom: 6px;
+}
+.contentTitleSection .titleSection_mainImage {
+  width: 100%;
+  height: 38.1967vh;
+  background-size: 100%;
+  background-position: center;
+  margin-bottom: 20px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  cursor: hand;
+  transition: background-size 0.3s;
+}
+.contentTitleSection .titleSection_mainImage:hover {
+  background-size: 110%;
+}
+.contentTitleSection .contentTitleSection_summarySection {
+  -ctag-example: "...{ .contentTitleSection .contentTitleSection_summarySection p }";
+  width: 61.803398%;
+  margin-left: 19.098301%;
+  font-size: 16px;
   color: #777;
   line-height: 18px;
+}
+@media (max-width: 768px) {
+  .contentTitleSection .contentTitleSection_summarySection {
+    width: 90%;
+    margin-left: 5%;
+  }
 }
 .contentTitleSection .contentTitleSection_summarySection > p {
   -ctag-tag: "paragraph";
@@ -227,18 +365,37 @@ Mixin's
   margin: 0px;
   margin-bottom: 10px;
 }
+.contentTitleSection .contentTitleSection_close {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  top: 0px;
+  right: 0px;
+  background-image: url("../assets/close_icon.png");
+  cursor: pointer;
+  cursor: hand;
+}
+.contentTitleSection .contentTitleSection_close:hover {
+  background-color: rgba(30, 30, 30, 0.2);
+  background-image: url("../assets/close_icon_white.png");
+}
 .contentTitleSection .contentTitleSection_navLinks {
   /*<csstag tag="navigation">
             <div ...>
                 { .contentTitleSection_navLinkContainer }
             </div>
         </csstag>*/
-  width: 100%;
+  width: 61.803398%;
+  margin-left: 19.098301%;
   height: 60px;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  padding-right: 10px;
+  margin-top: 20px;
+  position: relative;
+}
+@media (max-width: 768px) {
+  .contentTitleSection .contentTitleSection_navLinks {
+    width: 90%;
+    margin-left: 5%;
+  }
 }
 .contentTitleSection .contentTitleSection_navLinks .contentTitleSection_navLinkContainer {
   /*<csstag tag="section">
@@ -248,7 +405,6 @@ Mixin's
             </csstag>*/
   float: left;
   width: 100%;
-  padding-left: 10px;
 }
 .contentTitleSection .contentTitleSection_navLinks .contentTitleSection_navLinkContainer .contentTitleSection_navLinkButton {
   /*<csstag tag="button">
@@ -272,10 +428,16 @@ Mixin's
 .examplesList {
   -ctag-tag: "section,list";
   -ctag-example: "...{ .examplesList_rowContainer }{ .examplesList_typeToggle }";
-  z-index: 1500;
+  z-index: 3000;
+  background-color: #fff;
+  position: absolute;
+  left: 38.196602%;
+  top: 0px;
+  width: 61.803398%;
+  height: 100%;
+  transition: width .5s, left .3s, top .2s;
 }
 .examplesList.nano {
-  width: 100%;
   padding-left: 19.098301%;
 }
 @media (max-width: 768px) {
@@ -309,13 +471,37 @@ Mixin's
   background-image: url("../assets/gradient.png");
   background-size: 5px 100%;
 }
+body.s_project .examplesList,
+body.s_fullscreen .examplesList,
+body.s_page .examplesList {
+  border-right: 1px solid #eee;
+}
+body.s_project .examplesList {
+  width: 38.196602%;
+  left: 0px;
+  top: 38.196602%;
+  height: 61.803398%;
+}
 @media (max-width: 768px) {
   body.s_project .examplesList {
     display: none;
   }
 }
+body.s_fullscreen .examplesList,
 body.s_page .examplesList {
   display: none;
+}
+@media (max-width: 768px) {
+  .examplesList {
+    left: 0px;
+    width: 100%;
+    position: relative;
+  }
+  body.s_project .examplesList,
+  body.s_list .examplesList,
+  body.s_page .examplesList {
+    margin-top: 80px;
+  }
 }
 .examplesList .examplesList_spacer {
   -ctag-tag: "shim";
@@ -370,6 +556,14 @@ body.s_thumbs .examplesList .examplesList_typeToggle {
   margin-bottom: 0px;
   color: #777;
   border-bottom: 7px solid #999;
+  transition: height .3s;
+}
+body.s_project .examplesList .examplesList_rowContainer .examplesList_header {
+  height: 0px;
+  border-bottom: 0px;
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
 }
 .examplesList .examplesList_rowContainer .examplesList_row {
   /*<csstag tag="row">
@@ -386,6 +580,9 @@ body.s_thumbs .examplesList .examplesList_typeToggle {
   transition: width .3s;
   cursor: pointer;
   cursor: hand;
+}
+body.s_project .examplesList .examplesList_rowContainer .examplesList_row {
+  padding: 20px 0px;
 }
 body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row {
   width: calc(33.3333% + -13.33333333px);
@@ -511,6 +708,9 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
   padding-right: 20px;
   color: #777;
 }
+body.s_project .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowDescription {
+  display: none;
+}
 body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .examplesList_rowText .examplesList_rowDescription {
   display: none;
 }
@@ -591,7 +791,9 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
   /*needed here for layering*/
 }
 @media (max-width: 768px) {
-  .phiTheme {
+  .phiTheme.s_project,
+  .phiTheme.s_list,
+  .phiTheme.s_page {
     height: auto;
   }
 }
@@ -614,17 +816,18 @@ body.s_thumbs .examplesList .examplesList_rowContainer .examplesList_row .exampl
 body.s_project .phiTheme .contentArea {
   z-index: 5000;
 }
-body.s_project .phiTheme .contentArea,
-body.s_list .phiTheme .contentArea,
+body.s_fullscreen .phiTheme .contentArea,
 body.s_page .phiTheme .contentArea {
   display: block;
 }
 @media (max-width: 768px) {
   .phiTheme .contentArea {
     width: 100%;
-    height: auto;
     position: relative;
     z-index: 2500;
+  }
+  body.s_fullscreen .phiTheme .contentArea {
+    height: 100vh;
   }
 }
 .phiTheme .phitheme_copyrightNav {
@@ -638,8 +841,9 @@ body.s_page .phiTheme .contentArea {
   bottom: 0px;
   width: 100%;
   height: 62px;
+  margin-top: 20px;
   transition: bottom .3s, width .3s, left .3s;
-  z-index: 4000;
+  z-index: 5000;
   overflow: hidden;
 }
 body.s_project .phiTheme .phitheme_copyrightNav,
@@ -647,6 +851,7 @@ body.s_list .phiTheme .phitheme_copyrightNav,
 body.s_page .phiTheme .phitheme_copyrightNav {
   left: 0px;
   width: 38.196602%;
+  display: none;
 }
 @media (max-width: 768px) {
   body.s_project .phiTheme .phitheme_copyrightNav,
@@ -654,10 +859,13 @@ body.s_page .phiTheme .phitheme_copyrightNav {
   body.s_page .phiTheme .phitheme_copyrightNav {
     width: 100%;
     position: relative;
+    display: block;
   }
 }
+body.s_fullscreen .phiTheme .phitheme_copyrightNav {
+  display: none;
+}
 body.s_project .phiTheme .phitheme_copyrightNav {
-  bottom: -70px;
   background-color: #fff;
 }
 .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
@@ -730,14 +938,14 @@ body.s_page .phiTheme .phitheme_copyrightNav .identityNav_bottomNav {
   top: 0px;
   transition: height .3s, top .3s, width .3s;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.2);
-  z-index: 3000;
+  z-index: 4000;
 }
 @media (max-width: 768px) {
   .identityNav {
     width: 100%;
     height: 100vh;
     top: 0px;
-    position: relative;
+    position: fixed;
     border-bottom: 1px solid #eee;
     transition: none;
   }
@@ -757,7 +965,7 @@ body.s_page .identityNav {
   body.s_page .identityNav {
     width: 100%;
     height: 80px;
-    position: relative;
+    position: fixed;
     transition: none;
   }
 }
@@ -934,12 +1142,8 @@ body.s_page .identityNav .identityNav_centerNav {
   body.s_project .identityNav .identityNav_centerNav .identityNav_link,
   body.s_list .identityNav .identityNav_centerNav .identityNav_link,
   body.s_page .identityNav .identityNav_centerNav .identityNav_link {
-    font-size: 14px;
     padding-top: 32px;
   }
-}
-body.s_project .identityNav .identityNav_centerNav .identityNav_link {
-  font-size: 16px;
 }
 .page {
   /*<csstag tag="page">
@@ -952,6 +1156,11 @@ body.s_project .identityNav .identityNav_centerNav .identityNav_link {
 }
 body.s_page .page {
   display: block;
+}
+@media (max-width: 768px) {
+  .page {
+    margin-top: 80px;
+  }
 }
 .page .page_content {
   /*<csstag tag="section">
@@ -1040,14 +1249,11 @@ body.s_page .page {
     transition: none;
   }
 }
-body.s_project .projectPage {
-  width: 61.803398%;
-}
 @media (max-width: 768px) {
   body.s_project .projectPage {
     width: 100%;
     left: 0px;
-    height: 60vh;
+    height: 100%;
   }
 }
 body.s_fullscreen .projectPage {
@@ -1062,13 +1268,17 @@ body.s_fullscreen .projectPage {
   position: absolute;
   top: 0px;
   left: 0px;
-  padding: 10px;
-  font-size: 14px;
+  padding: 14px 20px;
+  font-size: 16px;
   color: #eee;
   z-index: 200;
 }
 body.s_fullscreen .projectPage .projectPage_title {
   display: block;
+}
+.projectPage .projectPage_title .imageIndex {
+  padding-left: 10px;
+  font-size: 10px;
 }
 .projectPage .projectPage_img {
   -ctag-tag: "image";
@@ -1083,8 +1293,6 @@ body.s_fullscreen .projectPage .projectPage_title {
   transform: translateY(-50%) translateX(-50%);
   transition: all .3s;
   z-index: 100;
-  cursor: pointer;
-  cursor: hand;
 }
 body.s_project .projectPage .projectPage_img {
   display: block;
@@ -1321,63 +1529,4 @@ body.s_fullscreen .projectPage .projectPage_nextProject {
 }
 body.s_fullscreen .projectPage .projectPage_prevProject {
   display: block;
-}
-/** initial setup **/
-.nano {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.nano > .nano-content {
-  position: absolute;
-  overflow: scroll;
-  overflow-x: hidden;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
-.nano > .nano-content:focus {
-  outline: thin dotted;
-}
-.nano > .nano-content::-webkit-scrollbar {
-  display: none;
-}
-.has-scrollbar > .nano-content::-webkit-scrollbar {
-  display: block;
-}
-.nano > .nano-pane {
-  background: rgba(0, 0, 0, 0.25);
-  position: absolute;
-  width: 10px;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  visibility: hidden\9;
-  /* Target only IE7 and IE8 with this hack */
-  opacity: .01;
-  -webkit-transition: .2s;
-  -moz-transition: .2s;
-  -o-transition: .2s;
-  transition: .2s;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-}
-.nano > .nano-pane > .nano-slider {
-  background: #444;
-  background: rgba(0, 0, 0, 0.5);
-  position: relative;
-  margin: 0 1px;
-  -moz-border-radius: 3px;
-  -webkit-border-radius: 3px;
-  border-radius: 3px;
-}
-.nano:hover > .nano-pane,
-.nano-pane.active,
-.nano-pane.flashed {
-  visibility: visible\9;
-  /* Target only IE7 and IE8 with this hack */
-  opacity: 0.99;
 }

@@ -19,7 +19,7 @@
     border-right: 0px solid #eee;
     .zIndex( "project" );
     height: 100%; width: 0px;
-    left: @phi_inv;
+    left: @phi-inv;
     transition: width .3s, left .3s, height .3s, background-color .3s;
 
     @media ( max-width: @screen-sm-min ) {
@@ -29,11 +29,11 @@
     }
 
     body.s_project & {
-        width: @phi;
+        // width: 100%;
 
         @media ( max-width: @screen-sm-min ) {
             width: 100%;
-            left: 0px; height: 60vh;
+            left: 0px; height: 100%;
         }
     }
 
@@ -51,8 +51,8 @@
 
         position: absolute;
         top: 0px; left: 0px;
-        padding: 10px;
-        font-size: 14px;
+        padding: 14px 20px;
+        font-size: 16px;
         color: #eee;
         // display: none;
         .zIndex( "page_title" );
@@ -61,6 +61,11 @@
         body.s_fullscreen & {
             display: block;
         }
+
+        & .imageIndex {
+            padding-left: 10px;
+            font-size: 10px;
+        }
     }
 
     .projectPage_img {
@@ -68,7 +73,6 @@
         -ctag-example: "<img ... src='../content/designs/oh/images/home.png' />";
 
         box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
         display: block;
         left: 50%;
         max-height: ~"calc(100% - 120px)";
@@ -79,7 +83,6 @@
         // display: none;
         transition: all .3s;
         .zIndex( "page_img" );
-        .hand();
 
         body.s_project & {
             display: block;

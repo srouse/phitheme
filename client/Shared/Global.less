@@ -8,12 +8,18 @@ html{
 
     width: 100%; height: 100%;
     padding: 0px; margin: 0px;
-    overflow: hidden;
+    // overflow: hidden;
 
+    /*
     @media ( max-width: @screen-sm-min ) {
-        overflow: visible;
-        height: auto;
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            overflow: visible;
+            height: auto;
+        }
     }
+    */
 
     body {
         -ctag-tag: "global";
@@ -26,8 +32,33 @@ html{
         overflow: hidden;
 
         @media ( max-width: @screen-sm-min ) {
-            overflow: visible;
-            height: auto;
+            &.s_project,
+            &.s_list,
+            &.s_page {
+                overflow: visible;
+                height: auto;
+            }
+        }
+
+        /**
+         * These values will not show up in content, but can be
+         * queried by JavaScript to know which breakpoint is active.
+         * Add or remove as many breakpoints as you like.
+         * https://www.lullabot.com/articles/importing-css-breakpoints-into-javascript
+         */
+        &:before {
+          content: "smartphone";
+          display: none; /* Prevent from displaying. */
+        }
+        @media (min-width: @screen-sm-min ) {
+          &:before {
+            content: "tablet";
+          }
+        }
+        @media (min-width: @screen-md-min ) {
+          &:before {
+            content: "desktop";
+          }
         }
     }
 

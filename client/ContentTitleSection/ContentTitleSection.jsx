@@ -51,6 +51,13 @@ var ContentTitleSection = React.createClass({
         });
     },
 
+    openSlideShow: function () {
+        RouteState.toggle(
+            {fullscreen:'fullscreen'},
+            {fullscreen:''}
+        );
+    },
+
     render: function() {
 
         var project = PhiModel.project;
@@ -117,7 +124,23 @@ var ContentTitleSection = React.createClass({
             pseudo_edit = "true";
         }
 
+        fullimage = '';
+        fullimage_title = '';
+        var total_images = false;
+        if ( project.images ) {
+            var image_index = 0;
+            total_images = project.images.length;
+
+            if ( RouteState.route.image ) {
+                image_index = RouteState.route.image-1;
+            }
+
+            fullimage = PhiModel.project.images[image_index].image_url;
+            fullimage_title = PhiModel.project.images[image_index].title;
+        }
+
         return  <div className="contentTitleSection">
+
                     <div className="contentTitleSection_titleSection">
                         <div className="titleSection_titles">
                             <div className="titleSection_title">
@@ -127,16 +150,31 @@ var ContentTitleSection = React.createClass({
                                 { project.medium }
                             </div>
                         </div>
-                        <div className="titleSection_next"
+                        { /*<div className="titleSection_next"
                             onClick={ this.nextProject }></div>
                         <div className="titleSection_prev"
-                            onClick={ this.prevProject }></div>
+                            onClick={ this.prevProject }></div> */ }
+                        <div className="titleSection_totalImgs"
+                            onClick={ this.openSlideShow }>
+                            <div className="titleSection_totalImgs__num">
+                                { total_images }
+                            </div>
+                            <div className="titleSection_totalImgs__images">
+                                images
+                            </div>
+                        </div>
                     </div>
+                    <div className="titleSection_mainImage" style={{
+                            'background-image':'url(\'' + fullimage + '\')'}}
+                            onClick={ this.openSlideShow }></div>
+
                     <div className="contentTitleSection_summarySection"
                         contentEditable={ pseudo_edit }
                         dangerouslySetInnerHTML={{__html:project.description}}>
                     </div>
                     { nav_links_dom }
+                    <div className="contentTitleSection_close"
+                        onClick={ this.closeProject }></div>
                 </div>;
     }
 

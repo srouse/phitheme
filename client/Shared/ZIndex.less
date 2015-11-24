@@ -5,20 +5,13 @@
 
 .zIndex( @loc ) when ( @loc = "identityNav" )
 {
-	z-index: 3000;
+	z-index: 4000;
 }
-	.zIndex( @loc ) when ( @loc = "titleSection_titles" )
-	{
-		z-index: 10;
-	}
-	.zIndex( @loc ) when ( @loc = "titleSection_button" )
-	{
-		z-index: 20;
-	}
+
 
 .zIndex( @loc ) when ( @loc = "contentTitleSection" )
 {
-	z-index: 500;
+	z-index: 2000;
 }
 
 .zIndex( @loc ) when ( @loc = "contentArea" )
@@ -34,11 +27,6 @@
 		z-index: 2500;
 	}
 
-	.zIndex( @loc ) when ( @loc = "examplesList" )
-	{
-		z-index: 1500;
-	}
-
 	.zIndex( @loc ) when ( @loc = "project" )
 	{
 		z-index: 2000;
@@ -52,7 +40,12 @@
 			z-index: 100;
 		}
 
+.zIndex( @loc ) when ( @loc = "examplesList" )
+{
+	z-index: 3000;
+}
+
 .zIndex( @loc ) when ( @loc = "phitheme_copyrightNav" )
 {
-	z-index: 4000;
+	z-index: 5000;
 }

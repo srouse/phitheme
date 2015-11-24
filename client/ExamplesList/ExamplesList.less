@@ -4,10 +4,15 @@
     -ctag-example: "...{ .examplesList_rowContainer }{ .examplesList_typeToggle }";
 
     .zIndex( "examplesList" );
+    background-color: #fff;
+    position: absolute;
+    left: @phi-inv; top: 0px;
+    width: @phi; height: 100%;
+    transition: width .5s, left .3s, top .2s;
 
     &.nano {
-        width: 100%;
-        padding-left: @phi_inv/2;
+        // width: 100%;
+        padding-left: @phi-inv/2;
 
         @media ( max-width: @screen-sm-min ) {
             height: auto;
@@ -44,14 +49,36 @@
         background-size: 5px 100%;
     }
 
+    body.s_project &,
+    body.s_fullscreen &,
+    body.s_page & {
+        border-right: 1px solid #eee;
+    }
+
     body.s_project & {
+        width: @phi-inv;
+        left: 0px; top: @phi-inv;
+        height: @phi;
         @media ( max-width: @screen-sm-min ) {
     		display: none;
     	}
     }
 
+    body.s_fullscreen &,
     body.s_page & {
         display: none;
+    }
+
+    @media ( max-width: @screen-sm-min ) {
+        left: 0px; width: 100%;
+        position: relative;
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            margin-top: 80px;
+        }
+
     }
 
     .examplesList_spacer {
@@ -87,7 +114,9 @@
         -ctag-example: "<div class='nano-content'><div ...>{ .examplesList_header }{ .examplesList_row }{ .examplesList_row }{ .examplesList_row }</div></div>";
 
         width: @phi;
-        margin-left: @phi_inv/2;
+        margin-left: @phi-inv/2;
+
+
 
         @media ( max-width: @screen-sm-min ) {
             width: 90%;
@@ -105,12 +134,20 @@
 
             float: left;
             width: 100%;//@phi;
-            //margin-left: @phi_inv/2;
+            //margin-left: @phi-inv/2;
             font-size: 26px;
             padding-bottom: 28px;
             margin-bottom: 0px;
             color: #777;
             border-bottom: 7px solid @cs_purple;
+            transition: height .3s;
+
+            body.s_project & {
+                height: 0px;
+                border-bottom: 0px;
+                padding: 0px; margin: 0px;
+                overflow: hidden;
+            }
         }
 
         .examplesList_row {
@@ -127,6 +164,10 @@
             position: relative;
             transition: width .3s;
             .hand();
+
+            body.s_project & {
+                padding: 20px 0px;
+            }
 
             body.s_thumbs & {
                 .calc( width , 33.3333% , -(40px/3) );
@@ -260,6 +301,10 @@
 
                     color: #777;
 
+                    body.s_project & {
+                        display: none;
+                    }
+
                     body.s_thumbs & {
                         display: none;
                     }
@@ -282,8 +327,8 @@
 
                 float: right; clear: right;
                 box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .2 );
-                width: @phi_inv;
-            	padding-bottom: @phi_inv;// @phinv-phi; /* 16:9 */
+                width: @phi-inv;
+            	padding-bottom: @phi-inv;// @phinv-phi; /* 16:9 */
             	position: relative;
 
                 body.s_thumbs & {
@@ -292,6 +337,8 @@
                     width: 100%;
                     float: left;
                 }
+
+
 
                .examplesList_rowImageChild {
                    -ctag-tag: "image";

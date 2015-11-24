@@ -166,6 +166,13 @@ var PhiModelSingleton = function () {
             }
 
             return flat_list[0];
+        },
+
+        getBreakpoint : function () {
+            return window.getComputedStyle(
+                        document.querySelector('body'), ':before')
+                        .getPropertyValue('content')
+                        .replace(/\"/g, '');
         }
     };
 

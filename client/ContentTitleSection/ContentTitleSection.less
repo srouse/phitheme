@@ -7,33 +7,52 @@
             { .contentTitleSection_navLinks }
         </div>
     </csstag>*/
-    width: @phi_inv; height:@phi;
+
+    width: @phi; height: auto;
     position: absolute;
-    left: 0px; bottom: 0px;
-    border-right: 1px solid #eee;
+    left: @phi-inv; top: 0px;
+    // border-left: 1px solid #eee;
+    background-color: #fff;
+    padding-top: 20px;
+    display: none;
+
     .zIndex( "contentTitleSection" );
 
     @media ( max-width: @screen-sm-min ) {
-        width: 100%; height: 300px;
+        width: 100%;
+        //height: 300px;
         position: relative;
+        left: 0px;
         display: none;
     }
 
     body.s_project & {
+        display: block;
+
         @media ( max-width: @screen-sm-min ) {
     		display: block;
+            margin-top: 80px;
     	}
     }
 
+    body.s_fullscreen & {
+        display: none;
+    }
+
     .contentTitleSection_titleSection {
-        -ctag-tag: "section,header";
         -ctag-example: "...{ .titleSection_titles }{ .titleSection_next }{ .titleSection_prev }";
 
-        width: 100%; height: 80px;
+        width: @phi; margin-left: @phi-inv/2;
+        height: 80px;
         position: relative;
+        margin-top: 40px; margin-bottom: 20px;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 90%;
+            margin-left: 5%;
+        }
 
         .titleSection_button {
-            -ctag-tag: "button";
             -ctag-example: "...";
 
             width: 60px; height: 100%;
@@ -48,7 +67,6 @@
         }
 
         .titleSection_close {
-            -ctag-tag: "button";
             -ctag-example: "...";
 
             &:extend(
@@ -73,7 +91,6 @@
             background-image: url("../assets/prev_icon.png");
         }
         .titleSection_next {
-            -ctag-tag: "button";
             -ctag-example: "...";
 
             &:extend(
@@ -87,44 +104,84 @@
         }
 
         .titleSection_titles {
-            -ctag-tag: "section";
             -ctag-example: "...{ .titleSection_title }{ .titleSection_subTitle }";
 
             width: 100%; height: 100%;
             position: absolute;
-            .zIndex( "titleSection_titles" );
+
             left: 0px; top: 0px;
             text-align: left;
-            padding: 18px 20px;
+            // padding: 18px 20px;
             color: #777;
 
             .titleSection_title {
-                -ctag-tag: "title";
                 -ctag-example: "...Project Title";
 
                 float:left; clear: left;
-                font-size: 20px; margin-bottom: 4px;
+                font-size: 28px; margin-bottom: 4px;
             }
             .titleSection_subTitle {
-                -ctag-tag: "title";
                 -ctag-example: "...Project Sub Title";
 
                 float: left; clear: left;
                 font-size: 12px;
             }
         }
+
+        .titleSection_totalImgs {
+            width: 60px; height: 60px;
+            border: 1px solid #eee;
+            position: relative;
+            text-align: center;
+            float: right;
+            .hand();
+            &:hover {
+                background-color: #eee;
+            }
+
+            &__num {
+                font-size: 24px;
+                width: 100%;
+                color: #999;
+                position: absolute;
+                top: 8px;
+            }
+            &__images {
+                font-size: 12px;
+                width: 100%;
+                color: #aaa;
+                position: absolute;
+                bottom: 6px;
+            }
+        }
+    }
+
+    .titleSection_mainImage {
+        width: 100%; height: @vh-phi-inv;
+        background-size : 100%;
+        background-position: center;
+        margin-bottom : 20px;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        .hand();
+        transition: background-size .3s;
+
+        &:hover {
+            background-size : 110%;
+        }
     }
 
     .contentTitleSection_summarySection {
-        -ctag-tag: "title";
         -ctag-example: "...{ .contentTitleSection .contentTitleSection_summarySection p }";
 
-        width: 100%;
-        .calc( height , 100% , -( 80px + 70px ) );
-        padding: 0px 20px;
-        overflow: auto;
-        font-size: 14px; color: #777;
+        width: @phi; margin-left: @phi-inv/2;
+        font-size: 16px; color: #777;
         line-height: 18px;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 90%;
+            margin-left: 5%;
+        }
 
         > p {
             -ctag-tag: "paragraph";
@@ -136,16 +193,33 @@
         }
     }
 
+    .contentTitleSection_close {
+        position: absolute;
+        width: 60px; height: 60px;
+        top: 0px; right: 0px;
+        background-image: url("../assets/close_icon.png");
+        .hand();
+
+        &:hover {
+            background-color: rgba( 30,30,30,.2);
+            background-image: url("../assets/close_icon_white.png");
+        }
+    }
+
     .contentTitleSection_navLinks {
         /*<csstag tag="navigation">
             <div ...>
                 { .contentTitleSection_navLinkContainer }
             </div>
         </csstag>*/
-        width: 100%; height: 60px;
-        position: absolute;
-        bottom: 0px; left: 0px;
-        padding-right: 10px;
+        width: @phi; margin-left: @phi-inv/2;
+        height: 60px; margin-top: 20px;
+        position: relative;
+
+        @media ( max-width: @screen-sm-min ) {
+            width: 90%;
+            margin-left: 5%;
+        }
 
         .contentTitleSection_navLinkContainer {
             /*<csstag tag="section">
@@ -155,7 +229,6 @@
             </csstag>*/
             float: left;
             width: 100%;
-            padding-left: 10px;
 
             .contentTitleSection_navLinkButton {
                 /*<csstag tag="button">

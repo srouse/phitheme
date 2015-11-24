@@ -25,11 +25,11 @@ module.exports = function(grunt) {
         files: {
             'dist/phitheme.less':
             [
+                'node_modules/nanoscroller/bin/css/nanoscroller.css',
                 'client/Shared/html.less',//fonts there
                 'client/Shared/**/*.less',
                 'client/**/Shared/**/*.less',//process shared less first
-                'client/**/*.less',
-                'node_modules/nanoscroller/bin/css/nanoscroller.css'
+                'client/**/*.less'                
             ]
         }
     }
