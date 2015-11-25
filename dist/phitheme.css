@@ -350,7 +350,7 @@ body.s_fullscreen .contentTitleSection {
   margin-left: 19.098301%;
   font-size: 16px;
   color: #777;
-  line-height: 18px;
+  line-height: 24px;
 }
 @media (max-width: 768px) {
   .contentTitleSection .contentTitleSection_summarySection {
@@ -475,6 +475,7 @@ body.s_project .examplesList,
 body.s_fullscreen .examplesList,
 body.s_page .examplesList {
   border-right: 1px solid #eee;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
 }
 body.s_project .examplesList {
   width: 38.196602%;
@@ -496,6 +497,7 @@ body.s_page .examplesList {
     left: 0px;
     width: 100%;
     position: relative;
+    font-size: 14px;
   }
   body.s_project .examplesList,
   body.s_list .examplesList,

@@ -491,7 +491,7 @@ Mixin's
 
         width: @phi; margin-left: @phi-inv/2;
         font-size: 16px; color: #777;
-        line-height: 18px;
+        line-height: 24px;
 
         @media ( max-width: @screen-sm-min ) {
             width: 90%;
@@ -627,6 +627,7 @@ Mixin's
     body.s_fullscreen &,
     body.s_page & {
         border-right: 1px solid #eee;
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
     }
 
     body.s_project & {
@@ -646,6 +647,7 @@ Mixin's
     @media ( max-width: @screen-sm-min ) {
         left: 0px; width: 100%;
         position: relative;
+        font-size: 14px;
 
         body.s_project &,
         body.s_list &,
