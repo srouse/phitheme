@@ -1,6 +1,5 @@
 
-.examplesList {
-    -ctag-tag: "section,list";
+.examplesListOFF {
     -ctag-example: "...{ .examplesList_rowContainer }{ .examplesList_typeToggle }";
 
     .zIndex( "examplesList" );
@@ -9,6 +8,29 @@
     left: @phi-inv; top: 0px;
     width: @phi; height: 100%;
     transition: width .5s, left .3s, top .2s;
+
+    body.s_project &,
+    body.s_fullscreen &,
+    body.s_page & {
+        border-right: 1px solid #eee;
+        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+        width: @phi-inv;
+        left: 0px; top: @phi-inv;
+        height: @phi;
+    }
+
+    @media ( max-width: @screen-sm-min ) {
+        left: 0px; width: 100%;
+        position: relative;
+        font-size: 14px;
+
+        body.s_project &,
+        body.s_list &,
+        body.s_page & {
+            margin-top: 80px;
+        }
+    }
+
 
     &.nano {
         // width: 100%;
@@ -49,39 +71,7 @@
         background-size: 5px 100%;
     }
 
-    body.s_project &,
-    body.s_fullscreen &,
-    body.s_page & {
-        border-right: 1px solid #eee;
-        box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
-    }
 
-    body.s_project & {
-        width: @phi-inv;
-        left: 0px; top: @phi-inv;
-        height: @phi;
-        @media ( max-width: @screen-sm-min ) {
-    		display: none;
-    	}
-    }
-
-    body.s_fullscreen &,
-    body.s_page & {
-        display: none;
-    }
-
-    @media ( max-width: @screen-sm-min ) {
-        left: 0px; width: 100%;
-        position: relative;
-        font-size: 14px;
-
-        body.s_project &,
-        body.s_list &,
-        body.s_page & {
-            margin-top: 80px;
-        }
-
-    }
 
     .examplesList_spacer {
         -ctag-tag: "shim";
