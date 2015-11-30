@@ -1,0 +1,504 @@
+{
+	"variables":{
+		"phi":{
+			"base":"phi",
+			"scheme":"phi-values",
+			"values":[
+				"61.803%","_@_phi / 2","100% - _@_phi","( 100% - _@_phi ) / 2",
+				"61.803vh","_@_phi-vh / 2","100vh - _@_phi-vh","( 100vh - _@_phi-vh ) / 2",
+				"61.803vw","_@_phi-vw / 2","100vw - _@_phi-vw","( 100vw - _@_phi-vw ) / 2"
+			],
+			"atoms":{
+				"phi-width":{
+					"group":"sizing",
+					"example":"<div ... style='height: 100px; background-color:#fff;'></div>",
+					"selector":".a-width-@var_name",
+					"declaration_value":"width: _@_@var_name;"
+				},
+				"phi-height":{
+					"group":"sizing",
+					"example":"<div ... style='width: 100px; background-color:#fff;'></div>",
+					"selector":".a-height-@var_name",
+					"declaration_value":"height: _@_@var_name;"
+				},
+				"phi-left":{
+					"group":"positioning",
+					"example":"<div ... style='width: 100px; height: 100px; background-color:#fff;'></div>",
+					"selector":".a-left-@var_name",
+					"declaration_value":"left: _@_@var_name;"
+				},
+				"phi-top":{
+					"group":"positioning",
+					"example":"<div ... style='width: 100px; height: 100px; background-color:#fff;'></div>",
+					"selector":".a-top-@var_name",
+					"declaration_value":"top: _@_@var_name;"
+				},
+				"phi-bottom":{
+					"group":"positioning",
+					"example":"<div ... style='width: 100px; height: 100px; background-color:#fff;'></div>",
+					"selector":".a-bottom-@var_name",
+					"declaration_value":"bottom: _@_@var_name;"
+				},
+				"phi-right":{
+					"group":"positioning",
+					"example":"<div ... style='width: 100px; height: 100px; background-color:#fff;'></div>",
+					"selector":".a-right-@var_name",
+					"declaration_value":"right: _@_@var_name;"
+				}
+			}
+		},
+
+		"binary-values":{
+			"base":"binary",
+			"scheme":"binary-values",
+			"values":[
+				"0","100%"
+			],
+			"atoms":{
+				"binary-width":{
+					"group":"sizing",
+					"example":"<div ... style='height: 100px; background-color:#fff;'></div>",
+					"selector":".a-width@var_name_no_base",
+					"declaration_value":"width: _@_@var_name;"
+				},
+				"binary-height":{
+					"group":"sizing",
+					"example":"<div ... style='width: 100px; background-color:#fff;'></div>",
+					"selector":".a-height@var_name_no_base",
+					"declaration_value":"height: _@_@var_name;"
+				},
+				"binary-padding":{
+					"group":"spacing",
+					"example":"<div ... style='width: 100px; background-color:#fff;'>Text</div>",
+					"selector":".a-padding@var_name_no_base",
+					"declaration_value":"padding: _@_@var_name;"
+				},
+				"binary-margin":{
+					"group":"spacing",
+					"example":"<div ... style='width: 100px; background-color:#fff;'>Text</div>",
+					"selector":".a-margin@var_name_no_base",
+					"declaration_value":"margin: _@_@var_name;"
+				}
+			}
+		},
+
+		"example-blue":{
+			"base":"example-blue",
+			"scheme":"color-values",
+			"values":[
+				"#003F87",
+				"#81AFE3","#3F7BBF","#004CA3",
+				"#00346F","#00244E","#001A39"
+			],
+			"atoms":{
+				"background-example-blue":{
+					"group":"colors",
+					"example":"<div ... style='height: 100px; width: 100px;'></div>",
+					"selector":".a-background-@var_name",
+					"declaration_value":"background-color : _@_@var_name;"
+				},
+				"font-color-example-blue":{
+					"group":"colors",
+					"example":"...Font Color",
+					"selector":".a-font-color-@var_name",
+					"declaration_value":"color : _@_@var_name;"
+				}
+			}
+		},
+
+		"greys":{
+			"base":"grey",
+			"scheme":"10-scale",
+			"values":[
+				"#808080",
+				"#000","#1A1A1A","#333",
+				"#4D4D4D","#666666","#808080",
+				"#999999","#B3B3B3","#CCCCCC",
+				"#E6E6E6","#fff"
+			],
+			"atoms":{
+				"background-grey":{
+					"group":"colors",
+					"example":"<div ... style='height: 100px; width: 100px;'></div>",
+					"selector":".a-background-@var_name",
+					"declaration_value":"background-color : _@_@var_name;"
+				},
+				"text-color-grey":{
+					"group":"colors",
+					"example":"...Text Color",
+					"selector":".a-text-color-@var_name",
+					"declaration_value":"color : _@_@var_name;"
+				}
+			}
+		},
+
+		"alpha":{
+			"base":"alpha",
+			"scheme":"10-scale",
+			"values":[
+				".5",
+				"0",".1",".2",
+				".3",".4",".5",
+				".6",".7",".8",
+				".9","1"
+			],
+			"atoms":{
+				"opacity":{
+					"group":"colors",
+					"example":"<div ... style='height: 100px; width: 100px; background-color: #fff'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"opacity : _@_@var_name;"
+				}
+			}
+		},
+		"alpha-greys":{
+			"base":"alpha-grey",
+			"scheme":"10-scale",
+			"values":[
+				"rgba( 0,0,0,.5 )",
+				"rgba( 0,0,0,0 )","rgba( 0,0,0,.1 )","rgba( 0,0,0,.2 )",
+				"rgba( 0,0,0,.3 )","rgba( 0,0,0,.4 )","rgba( 0,0,0,.5 )",
+				"rgba( 0,0,0,.6 )","rgba( 0,0,0,.7 )","rgba( 0,0,0,.8 )",
+				"rgba( 0,0,0,.9 )","rgba( 0,0,0,1 )"
+			],
+			"atoms":{
+				"alpha-grey-background":{
+					"group":"colors",
+					"example":"<div ... style='height: 100px; width: 100px; background-color: #fff'></div>",
+					"selector":".a-background-@var_name",
+					"declaration_value":"background-color : _@_@var_name;"
+				},
+				"hover-alpha-grey-background":{
+					"group":"colors",
+					"example":"<div ... style='height: 100px; width: 100px; background-color: #fff'></div>",
+					"selector":".a-hover-background-@var_name",
+					"declaration_value":"&:hover { background-color : _@_@var_name; }"
+				}
+			}
+		},
+
+		"row-4":{
+			"base":"row",
+			"scheme":"4-with-quarter-scale",
+			"values":[
+				"38px","_@_row * .25","_@_row * .5","_@_row * .75",
+				"0",
+				"_@_row * 1","_@_row * 1.25","_@_row * 1.5","_@_row * 1.75",
+				"_@_row * 2","_@_row * 2.25","_@_row * 2.5","_@_row * 2.75",
+				"_@_row * 3","_@_row * 3.25","_@_row * 3.5","_@_row * 3.75",
+				"_@_row * 4","_@_row * 4.25","_@_row * 4.5","_@_row * 4.75"
+			],
+			"atoms":{
+				"height-row-4":{
+					"group":"sizing",
+					"example":"<div ... style='width: 100px;'></div>",
+					"selector":".a-height-@var_name",
+					"declaration_value":"height: _@_@var_name;"
+				},
+				"width-row-4":{
+					"group":"sizing",
+					"example":"<div ... style='width: 100px;'></div>",
+					"selector":".a-width-@var_name",
+					"declaration_value":"width: _@_@var_name;"
+				}
+			}
+		},
+
+
+		"padding":{
+			"base":"spacing",
+			"scheme":"spacing-values",
+			"values":[
+				"10px",
+				"_@_@base + 10px","_@_@base + 20px","_@_@base + 40px",
+				"_@_@base - 4px","_@_@base - 8px","_@_@base - 10px"
+			],
+			"atoms":{
+				"margin-values":{
+					"group":"spacing",
+					"example":"<div ... style='width: 100px; height: 100%; background-color:#fff'></div>",
+					"selector":".a-margin@var_name_no_base",
+					"declaration_iteration_values":[
+						"margin: _@_@var_name;",
+						"margin-top: _@_@var_name; margin-bottom: _@_@var_name;",
+						"margin-left: _@_@var_name; margin-right: _@_@var_name;",
+						"margin-top: _@_@var_name;",
+						"margin-bottom: _@_@var_name;",
+						"margin-left: _@_@var_name;",
+						"margin-right: _@_@var_name;"
+					]
+				},
+				"padding-values":{
+					"group":"spacing",
+					"example":"<div ... style='width: 100px; height: 100%; background-color:#fff'></div>",
+					"selector":".a-padding@var_name_no_base",
+					"declaration_iteration_values":[
+						"padding: _@_@var_name;",
+						"padding-top: _@_@var_name; padding-bottom: _@_@var_name;",
+						"padding-left: _@_@var_name; padding-right: _@_@var_name;",
+						"padding-top: _@_@var_name;",
+						"padding-bottom: _@_@var_name;",
+						"padding-left: _@_@var_name;",
+						"padding-right: _@_@var_name;"
+					]
+				}
+			}
+		},
+
+		"margins":{
+			"base":"spacing",
+			"scheme":"row-spacing-values",
+			"values":[
+				"_@_row","_@_row-quarter","_@_row-half","_@_row-three-quarters",
+				"_@_row-0",
+				"_@_row-1","_@_row-1-quarter","_@_row-1-half","_@_row-1-three-quarters",
+				"_@_row-2","_@_row-2-quarter","_@_row-2-half","_@_row-2-three-quarters",
+				"_@_row-3","_@_row-3-quarter","_@_row-3-half","_@_row-3-three-quarters",
+				"_@_row-4","_@_row-4-quarter","_@_row-4-half","_@_row-4-three-quarters"
+			],
+			"atoms":{
+				"margin-rows":{
+					"group":"spacing",
+					"example":"<div ... style='width: 100px; height: 100%; background-color:#fff'></div>",
+					"selector":".a-margin@var_name_no_base",
+					"declaration_iteration_values":[
+						"margin: _@_@var_name;",
+						"margin-top: _@_@var_name; margin-bottom: _@_@var_name;",
+						"margin-left: _@_@var_name; margin-right: _@_@var_name;",
+						"margin-top: _@_@var_name;",
+						"margin-bottom: _@_@var_name;",
+						"margin-left: _@_@var_name;",
+						"margin-right: _@_@var_name;"
+					]
+				},
+				"padding-rows":{
+					"group":"spacing",
+					"example":"<div ... style='width: 100px; height: 100%; background-color:#fff'></div>",
+					"selector":".a-padding@var_name_no_base",
+					"declaration_iteration_values":[
+						"padding: _@_@var_name;",
+						"padding-top: _@_@var_name; padding-bottom: _@_@var_name;",
+						"padding-left: _@_@var_name; padding-right: _@_@var_name;",
+						"padding-top: _@_@var_name;",
+						"padding-bottom: _@_@var_name;",
+						"padding-left: _@_@var_name;",
+						"padding-right: _@_@var_name;"
+					]
+				}
+			}
+		},
+
+		"transitions":{
+			"base":"transition",
+			"scheme":"transition-core-values",
+			"values":[
+				"all .3s","none","width .3s","height .3s","left .3s","right .3s","top .3s","bottom .3s"
+			],
+			"atoms":{
+				"transitions":{
+					"group":"animations",
+					"example":"<div ... style='width: 100px; height: 100%; background-color:#fff'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"transition: _@_@var_name;"
+				}
+			}
+		},
+
+
+        "display-values":{
+			"base":"display",
+			"scheme":"display-values",
+			"values":[
+				"none","block","inline","flex"
+			],
+			"atoms":{
+				"display":{
+					"group":"misc",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"display: _@_@var_name;"
+				}
+			}
+		},
+		"floats":{
+			"base":"float",
+			"scheme":"float-values",
+			"values":[
+				"left","none","right"
+			],
+			"atoms":{
+				"float-values":{
+					"group":"position",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"float: _@_@var_name;"
+				}
+			}
+		},
+		"clears":{
+			"base":"clear",
+			"scheme":"clear-values",
+			"values":[
+				"left","both","right"
+			],
+			"atoms":{
+				"clears":{
+					"group":"position",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"clear: _@_@var_name;"
+				}
+			}
+		},
+		"float-clears":{
+			"base":"float-clear",
+			"scheme":"clear-float-values",
+			"values":[
+				"left","right"
+			],
+			"atoms":{
+				"float-clears":{
+					"group":"position",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"clear: _@_@var_name; float: _@_@var_name"
+				}
+			}
+		},
+		"position-values":{
+			"base":"position",
+			"scheme":"position-values",
+			"values":[
+				"absolute","relative","fixed","static"
+			],
+			"atoms":{
+				"position-values":{
+					"group":"positioning",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"position : _@_@var_name;"
+				}
+			}
+		},
+		"text-size-values":{
+			"base":"text-size",
+			"scheme":"size-values",
+			"values":[
+				"14px",
+				"_@_@base + 2","_@_@base + 5","_@_@base + 11",
+				"_@_@base - 2","_@_@base - 4","_@_@base - 4"
+			],
+			"atoms":{
+				"font-sizes":{
+					"group":"typography",
+					"example":"...Font Sizes",
+					"selector":".a-@var_name",
+					"declaration_value":"font-size: _@_@var_name; line-height: _@_@var_name * 1.5;"
+				}
+			}
+		},
+		"text-color-values":{
+			"base":"text-color",
+			"scheme":"color-values",
+			"values":[
+				"_@_grey-5",
+				"_@_grey-6","_@_grey-7","_@_grey-8",
+				"_@_grey-4","_@_grey-3","_@_grey-0"
+			],
+			"atoms":{
+				"text-color":{
+					"group":"typography",
+					"example":"...Font Colors",
+					"selector":".a-@var_name",
+					"declaration_value":"color: _@_@var_name;"
+				}
+			}
+		},
+		"text-align-values":{
+			"base":"text-align",
+			"scheme":"align-values",
+			"values":[
+				"left","center","right"
+			],
+			"atoms":{
+				"text-align":{
+					"group":"typography",
+					"example":"...Font Align",
+					"selector":".a-@var_name",
+					"declaration_value":"text-align : _@_@var_name;"
+				}
+			}
+		},
+		"overflow-values":{
+			"base":"overflow",
+			"scheme":"overflow-values",
+			"values":[
+				"visible","hidden","scroll","auto","initial","inherit"
+			],
+			"atoms":{
+				"overflow":{
+					"group":"misc",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'>Lots of text to trigger the overflow</div>",
+					"selector":".a-@var_name",
+					"declaration_value":"overflow : _@_@var_name;"
+				}
+			}
+		},
+
+		"cursor-values":{
+			"base":"cursor",
+			"scheme":"cursor-values",
+			"values":[
+				"hand","pointer","default"
+			],
+			"atoms":{
+				"cursor":{
+					"group":"interactive",
+					"example":"...Cursor",
+					"selector":".a-@var_name",
+					"declaration_value":"cursor : _@_@var_name;"
+				}
+			}
+		},
+
+        "breakpoint-values":{
+			"base":"breakpoint",
+			"scheme":"breakpoint-values",
+			"values":[
+				"768px","991px",
+                "992px","1199px",
+                "1200px","4000px"
+			]
+		},
+
+		"z-indexes":{
+			"base":"zindex",
+			"scheme":{"scheme":{"@base":[
+				"-homePage",
+				"-projectPage",
+				"-project",
+				"-contentArea","-contentArea-s-project",
+				"-identityNav",
+					"-page_title"
+			]}},
+			"values":[
+				"4000",
+				"2000",
+				"6000",
+				"1000","5000",
+				"4000",
+					"200"
+			],
+			"atoms":{
+				"z-index":{
+					"group":"positioning",
+					"example":"...z-layer",
+					"selector":".a-@var_name",
+					"declaration_value":"z-index : _@_@var_name;"
+				}
+			}
+		}
+
+
+	}
+}

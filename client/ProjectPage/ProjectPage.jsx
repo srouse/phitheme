@@ -8,15 +8,7 @@ var ProjectPage = React.createClass({
     		function ( route , prev_route ) {
                 me.forceUpdate();
     		},
-            "project_listeners"
-    	);
-
-        RouteState.addDiffListener(
-    		"image",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "project_listeners"
+            "contenttitle_listeners"
     	);
 
         RouteState.addDiffListener(
@@ -24,139 +16,120 @@ var ProjectPage = React.createClass({
     		function ( route , prev_route ) {
                 me.forceUpdate();
     		},
-            "project_listeners"
+            "contenttitle_listeners"
     	);
     },
 
     componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "project_listeners" );
+        RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
     },
 
-    closeProject: function ( e ) {
-        if ( RouteState.route.fullscreen == "fullscreen" ) {
-            RouteState.merge({fullscreen:''});
-        }else{
-            RouteState.merge({project:'',image:'',fullscreen:''});
-        }
-
-        this.stopPropagation( e );
+    closeProject: function () {
+        RouteState.merge({project:''})
     },
 
-    _getImageIndex: function () {
-        var image_index = 0;
-        if ( RouteState.route.image ) {
-            image_index = RouteState.route.image-1;
-        }
-        return image_index;
-    },
-
-    prevProject: function ( e ) {
+    prevProject: function () {
         var project = PhiModel.getPrevProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
-        this.stopPropagation( e );
     },
 
-    nextProject: function ( e ) {
+    nextProject: function () {
         var project = PhiModel.getNextProject( RouteState.route.project );
 
         RouteState.merge(
-            {project:project.slug}
+            {project:project.slug,image:""}
         );
-        this.stopPropagation( e );
     },
 
-    nextImage: function ( e ) {
-        var image_index = this._getImageIndex();
-
-        var new_img_index = 0;
-        if ( image_index < PhiModel.project.images.length-1 ) {
-            new_img_index = image_index+1;
-        }
-
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
-        this.stopPropagation( e );
+    gotoProject: function ( nav_link ) {
+        RouteState.merge({
+            project:nav_link.project,
+            list:nav_link.list
+        });
     },
 
-    prevImage: function ( e ) {
-        var image_index = this._getImageIndex();
-
-        var new_img_index = PhiModel.project.images.length-1;
-        if ( image_index > 0 ) {
-            new_img_index = image_index-1;
-        }
-
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
-        this.stopPropagation( e );
-    },
-
-    imageToFullscreen: function ( e ) {
+    openSlideShow: function () {
         RouteState.toggle(
-            {fullscreen:'fullscreen'},
-            {fullscreen:''}
+            {slideshow:'slideshow'},
+            {slideshow:''}
         );
-        this.stopPropagation( e );
-    },
-
-    changeImage: function ( index , e ) {
-        RouteState.merge(
-            {image:index+""}
-        );
-        this.stopPropagation( e );
-    },
-
-    stopPropagation: function ( e ) {
-        e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
-    },
-
-    getExternalLink: function ( link_name ) {
-        if ( PhiModel.project.external_links ) {
-            if (
-                PhiModel.project.external_links[ link_name ]
-            ) {
-                var do_show = false;
-                if ( PhiModel.project.external_links[ link_name ].private == true ) {
-                    if ( RouteState.route.private == "private" ) {
-                        do_show = true;
-                    }
-                }else{
-                    do_show = true;
-                }
-
-                var className = "projectPage_leftLink";
-                if ( link_name == "link_right" )
-                    className = "projectPage_rightLink"
-
-                if ( do_show ) {
-                    return <div className={ className }
-                                key={ className }>
-                                <a href={ PhiModel.project.external_links[ link_name ].location }
-                                    onClick={ this.stopPropagation }
-                                     className="projectPage_link" target="_new_left">
-                                    { PhiModel.project.external_links[ link_name ].title }
-                                </a>
-                            </div>;
-                }
-            }
-        }
-        return "";
     },
 
     render: function() {
 
-        var fullimage = PhiModel.project.fullimage;
-        var fullimage_title = "";
-        var image_context = "";
+        var project = PhiModel.project;
+        var nav_links_dom = "";
+        if ( project.navigation_links ) {
+            var nav_link;
 
-        if ( PhiModel.project && PhiModel.project.images ) {
+            // filter for private
+            var filtered_children = [];
+            var total_links = project.navigation_links.length;
+            for ( var p=0; p<total_links; p++ ) {
+                nav_link = project.navigation_links[p];
+                if (
+                    nav_link.private === true &&
+                    RouteState.route.private != "private"
+                ) {
+                    continue;
+                }
+                filtered_children.push( nav_link );
+            }
+
+            // put links together with filtered list
+            var total_filtered_links = filtered_children.length;
+            var nav_links_children = [];
+            for ( var p=0; p<total_filtered_links; p++ ) {
+                nav_link = filtered_children[p];
+
+                if ( nav_link.internal && nav_link.internal == true ) {
+                    nav_links_children.push(
+                        <div className="projectPage_navLinkContainer"
+                            style={{width: 100/total_filtered_links + "%" }}
+                            key={ "nav_link_" + p }>
+                            <div className="projectPage_navLinkButton"
+                                onClick={
+                                    this.gotoProject.bind( this , nav_link )
+                                }>
+                                { nav_link.title }
+                            </div>
+                        </div>
+                    );
+                }else{
+                    nav_links_children.push(
+                        <div className="projectPage_navLinkContainer"
+                            style={{width: 100/total_filtered_links + "%" }}
+                            key={ "nav_link_" + p }>
+                            <a className="projectPage_navLinkButton"
+                                href={ nav_link.location } target="nav_link">
+                                { nav_link.title }
+                            </a>
+                        </div>
+                    );
+                }
+
+
+            }
+
+            nav_links_dom = <div className="projectPage_navLinks">
+                                { nav_links_children }
+                            </div>;
+        }
+
+        var pseudo_edit = "false";
+        if ( RouteState.route.edit == "edit" ) {
+            pseudo_edit = "true";
+        }
+
+        fullimage = '';
+        fullimage_title = '';
+        var total_images = false;
+        if ( project.images ) {
             var image_index = 0;
+            total_images = project.images.length;
 
             if ( RouteState.route.image ) {
                 image_index = RouteState.route.image-1;
@@ -164,29 +137,43 @@ var ProjectPage = React.createClass({
 
             fullimage = PhiModel.project.images[image_index].image_url;
             fullimage_title = PhiModel.project.images[image_index].title;
-
-            image_context = image_index+1 + " / " + PhiModel.project.images.length;
         }
 
-        var links = [];
-        links.push( this.getExternalLink( "link_left" ) );
-        links.push( this.getExternalLink( "link_right" ) );
+        return  <div className="c-projectPage">
 
-        return  <div className="projectPage">
-                    <div className="projectPage_title">
-                        { fullimage_title }
-                        <span className="imageIndex">{ image_context }</span>
+                    <div className="c-projectPage__titleSection">
+
+                        <div className="c-projectPage__titleSection__titles">
+                            <div className="c-projectPage__totalImgs"
+                                onClick={ this.openSlideShow }>
+                                <div className="c-projectPage__totalImgs__num">
+                                    { total_images }
+                                </div>
+                                <div className="c-projectPage__totalImgs__images">
+                                    images
+                                </div>
+                            </div>
+                            <div className="c-projectPage__title">
+                                { project.title }
+                            </div>
+                            <div className="c-projectPage__subTitle">
+                                { project.medium }
+                            </div>
+                        </div>
+
                     </div>
-                    <img src={ fullimage }
-                        className="projectPage_img" />
-                    { links }
-                    <div className="projectPage_close"
-                        onClick={ this.closeProject }></div>
+                    <div className="c-projectPage__previewImage" style={{
+                            'background-image':'url(\'' + fullimage + '\')'}}
+                            onClick={ this.openSlideShow }>
+                    </div>
+                    <div className="c-projectPage__body"
+                        contentEditable={ pseudo_edit }
+                        dangerouslySetInnerHTML={{__html:project.description}}>
+                    </div>
 
-                    <div className="projectPage_nextProject"
-                        onClick={ this.nextImage }></div>
-                    <div className="projectPage_prevProject"
-                        onClick={ this.prevImage }></div>
+                    { nav_links_dom }
+                    <div className="c-projectPage__close"
+                        onClick={ this.closeProject }></div>
                 </div>;
     }
 

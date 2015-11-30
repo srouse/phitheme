@@ -2,8 +2,8 @@
 .phiTheme {
     /*<csstag tag="app">
         <div ...>
-            { .contentTitleSection }
-            { .identityNav }
+            { .projectPage }
+            { .homePage }
             { .contentArea }
         </div>
     </csstag>*/
@@ -19,14 +19,14 @@
         }
 	}
 
-    .contentTitleSection {}
+    .projectPage {}
 
-    .identityNav {}
+    .homePage {}
 
     .contentArea {
         /*<csstag tag="section">
             <div ...>
-                { .examplesList }
+                { .listPage }
             </div>
         </csstag>*/
         width: @phi; height: 100%;
@@ -37,7 +37,7 @@
         background-color: #fff;
         display: none;
 
-        body.s_fullscreen &,
+
         body.s_page & {
             display: block;
         }
@@ -46,9 +46,7 @@
     		width: 100%;
             position: relative;
             .zIndex( "contentArea_screen-sm-min" );
-            body.s_fullscreen & {
-                height: 100vh;
-            }
+
     	}
     }
 
@@ -56,7 +54,7 @@
     .phitheme_copyrightNav {
         /*<csstag tag="container">
             <div ...>
-                { .identityNav_bottomNav }
+                { .homePage_bottomNav }
             </div>
         </div>*/
         position: absolute;
@@ -84,7 +82,7 @@
         	}
         }
 
-        body.s_fullscreen & {
+        body.s-slideshow & {
             display: none;
         }
 
@@ -93,12 +91,12 @@
             background-color: #fff;
         }
 
-        .identityNav_bottomNav {
+        .homePage_bottomNav {
             /*<csstag tag="link">
                 <div ...>
-                    { .identityNav_bottomNavLink }
-                    { .identityNav_bottomNavLink }
-                    { .identityNav_copyright }
+                    { .homePage_bottomNavLink }
+                    { .homePage_bottomNavLink }
+                    { .homePage_copyright }
                 </div>
             </csstag>*/
             position: absolute;
@@ -122,7 +120,7 @@
 
 
 
-            .identityNav_bottomNavLink {
+            .homePage_bottomNavLink {
                 /*<csstag tag="link">
                     <div ...>Contact</div>
                 </csstag>*/
@@ -139,7 +137,7 @@
                 }
             }
 
-            .identityNav_copyright {
+            .homePage_copyright {
                 /*<csstag tag="link">
                     <div ...>copyright 2015, Your Company...</div>
                 </csstag>*/

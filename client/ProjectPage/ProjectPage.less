@@ -1,329 +1,136 @@
 
-.projectPage {
-    /*<csstag tag="section">
-        <div ...>
-            { .projectPage_title }
-            { .projectPage_img }
+.c-projectPage {
+    /*-ctag-example: ...
+            { .projectPage_titleSection }
+            { .projectPage_summarySection }
+            { .projectPage_navLinks };
+    */
+    .a-width-0; .a-height-100;
+    .a-position-absolute;
+    .a-position-top-right;
+    .a-background-grey-10;
+    .a-overflow-y;
+    .a-transition-width;
+    .a-zindex-projectPage;
 
-            { .projectPage_imgNav }
-            { .projectPage_leftLink }
-            { .projectPage_rightLink }
+    .s-project-a-width-phi;
 
-            { .projectPage_nav }
-            { .projectPage_close }
-        </div>
-    </csstag>*/
-    position: fixed;
-    right: 0px; top: 0px;
-    background-color: rgba( 0 , 0 , 0 , .5 );
-    border-right: 0px solid #eee;
-    .zIndex( "project" );
-    height: 100%; width: 0px;
-    left: @phi-inv;
-    transition: width .3s, left .3s, height .3s, background-color .3s;
+    .breakpoint-sm-a-width-100;
+    .breakpoint-sm-a-position-relative;
 
-    @media ( max-width: @screen-sm-min ) {
-        position: relative;
-        height: 0px;
-        transition: none;
-    }
+    &__titleSection {
+        /* -ctag-example: "...
+            { .titleSection_titles }
+            { .titleSection_next }
+            { .titleSection_prev };*/
+        .a-width-phi;
+        .a-box-center-y;
+        .a-position-relative;
+        .a-margin-v-row-1-half;
+        .a-clear-fix;
 
-    body.s_project & {
-        // width: 100%;
+        .breakpoint-sm-a-width-100;
+        .breakpoint-sm-a-padding-h-large;
 
-        @media ( max-width: @screen-sm-min ) {
-            width: 100%;
-            left: 0px; height: 100%;
+        &__titles {
+            /* -ctag-example: "...
+                { .titleSection_title }
+                { .titleSection_subTitle }";*/
+            .a-width-100;
+            .a-float-clear-left;
+            .a-text-align-left;
+            .a-text-color;
         }
     }
 
-    body.s_fullscreen & {
-        // transition: none;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.7 );
-        left: 0px;
+    &__title {
+        /* -ctag-example: "...Project Title";*/
+        .a-float-clear-left;
+        .a-text-size-largest;
+        .a-text-color-darker;
+    }
+    &__subTitle {
+        /* -ctag-example: "...Project Sub Title";*/
+        .a-float-clear-left;
+        .a-text-size-small;
     }
 
-    .projectPage_title {
-        /*<csstag tag="title">
-            <div ...>title</div>
-        </csstag>*/
+    &__totalImgs {
+        .a-position-relative;
+        .a-text-align-center;
+        .a-float-clear-right;
+        .a-interactive-hover;
+        .a-height-row-1-half;
+        .a-width-row-1-half;
 
-        position: absolute;
-        top: 0px; left: 0px;
-        padding: 14px 20px;
-        font-size: 16px;
-        color: #eee;
-        // display: none;
-        .zIndex( "page_title" );
-        // background-color: rgba( 255,255,255,.7);
+        border: 1px solid #eee;
 
-        body.s_fullscreen & {
-            display: block;
+        &__num {
+            .a-text-size-largest;
+            .a-width-100;
+            .a-text-color-lighter;
+            .a-position-absolute;
+
+            top: 3px;
         }
+        &__images {
+            .a-text-size-small;
+            .a-width-100;
+            .a-text-color-lighter;
+            .a-position-absolute;
 
-        & .imageIndex {
-            padding-left: 10px;
-            font-size: 10px;
-        }
-    }
-
-    .projectPage_img {
-        -ctag-tag: "image";
-        -ctag-example: "<img ... src='../content/designs/oh/images/home.png' />";
-
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-        display: block;
-        left: 50%;
-        max-height: ~"calc(100% - 120px)";
-        max-width: ~"calc(100% - 100px)";
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%) translateX(-50%);
-        // display: none;
-        transition: all .3s;
-        .zIndex( "page_img" );
-
-        body.s_project & {
-            display: block;
-        }
-
-        body.s_fullscreen & {
-            max-height: ~"calc(100% - 80px)";
-            max-width: ~"calc(100% - 100px)";
+            bottom: 5px;
         }
     }
 
-    .projectPage_leftLink {
-        -ctag-tag: "link";
-        -ctag-example: "...";
 
-        height: 40px;
-        position: absolute;
-        left: 0px; bottom: 0px;
-        padding: 10px 20px;
-    }
+    &__previewImage {
+        //width: 100%; height: @vh-phi-inv;
+        .a-width-100; .a-height-phi-inv-vh;
+        .a-margin-bottom-row-half;
+        .a-interactive;
+        .a-transition-all;
 
-    .projectPage_rightLink {
-        -ctag-tag: "link";
-        -ctag-example: "...";
-
-        height: 40px;
-        position: absolute;
-        right: 0px; bottom: 0px;
-        padding: 10px 20px;
-    }
-
-    .projectPage_link {
-        -ctag-tag: "link";
-        -ctag-example: "...";
-
-        color: #fff;
-        font-size: 16px;
-        text-decoration: none;
-        @media ( max-width: @screen-sm-min ) {
-            font-size: 14px;
-        }
-    }
-
-    .projectPage_imgNav {
-        /*<csstag tag="navigation">
-            <div ...>
-                { .projectPage_imgNav_icons }
-            </div>
-        </csstag>*/
-        position: absolute;
-        bottom: 0px; right: 0px;
-        width: 100%; height: 40px;
-
-        .projectPage_imgNav_icons {
-            /*<csstag tag="button">
-                <div ... style="width: 124px;">
-                    { .projectPage_imgNav_prev }
-                    { .projectPage_imgNav_icon }
-                    { .projectPage_imgNav_icon }
-                    { .projectPage_imgNav_next }
-                </div>
-            </csstag>*/
-            height: 100%;
-            margin: 0px auto;
-            width: 150px;
-
-            .projectPage_imgNav_prev {
-                /*<csstag tag="button">
-                    <div ...></div>
-                </csstag>*/
-                width: 50px; height: 100%;
-                background-image: url("../assets/prev_icon_sm_white.png");
-                float: left;
-                .hand();
-                &:hover {
-                    background-color: rgba( 0,0,0,.2);
-                }
-            }
-
-            .projectPage_imgNav_text {
-                /*<csstag tag="label">
-                    <div ...>3 / 4</div>
-                </csstag>*/
-                color: #eee;
-                font-size: 14px;
-                padding-top: 11px;
-                width: 50px;
-                float: left;
-                text-align: center;
-            }
-
-            .projectPage_imgNav_next {
-                /*<csstag tag="button">
-                    <div ...></div>
-                </csstag>*/
-                width: 50px; height: 100%;
-                background-image: url("../assets/next_icon_sm_white.png");
-                float: left;
-                .hand();
-                &:hover {
-                    background-color: rgba( 0,0,0,.2);
-                }
-            }
-
-            .projectPage_imgNav_icon {
-                /*<csstag tag="button">
-                    <div ...>
-                        { .projectPage_imgNav_iconBG }
-                    </div>
-                </csstag>*/
-                width: 30px; height: 100%;
-                float: left;
-                .hand();
-                &:hover {
-                    opacity: 0.5;
-                }
-
-                .projectPage_imgNav_iconBG {
-                    /*<csstag tag="button">
-                        <div ...></div>
-                    </csstag>*/
-                    width: 12px; height: 12px;
-                    border-radius: 50%;
-                    background-color: #fff;
-                    margin: 9px;
-                }
-            }
-
-        }
-
-    }
-
-/*===================*/
-    .projectPage_nav {
-        /*<csstag tag="navigation">
-            <div ...>
-                { .projectPage_navPrev }
-                { .projectPage_navNext }
-            </div>
-        </csstag>*/
-        position: absolute;
-        bottom: 0px; left: 0px;
-        width: 100%; height: 60px;
-        display:none;
-
-        body.s_project & {
-            display: block;
-        }
-
-        body.s_fullscreen & {
-            display: none;
-        }
-
-        .projectPage_navBase {
-            /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
-            width: 50%; height: 100%;
-            // background-color: rgba( 30,30,30,.1);
-            .hand();
-            &:hover {
-                background-color: rgba( 0,0,0,.1);
-            }
-        }
-
-        .projectPage_navPrev {
-            /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
-            &:extend(
-                .projectPage
-                .projectPage_nav
-                .projectPage_navBase all
-            );
-            float: left;
-            background-image: url("../assets/prev_icon.png");
-        }
-        .projectPage_navNext {
-            /*<csstag tag="button">
-                <div ...></div>
-            </csstag>*/
-            &:extend(
-                .projectPage
-                .projectPage_nav
-                .projectPage_navBase all
-            );
-            float: right;
-            background-image: url("../assets/next_icon.png");
-        }
-    }
-
-    .projectPage_close {
-        /*<csstag tag="button">
-            <div ...></div>
-        </csstag>*/
-        position: absolute;
-        width: 60px; height: 60px;
-        top: 0px; right: 0px;
-        background-image: url("../assets/close_icon_white.png");
-        .hand();
-        display:none;
-
-        body.s_project & {
-            display: block;
-        }
-
+        background-size : 100%;
+        background-position: center;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
         &:hover {
-            background-color: rgba( 30,30,30,.2);
+            background-size : 110%;
         }
     }
 
-    .projectPage_nextProject {
-        /*<csstag tag="button">
-            <div ...></div>
-        </csstag>*/
-        position: absolute;
-        width: 60px; height: 60px;
-        left: 0px;
-        .calc( top , 50% , -25px );
-        .handover( rgba( 0,0,0,.2) );
-        background-image: url("../assets/prev_icon_white.png");
-        display: none;
+    &__body {
+        /* -ctag-example: "...<p>here is some text</p>";*/
+        .a-width-phi;
+        .a-box-center-y;
+        .a-text-size-large;
+        .a-text-color-darker;
 
-        body.s_fullscreen & {
-            display: block;
+        .breakpoint-sm-a-width-100;
+        .breakpoint-sm-a-padding-h-large;
+        .breakpoint-sm-a-text-size;
+
+        > p {
+            .a-padding-0;
+            .a-margin-0;
+            .a-margin-bottom-row-half;
         }
     }
-    .projectPage_prevProject {
-        /*<csstag tag="button">
-            <div ...></div>
-        </csstag>*/
-        position: absolute;
-        width: 50px; height: 60px;
-        right: 0px;
-        .calc( top , 50% , -25px );
-        .handover( rgba( 0,0,0,.2) );
-        background-image: url("../assets/next_icon_white.png");
-        display: none;
 
-        body.s_fullscreen & {
-            display: block;
+    &__close {
+        /* -ctag-example: ...; */
+        .a-position-absolute;
+        .a-position-top-right;
+        .a-height-row-1-half;
+        .a-width-row-1-half;
+        .a-hover-background-alpha-grey-3;
+        .a-interactive;
+
+        background-image: url("../assets/close_icon.png");
+        &:hover {
+            background-image: url("../assets/close_icon_white.png");
         }
     }
+
 }

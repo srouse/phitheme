@@ -2,9 +2,9 @@
 
 
 var PhiModel = PhiModelSingleton();
-var PhiTheme = function () {};
+var PhiThemeBootstrap = function () {};
 
-PhiTheme.run = function ( data_dom ) {
+PhiThemeBootstrap.run = function ( data_dom ) {
 
     $(window).ready(function () {
 
@@ -24,51 +24,51 @@ PhiTheme.run = function ( data_dom ) {
             styles[".page .page_content h1"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
-            styles[".examplesList .examplesList_rowContainer .examplesList_header"] = {
+            styles[".listPage .listPage_rowContainer .listPage_header"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
         }
         if ( PhiModel.style.text_highlight_color ) {
-            styles[".identityNav .identityNav_centerNav .identityNav_link:hover"] = {
+            styles[".homePage .homePage_centerNav .homePage_link:hover"] = {
                 "color":PhiModel.style.text_highlight_color
             };
         }
         if ( PhiModel.style.side_gradient ) {
-            styles[".examplesList.nano > .nano-pane > .nano-slider"] = {
+            styles[".listPage.nano > .nano-pane > .nano-slider"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
-            styles[".identityNav .identityNav_rightGradient"] = {
+            styles[".homePage .homePage_rightGradient"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
-            styles[".identityNav"] = {
+            styles[".homePage"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
         }
         if ( PhiModel.style.home_background_color ) {
-            styles[".identityNav"] = styles[".identityNav"] || {};
-            styles[".identityNav"]['background-color']
+            styles[".homePage"] = styles[".homePage"] || {};
+            styles[".homePage"]['background-color']
                 = PhiModel.style.home_background_color;
         }
         if ( PhiModel.style.home_main_nav_text_color ) {
-            styles[".identityNav .identityNav_centerNav .identityNav_link"] = {
+            styles[".homePage .homePage_centerNav .homePage_link"] = {
                 "color":PhiModel.style.home_main_nav_text_color
             };
         }
         if ( PhiModel.style.home_secondary_nav_text_color ) {
-            styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_bottomNavLink"] = {
+            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_bottomNavLink"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
-            styles[".phiTheme .phitheme_copyrightNav .identityNav_bottomNav .identityNav_copyright"] = {
+            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_copyright"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
         }
         if ( PhiModel.style.logo ) {
-            styles[".identityNav .identityNav_logo"] = {
+            styles[".homePage .homePage_logo"] = {
                 "background-image":"url('"+ PhiModel.style.logo + "')"
             };
         }
         if ( PhiModel.style.logo_mark ) {
-            styles[".identityNav .identityNav_logo_small"] = {
+            styles[".homePage .homePage_logo_small"] = {
                 "background-image":"url('"+ PhiModel.style.logo_mark + "')"
             };
         }
@@ -77,7 +77,7 @@ PhiTheme.run = function ( data_dom ) {
 
         React.render(
             React.createElement(
-                Home,
+                PhiTheme,
                 {
                     PhiModel:PhiModel
                 }

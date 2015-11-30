@@ -1,9 +1,7 @@
 
-var Home = React.createClass({
+var PhiTheme = React.createClass({
 
     refreshPhiModelState: function () {
-
-
 
         // mobile opens new projects/list half way down...
         if (
@@ -142,8 +140,8 @@ var Home = React.createClass({
                     style.color = PhiModel.style.text_highlight_color;
                 }
                 page_links.push(
-                    <div className="identityNav_bottomNavLink"
-                        key={ "identityNav_bottomNavLink_" + p }
+                    <div className="homePage_bottomNavLink"
+                        key={ "homePage_bottomNavLink_" + p }
                         style={ style }
                         onClick={ this.gotoPage.bind( this , page_str ) }>
                         { page.title }
@@ -154,20 +152,20 @@ var Home = React.createClass({
         }
 
         return  <div className="phiTheme">
-                    <IdentityNav />
+                    <HomePage />
+                    <SlideShow />
                     <div className="contentArea">
-                        <ProjectPage />
                         <Page />
                     </div>
 
-                    <ExamplesList />
-                    <ContentTitleSection />
+                    <ListPage />
+                    <ProjectPage />
 
                     { /*needed here for layering*/ }
                     <div className="phitheme_copyrightNav">
-                        <div className="identityNav_bottomNav">
+                        <div className="homePage_bottomNav">
                             { page_links }
-                            <div className="identityNav_copyright">
+                            <div className="homePage_copyright">
                                 { PhiModel.copyright }
                             </div>
                         </div>

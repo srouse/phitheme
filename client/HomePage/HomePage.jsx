@@ -1,5 +1,5 @@
 
-var IdentityNav = React.createClass({
+var HomePage = React.createClass({
 
 
     gotoTag: function ( tag ) {
@@ -64,7 +64,7 @@ var IdentityNav = React.createClass({
                     style.color = color_style;
                 }
                 project_links.push(
-                    <div className="identityNav_link"
+                    <div className="homePage_link"
                         style={ style } key={ product.title }
                         onClick={ this.gotoTag.bind( this , product.filters ) }>
                         { product.title }
@@ -74,17 +74,17 @@ var IdentityNav = React.createClass({
 
         }
 
-        return  <div className="identityNav">
-                    <div className="identityNav_gradOffset">
-                        <div className="identityNav_logo"
+        return  <div className="homePage">
+                    <div className="homePage_gradOffset">
+                        <div className="homePage_logo"
                             onClick={ this.gotoHome }></div>
-                        <div className="identityNav_logo_small"
+                        <div className="homePage_logo_small"
                             onClick={ this.gotoHome }></div>
-                        <div className="identityNav_centerNav">
+                        <div className="homePage_centerNav">
                             { project_links }
                         </div>
                     </div>
-                    <div className="identityNav_rightGradient"></div>
+                    <div className="homePage_rightGradient"></div>
                 </div>;
     }
 

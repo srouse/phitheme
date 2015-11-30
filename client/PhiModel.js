@@ -29,7 +29,7 @@ var PhiModelSingleton = function () {
                 title:"Design",
                 filters:['design']
             }
-        ],
+        ], 
         projects:[
             {
                 title:"QuantifiedProject",

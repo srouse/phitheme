@@ -1,0 +1,69 @@
+
+/* test_01_02.less */
+
+
+/*
+<div class="c-pageContent">
+    <div class="o-box">My Content</div>
+    <div class="o-box o-box--large">My Content</div>
+    <div class="o-box desktop-a-height-row-2">My Content</div>
+    <div class="o-box c-pageContent__o-box--highlighted">My Content</div>
+    <div class="c-pageContent__highlightedBox">My Content</div>
+</div>
+*/
+
+/* COMPONENTS */
+.c-pageContent {
+    &__o-box--highlighted {
+        .desktop-a-height-row-2;
+    }
+
+    &__highlightedBox {
+        .o-box;
+        .desktop-a-height-row-2;
+    }
+}
+
+
+/* OBJECTS */
+.o-box {
+    .a-outline;
+    .a-height-row-2;
+
+    .desktop-a-height-row;
+    .desktop-a-width-col-1-2;
+}
+
+.o-box--large {
+    .desktop-a-height-row-2;
+}
+
+
+/* CORE */
+.a-height-row { height:50px; }
+.a-height-row-2 { height: 100px; }
+.a-outline { border: 1px solid red; }
+.a-width-col-1-2 { width: 50%; }
+.a-width-col-1-3 { width: 33.33%; }
+.a-width-col-2-3 { width: 66.66%; }
+.a-width-col-full { width: 100%; }
+
+/* STATES */
+
+@tablet-width: 480px;
+.tablet-a-height-row{ @media ( min-width: @tablet-width ) { height: 50px; } }
+.tablet-a-height-row-2{ @media ( min-width: @tablet-width ) { height: 100px; } }
+.tablet-a-outline { border: 1px solid red; }
+.tablet-a-width-col-1-2 { @media ( min-width: @tablet-width ) { width: 50%; } }
+.tablet-a-width-col-1-3 { @media ( min-width: @tablet-width ) { width: 33.33%; } }
+.tablet-a-width-col-2-3 { @media ( min-width: @tablet-width ) { width: 66.66%; } }
+.tablet-a-width-col-full { @media ( min-width: @tablet-width ) { width: 100%; } }
+
+@desktop-width: 960px;
+.desktop-a-height-row{ @media ( min-width: @desktop-width ) { height: 50px; } }
+.desktop-a-height-row-2{ @media ( min-width: @desktop-width ) { height: 100px; } }
+.desktop-a-outline { border: 1px solid red; }
+.desktop-a-width-col-1-2 { @media ( min-width: @desktop-width ) { width: 50%; } }
+.desktop-a-width-col-1-3 { @media ( min-width: @desktop-width ) { width: 33.33%; } }
+.desktop-a-width-col-2-3 { @media ( min-width: @desktop-width ) { width: 66.66%; } }
+.desktop-a-width-col-full { @media ( min-width: @desktop-width ) { width: 100%; } }

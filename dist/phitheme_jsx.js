@@ -1,187 +1,97 @@
 
-var ContentTitleSection = React.createClass({displayName: "ContentTitleSection",
+var HomePage = React.createClass({displayName: "HomePage",
 
-    componentDidMount: function() {
-        var me = this;
-        RouteState.addDiffListener(
-    		"project",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "contenttitle_listeners"
-    	);
 
-        RouteState.addDiffListener(
-    		"private",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "contenttitle_listeners"
-    	);
+    gotoTag: function ( tag ) {
+        if ( PhiModel.getBreakpoint() == "smartphone" ) {
+            RouteState.merge(
+                {
+                    list:tag,
+                    project:'',
+                    image:'',
+                    page:''
+                },
+                true
+            );
+        }else{
+            RouteState.merge(
+                {
+                    list:tag
+                },
+                true
+            );
+        }
     },
 
-    componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
-    },
-
-    closeProject: function () {
-        RouteState.merge({project:''})
-    },
-
-    prevProject: function () {
-        var project = PhiModel.getPrevProject( RouteState.route.project );
-
+    gotoHome: function ( ) {
         RouteState.merge(
-            {project:project.slug,image:""}
-        );
-    },
-
-    nextProject: function () {
-        var project = PhiModel.getNextProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
-    },
-
-    gotoProject: function ( nav_link ) {
-        RouteState.merge({
-            project:nav_link.project,
-            list:nav_link.list
-        });
-    },
-
-    openSlideShow: function () {
-        RouteState.toggle(
-            {fullscreen:'fullscreen'},
-            {fullscreen:''}
+            {
+                list:'',
+                project:'',
+                image:'',
+                page:''
+            },
+            true
         );
     },
 
     render: function() {
 
-        var project = PhiModel.project;
-        var nav_links_dom = "";
-        if ( project.navigation_links ) {
-            var nav_link;
+        var project_links = [];
+        if ( PhiModel.product_nav ) {
+            var product,style;
 
-            // filter for private
-            var filtered_children = [];
-            var total_links = project.navigation_links.length;
-            for ( var p=0; p<total_links; p++ ) {
-                nav_link = project.navigation_links[p];
-                if (
-                    nav_link.private === true &&
-                    RouteState.route.private != "private"
-                ) {
-                    continue;
+            var list_arr;
+            if ( RouteState.route.list instanceof Array ) {
+                list_arr = RouteState.route.list;
+            }else{
+                list_arr = [RouteState.route.list];
+            }
+
+            for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
+                product = PhiModel.product_nav[p];
+                style = {"width":(100/PhiModel.product_nav.length) + "%"};
+                var filter;
+                var color_style = PhiModel.style.text_highlight_color;
+                for ( var f=0; f<product.filters.length; f++ ) {
+                    filter = product.filters[f];
+                    if ( list_arr.indexOf( filter ) == -1 ) {
+                        color_style = false;
+                        break;
+                    }
                 }
-                filtered_children.push( nav_link );
-            }
-
-            // put links together with filtered list
-            var total_filtered_links = filtered_children.length;
-            var nav_links_children = [];
-            for ( var p=0; p<total_filtered_links; p++ ) {
-                nav_link = filtered_children[p];
-
-                if ( nav_link.internal && nav_link.internal == true ) {
-                    nav_links_children.push(
-                        React.createElement("div", {className: "contentTitleSection_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
-                            React.createElement("div", {className: "contentTitleSection_navLinkButton", 
-                                onClick: 
-                                    this.gotoProject.bind( this , nav_link)
-                                }, 
-                                 nav_link.title
-                            )
-                        )
-                    );
-                }else{
-                    nav_links_children.push(
-                        React.createElement("div", {className: "contentTitleSection_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
-                            React.createElement("a", {className: "contentTitleSection_navLinkButton", 
-                                href:  nav_link.location, target: "nav_link"}, 
-                                 nav_link.title
-                            )
-                        )
-                    );
+                if ( color_style ) {
+                    style.color = color_style;
                 }
-
-
+                project_links.push(
+                    React.createElement("div", {className: "homePage_link", 
+                        style:  style, key:  product.title, 
+                        onClick:  this.gotoTag.bind( this , product.filters) }, 
+                         product.title
+                    )
+                );
             }
 
-            nav_links_dom = React.createElement("div", {className: "contentTitleSection_navLinks"}, 
-                                 nav_links_children 
-                            );
         }
 
-        var pseudo_edit = "false";
-        if ( RouteState.route.edit == "edit" ) {
-            pseudo_edit = "true";
-        }
-
-        fullimage = '';
-        fullimage_title = '';
-        var total_images = false;
-        if ( project.images ) {
-            var image_index = 0;
-            total_images = project.images.length;
-
-            if ( RouteState.route.image ) {
-                image_index = RouteState.route.image-1;
-            }
-
-            fullimage = PhiModel.project.images[image_index].image_url;
-            fullimage_title = PhiModel.project.images[image_index].title;
-        }
-
-        return  React.createElement("div", {className: "contentTitleSection"}, 
-
-                    React.createElement("div", {className: "contentTitleSection_titleSection"}, 
-                        React.createElement("div", {className: "titleSection_titles"}, 
-                            React.createElement("div", {className: "titleSection_title"}, 
-                                 project.title
-                            ), 
-                            React.createElement("div", {className: "titleSection_subTitle"}, 
-                                 project.medium
-                            )
-                        ), 
-                        /*<div className="titleSection_next"
-                            onClick={ this.nextProject }></div>
-                        <div className="titleSection_prev"
-                            onClick={ this.prevProject }></div> */ 
-                        React.createElement("div", {className: "titleSection_totalImgs", 
-                            onClick:  this.openSlideShow}, 
-                            React.createElement("div", {className: "titleSection_totalImgs__num"}, 
-                                 total_images 
-                            ), 
-                            React.createElement("div", {className: "titleSection_totalImgs__images"}, 
-                                "images"
-                            )
+        return  React.createElement("div", {className: "homePage"}, 
+                    React.createElement("div", {className: "homePage_gradOffset"}, 
+                        React.createElement("div", {className: "homePage_logo", 
+                            onClick:  this.gotoHome}), 
+                        React.createElement("div", {className: "homePage_logo_small", 
+                            onClick:  this.gotoHome}), 
+                        React.createElement("div", {className: "homePage_centerNav"}, 
+                             project_links 
                         )
                     ), 
-                    React.createElement("div", {className: "titleSection_mainImage", style: {
-                            'background-image':'url(\'' + fullimage + '\')'}, 
-                            onClick:  this.openSlideShow}), 
-
-                    React.createElement("div", {className: "contentTitleSection_summarySection", 
-                        contentEditable:  pseudo_edit, 
-                        dangerouslySetInnerHTML: {__html:project.description}}
-                    ), 
-                     nav_links_dom, 
-                    React.createElement("div", {className: "contentTitleSection_close", 
-                        onClick:  this.closeProject})
+                    React.createElement("div", {className: "homePage_rightGradient"})
                 );
     }
 
 });
 
 
-var ExamplesList = React.createClass({displayName: "ExamplesList",
+var ListPage = React.createClass({displayName: "ListPage",
 
     openProject: function ( slug ) {
         RouteState.merge(
@@ -241,8 +151,8 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
             tagTitle = list.title.capitalizeEachWord();
 
         rows.push(
-            React.createElement("div", {className: "examplesList_header", 
-                key:  "examplesList_header" }, 
+            React.createElement("div", {className: "listPage_header", 
+                key:  "listPage_header" }, 
                 tagTitle
             )
         );
@@ -253,27 +163,27 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 
             image = "";
             if ( item.image )
-                image = React.createElement("div", {className: "examplesList_rowImage"}, 
-                    React.createElement("div", {className: "examplesList_rowImageChild", 
+                image = React.createElement("div", {className: "listPage_rowImage"}, 
+                    React.createElement("div", {className: "listPage_rowImageChild", 
                         style: {
                             backgroundImage:
                                 "url('"+item.image+"')"
                         }})
                 )
 
-            var className = "examplesList_row index_" + i%3;
+            var className = "listPage_row index_" + i%3;
             rows.push(
                 React.createElement("div", {className:  className, 
                     onClick:  this.openProject.bind( this , item.slug), 
-                    key:  "examplesList_row_" + item.slug}, 
-                    React.createElement("div", {className: "examplesList_rowText"}, 
-                        React.createElement("div", {className: "examplesList_rowTitle"}, 
+                    key:  "listPage_row_" + item.slug}, 
+                    React.createElement("div", {className: "listPage_rowText"}, 
+                        React.createElement("div", {className: "listPage_rowTitle"}, 
                              item.title
                         ), 
-                        React.createElement("div", {className: "examplesList_rowSubTitle"}, 
+                        React.createElement("div", {className: "listPage_rowSubTitle"}, 
                              item.medium
                         ), 
-                        React.createElement("div", {className: "examplesList_rowDescription"}, 
+                        React.createElement("div", {className: "listPage_rowDescription"}, 
                              item.summary
                         )
                     ), 
@@ -283,8 +193,8 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
         }
 
         rows.push(
-            React.createElement("div", {className: "examplesList_spacer", 
-                key: "examplesList_spacer"}
+            React.createElement("div", {className: "listPage_spacer", 
+                key: "listPage_spacer"}
             )
         );
         return rows;
@@ -300,13 +210,13 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
             this.renderRows( project_list, rows );
         }
 
-        return  React.createElement("div", {className: "nano examplesList"}, 
+        return  React.createElement("div", {className: "nano listPage"}, 
                     React.createElement("div", {className: "nano-content"}, 
-                        React.createElement("div", {className: "examplesList_rowContainer"}, 
+                        React.createElement("div", {className: "listPage_rowContainer"}, 
                              rows 
                         )
                     )
-                    /*<div className="examplesList_typeToggle"
+                    /*<div className="listPage_typeToggle"
                         onClick={ this.toggleThumbs }></div>*/ 
                 );
     }
@@ -314,11 +224,41 @@ var ExamplesList = React.createClass({displayName: "ExamplesList",
 });
 
 
-var Home = React.createClass({displayName: "Home",
+var Page = React.createClass({displayName: "Page",
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListener(
+    		"page",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "page_listeners"
+    	);
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "page_listeners" );
+    },
+
+    render: function() {
+
+        var content = "No Page";
+        if ( PhiModel.page && PhiModel.page.content )
+            content = PhiModel.page.content;
+
+        return  React.createElement("div", {className: "page"}, 
+                    React.createElement("div", {className: "page_content", 
+                        dangerouslySetInnerHTML: { __html:content}})
+                )
+    }
+
+});
+
+
+var PhiTheme = React.createClass({displayName: "PhiTheme",
 
     refreshPhiModelState: function () {
-
-
 
         // mobile opens new projects/list half way down...
         if (
@@ -457,8 +397,8 @@ var Home = React.createClass({displayName: "Home",
                     style.color = PhiModel.style.text_highlight_color;
                 }
                 page_links.push(
-                    React.createElement("div", {className: "identityNav_bottomNavLink", 
-                        key:  "identityNav_bottomNavLink_" + p, 
+                    React.createElement("div", {className: "homePage_bottomNavLink", 
+                        key:  "homePage_bottomNavLink_" + p, 
                         style:  style, 
                         onClick:  this.gotoPage.bind( this , page_str) }, 
                          page.title
@@ -469,20 +409,20 @@ var Home = React.createClass({displayName: "Home",
         }
 
         return  React.createElement("div", {className: "phiTheme"}, 
-                    React.createElement(IdentityNav, null), 
+                    React.createElement(HomePage, null), 
+                    React.createElement(SlideShow, null), 
                     React.createElement("div", {className: "contentArea"}, 
-                        React.createElement(ProjectPage, null), 
                         React.createElement(Page, null)
                     ), 
 
-                    React.createElement(ExamplesList, null), 
-                    React.createElement(ContentTitleSection, null), 
+                    React.createElement(ListPage, null), 
+                    React.createElement(ProjectPage, null), 
 
                     /*needed here for layering*/ 
                     React.createElement("div", {className: "phitheme_copyrightNav"}, 
-                        React.createElement("div", {className: "identityNav_bottomNav"}, 
+                        React.createElement("div", {className: "homePage_bottomNav"}, 
                              page_links, 
-                            React.createElement("div", {className: "identityNav_copyright"}, 
+                            React.createElement("div", {className: "homePage_copyright"}, 
                                  PhiModel.copyright
                             )
                         )
@@ -494,131 +434,188 @@ var Home = React.createClass({displayName: "Home",
 });
 
 
-var IdentityNav = React.createClass({displayName: "IdentityNav",
+var ProjectPage = React.createClass({displayName: "ProjectPage",
 
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListener(
+    		"project",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "contenttitle_listeners"
+    	);
 
-    gotoTag: function ( tag ) {
-        if ( PhiModel.getBreakpoint() == "smartphone" ) {
-            RouteState.merge(
-                {
-                    list:tag,
-                    project:'',
-                    image:'',
-                    page:''
-                },
-                true
-            );
-        }else{
-            RouteState.merge(
-                {
-                    list:tag
-                },
-                true
-            );
-        }
+        RouteState.addDiffListener(
+    		"private",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "contenttitle_listeners"
+    	);
     },
 
-    gotoHome: function ( ) {
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
+    },
+
+    closeProject: function () {
+        RouteState.merge({project:''})
+    },
+
+    prevProject: function () {
+        var project = PhiModel.getPrevProject( RouteState.route.project );
+
         RouteState.merge(
-            {
-                list:'',
-                project:'',
-                image:'',
-                page:''
-            },
-            true
+            {project:project.slug,image:""}
+        );
+    },
+
+    nextProject: function () {
+        var project = PhiModel.getNextProject( RouteState.route.project );
+
+        RouteState.merge(
+            {project:project.slug,image:""}
+        );
+    },
+
+    gotoProject: function ( nav_link ) {
+        RouteState.merge({
+            project:nav_link.project,
+            list:nav_link.list
+        });
+    },
+
+    openSlideShow: function () {
+        RouteState.toggle(
+            {slideshow:'slideshow'},
+            {slideshow:''}
         );
     },
 
     render: function() {
 
-        var project_links = [];
-        if ( PhiModel.product_nav ) {
-            var product,style;
+        var project = PhiModel.project;
+        var nav_links_dom = "";
+        if ( project.navigation_links ) {
+            var nav_link;
 
-            var list_arr;
-            if ( RouteState.route.list instanceof Array ) {
-                list_arr = RouteState.route.list;
-            }else{
-                list_arr = [RouteState.route.list];
+            // filter for private
+            var filtered_children = [];
+            var total_links = project.navigation_links.length;
+            for ( var p=0; p<total_links; p++ ) {
+                nav_link = project.navigation_links[p];
+                if (
+                    nav_link.private === true &&
+                    RouteState.route.private != "private"
+                ) {
+                    continue;
+                }
+                filtered_children.push( nav_link );
             }
 
-            for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
-                product = PhiModel.product_nav[p];
-                style = {"width":(100/PhiModel.product_nav.length) + "%"};
-                var filter;
-                var color_style = PhiModel.style.text_highlight_color;
-                for ( var f=0; f<product.filters.length; f++ ) {
-                    filter = product.filters[f];
-                    if ( list_arr.indexOf( filter ) == -1 ) {
-                        color_style = false;
-                        break;
-                    }
+            // put links together with filtered list
+            var total_filtered_links = filtered_children.length;
+            var nav_links_children = [];
+            for ( var p=0; p<total_filtered_links; p++ ) {
+                nav_link = filtered_children[p];
+
+                if ( nav_link.internal && nav_link.internal == true ) {
+                    nav_links_children.push(
+                        React.createElement("div", {className: "projectPage_navLinkContainer", 
+                            style: {width: 100/total_filtered_links + "%"}, 
+                            key:  "nav_link_" + p}, 
+                            React.createElement("div", {className: "projectPage_navLinkButton", 
+                                onClick: 
+                                    this.gotoProject.bind( this , nav_link)
+                                }, 
+                                 nav_link.title
+                            )
+                        )
+                    );
+                }else{
+                    nav_links_children.push(
+                        React.createElement("div", {className: "projectPage_navLinkContainer", 
+                            style: {width: 100/total_filtered_links + "%"}, 
+                            key:  "nav_link_" + p}, 
+                            React.createElement("a", {className: "projectPage_navLinkButton", 
+                                href:  nav_link.location, target: "nav_link"}, 
+                                 nav_link.title
+                            )
+                        )
+                    );
                 }
-                if ( color_style ) {
-                    style.color = color_style;
-                }
-                project_links.push(
-                    React.createElement("div", {className: "identityNav_link", 
-                        style:  style, key:  product.title, 
-                        onClick:  this.gotoTag.bind( this , product.filters) }, 
-                         product.title
-                    )
-                );
+
+
             }
 
+            nav_links_dom = React.createElement("div", {className: "projectPage_navLinks"}, 
+                                 nav_links_children 
+                            );
         }
 
-        return  React.createElement("div", {className: "identityNav"}, 
-                    React.createElement("div", {className: "identityNav_gradOffset"}, 
-                        React.createElement("div", {className: "identityNav_logo", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "identityNav_logo_small", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "identityNav_centerNav"}, 
-                             project_links 
+        var pseudo_edit = "false";
+        if ( RouteState.route.edit == "edit" ) {
+            pseudo_edit = "true";
+        }
+
+        fullimage = '';
+        fullimage_title = '';
+        var total_images = false;
+        if ( project.images ) {
+            var image_index = 0;
+            total_images = project.images.length;
+
+            if ( RouteState.route.image ) {
+                image_index = RouteState.route.image-1;
+            }
+
+            fullimage = PhiModel.project.images[image_index].image_url;
+            fullimage_title = PhiModel.project.images[image_index].title;
+        }
+
+        return  React.createElement("div", {className: "c-projectPage"}, 
+
+                    React.createElement("div", {className: "c-projectPage__titleSection"}, 
+
+                        React.createElement("div", {className: "c-projectPage__titleSection__titles"}, 
+                            React.createElement("div", {className: "c-projectPage__totalImgs", 
+                                onClick:  this.openSlideShow}, 
+                                React.createElement("div", {className: "c-projectPage__totalImgs__num"}, 
+                                     total_images 
+                                ), 
+                                React.createElement("div", {className: "c-projectPage__totalImgs__images"}, 
+                                    "images"
+                                )
+                            ), 
+                            React.createElement("div", {className: "c-projectPage__title"}, 
+                                 project.title
+                            ), 
+                            React.createElement("div", {className: "c-projectPage__subTitle"}, 
+                                 project.medium
+                            )
                         )
+
                     ), 
-                    React.createElement("div", {className: "identityNav_rightGradient"})
+                    React.createElement("div", {className: "c-projectPage__previewImage", style: {
+                            'background-image':'url(\'' + fullimage + '\')'}, 
+                            onClick:  this.openSlideShow}
+                    ), 
+                    React.createElement("div", {className: "c-projectPage__body", 
+                        contentEditable:  pseudo_edit, 
+                        dangerouslySetInnerHTML: {__html:project.description}}
+                    ), 
+
+                     nav_links_dom, 
+                    React.createElement("div", {className: "c-projectPage__close", 
+                        onClick:  this.closeProject})
                 );
     }
 
 });
 
 
-var Page = React.createClass({displayName: "Page",
-
-    componentDidMount: function() {
-        var me = this;
-        RouteState.addDiffListener(
-    		"page",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "page_listeners"
-    	);
-    },
-
-    componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "page_listeners" );
-    },
-
-    render: function() {
-
-        var content = "No Page";
-        if ( PhiModel.page && PhiModel.page.content )
-            content = PhiModel.page.content;
-
-        return  React.createElement("div", {className: "page"}, 
-                    React.createElement("div", {className: "page_content", 
-                        dangerouslySetInnerHTML: { __html:content}})
-                )
-    }
-
-});
-
-
-var ProjectPage = React.createClass({displayName: "ProjectPage",
+var SlideShow = React.createClass({displayName: "SlideShow",
 
     componentDidMount: function() {
         var me = this;
@@ -647,15 +644,15 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
     	);
     },
 
-    componentWillUnmount: function(){
+    componentWillUnmount: function(){ 
         RouteState.removeDiffListenersViaClusterId( "project_listeners" );
     },
 
     closeProject: function ( e ) {
-        if ( RouteState.route.fullscreen == "fullscreen" ) {
-            RouteState.merge({fullscreen:''});
+        if ( RouteState.route.slideshow == "slideshow" ) {
+            RouteState.merge({slideshow:'',image:''});
         }else{
-            RouteState.merge({project:'',image:'',fullscreen:''});
+            RouteState.merge({project:'',image:'',slideshow:''});
         }
 
         this.stopPropagation( e );
@@ -717,8 +714,8 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
     imageToFullscreen: function ( e ) {
         RouteState.toggle(
-            {fullscreen:'fullscreen'},
-            {fullscreen:''}
+            {slideshow:'slideshow'},
+            {slideshow:''}
         );
         this.stopPropagation( e );
     },
@@ -733,39 +730,6 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
     stopPropagation: function ( e ) {
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-    },
-
-    getExternalLink: function ( link_name ) {
-        if ( PhiModel.project.external_links ) {
-            if (
-                PhiModel.project.external_links[ link_name ]
-            ) {
-                var do_show = false;
-                if ( PhiModel.project.external_links[ link_name ].private == true ) {
-                    if ( RouteState.route.private == "private" ) {
-                        do_show = true;
-                    }
-                }else{
-                    do_show = true;
-                }
-
-                var className = "projectPage_leftLink";
-                if ( link_name == "link_right" )
-                    className = "projectPage_rightLink"
-
-                if ( do_show ) {
-                    return React.createElement("div", {className:  className, 
-                                key:  className }, 
-                                React.createElement("a", {href:  PhiModel.project.external_links[ link_name ].location, 
-                                    onClick:  this.stopPropagation, 
-                                     className: "projectPage_link", target: "_new_left"}, 
-                                     PhiModel.project.external_links[ link_name ].title
-                                )
-                            );
-                }
-            }
-        }
-        return "";
     },
 
     render: function() {
@@ -787,24 +751,22 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             image_context = image_index+1 + " / " + PhiModel.project.images.length;
         }
 
-        var links = [];
-        links.push( this.getExternalLink( "link_left" ) );
-        links.push( this.getExternalLink( "link_right" ) );
 
-        return  React.createElement("div", {className: "projectPage"}, 
-                    React.createElement("div", {className: "projectPage_title"}, 
+        return  React.createElement("div", {className: "c-slideShow"}, 
+                    React.createElement("div", {className: "c-slideShow__title"}, 
                          fullimage_title, 
                         React.createElement("span", {className: "imageIndex"},  image_context )
                     ), 
                     React.createElement("img", {src:  fullimage, 
-                        className: "projectPage_img"}), 
-                     links, 
-                    React.createElement("div", {className: "projectPage_close", 
+                        className: "c-slideShow__img"}), 
+                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
+                                    "o-slideshow__btn--close", 
                         onClick:  this.closeProject}), 
-
-                    React.createElement("div", {className: "projectPage_nextProject", 
+                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
+                                    "o-slideshow__btn--nextProject", 
                         onClick:  this.nextImage}), 
-                    React.createElement("div", {className: "projectPage_prevProject", 
+                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
+                                    "o-slideshow__btn--prevProject", 
                         onClick:  this.prevImage})
                 );
     }

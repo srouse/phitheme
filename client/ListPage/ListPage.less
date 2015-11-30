@@ -1,8 +1,8 @@
 
-.examplesListOFF {
-    -ctag-example: "...{ .examplesList_rowContainer }{ .examplesList_typeToggle }";
+.listPage {
+    -ctag-example: "...{ .listPage_rowContainer }{ .listPage_typeToggle }";
 
-    .zIndex( "examplesList" );
+    .zIndex( "listPage" );
     background-color: #fff;
     position: absolute;
     left: @phi-inv; top: 0px;
@@ -10,8 +10,8 @@
     transition: width .5s, left .3s, top .2s;
 
     body.s_project &,
-    body.s_fullscreen &,
-    body.s_page & {
+    body.s-slideshow &,
+    body.s_page & { 
         border-right: 1px solid #eee;
         box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
         width: @phi-inv;
@@ -28,6 +28,7 @@
         body.s_list &,
         body.s_page & {
             margin-top: 80px;
+            .breakpoint-sm-a-width-100;
         }
     }
 
@@ -73,7 +74,7 @@
 
 
 
-    .examplesList_spacer {
+    .listPage_spacer {
         -ctag-tag: "shim";
         -ctag-example: "...";
 
@@ -82,7 +83,7 @@
         clear: both;
     }
 
-    .examplesList_typeToggle {
+    .listPage_typeToggle {
         -ctag-tag: "button";
         -ctag-example: "...";
 
@@ -101,13 +102,12 @@
         }
     }
 
-    .examplesList_rowContainer {
+    .listPage_rowContainer {
         -ctag-tag: "container";
-        -ctag-example: "<div class='nano-content'><div ...>{ .examplesList_header }{ .examplesList_row }{ .examplesList_row }{ .examplesList_row }</div></div>";
+        -ctag-example: "<div class='nano-content'><div ...>{ .listPage_header }{ .listPage_row }{ .listPage_row }{ .listPage_row }</div></div>";
 
         width: @phi;
         margin-left: @phi-inv/2;
-
 
 
         @media ( max-width: @screen-sm-min ) {
@@ -120,7 +120,7 @@
             text-align: center;
         }
 
-        .examplesList_header {
+        .listPage_header {
             -ctag-tag: "row,header";
             -ctag-example: "...Header";
 
@@ -142,11 +142,11 @@
             }
         }
 
-        .examplesList_row {
+        .listPage_row {
             /*<csstag tag="row">
                 <div ...>
-                    { .examplesList_rowText }
-                    { .examplesList_rowImage }
+                    { .listPage_rowText }
+                    { .listPage_rowImage }
                 </div>
             </csstag>*/
             float: left;
@@ -182,12 +182,12 @@
                 // border-bottom: 1px solid #aaa;
             }
 
-            .examplesList_rowText {
+            .listPage_rowText {
                 /*<csstag tag="row">
                     <div ...>
-                        { .examplesList_rowTitle }
-                        { .examplesList_rowSubTitle }
-                        { .examplesList_rowDescription }
+                        { .listPage_rowTitle }
+                        { .listPage_rowSubTitle }
+                        { .listPage_rowDescription }
                     </div>
                 </csstag>*/
                 width: @phi;
@@ -212,7 +212,7 @@
                     margin-bottom: 20px;
                 }
 
-                .examplesList_rowTitle {
+                .listPage_rowTitle {
                     /*<csstag tag="label">
                         <div ...>
                             Project Title
@@ -244,7 +244,7 @@
                         text-align: center;
                     }
                 }
-                .examplesList_rowSubTitle {
+                .listPage_rowSubTitle {
                     /*<csstag tag="label">
                         <div ...>
                             Project Sub Title
@@ -268,7 +268,7 @@
                         text-align: center;
                     }
                 }
-                .examplesList_rowDescription {
+                .listPage_rowDescription {
                     /*<csstag tag="label">
                         <div ...>
                             Lorem ipsum dolor sit amet, consectetur adipiscing
@@ -313,7 +313,7 @@
 
             }
 
-            .examplesList_rowImage {
+            .listPage_rowImage {
                 -ctag-tag: "row";
                 -ctag-example: "<img ... src='../content/posters/oh_poster/oh.png' />";
 
@@ -332,7 +332,7 @@
 
 
 
-               .examplesList_rowImageChild {
+               .listPage_rowImageChild {
                    -ctag-tag: "image";
                    -ctag-example: "...";
 

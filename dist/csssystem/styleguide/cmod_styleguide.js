@@ -21413,1251 +21413,3535 @@ RouteStateRoute.prototype.clone = function ( overrides , replace_arrays  ) {
 
 //# sourceMappingURL=jquery.nanoscroller.js.map
 
+/**
+ * gemini-scrollbar
+ * @version 1.2.9
+ * @link http://noeldelgado.github.io/gemini-scrollbar/
+ * @license MIT
+ */
+(function() {
+    var SCROLLBAR_WIDTH, CLASSNAMES, addClass, removeClass, getScrollbarWidth;
 
-var HomePage = React.createClass({displayName: "HomePage",
+    CLASSNAMES = {
+        element: 'gm-scrollbar-container',
+        verticalScrollbar: 'gm-scrollbar -vertical',
+        horizontalScrollbar: 'gm-scrollbar -horizontal',
+        thumb: 'thumb',
+        view: 'gm-scroll-view',
+        autoshow: 'gm-autoshow',
+        disable: 'gm-scrollbar-disable-selection',
+        prevented: 'gm-prevented',
+        scrollbarWidthTest: 'gm-test'
+    };
 
+    getScrollbarWidth = function getScrollbarWidth() {
+        var scrollDiv = document.createElement("div");
+        scrollDiv.className = CLASSNAMES.scrollbarWidthTest;
+        document.body.appendChild(scrollDiv);
 
-    gotoTag: function ( tag ) {
-        if ( PhiModel.getBreakpoint() == "smartphone" ) {
-            RouteState.merge(
-                {
-                    list:tag,
-                    project:'',
-                    image:'',
-                    page:''
-                },
-                true
-            );
-        }else{
-            RouteState.merge(
-                {
-                    list:tag
-                },
-                true
-            );
-        }
-    },
+        var scrollbarWidth = (scrollDiv.offsetWidth - scrollDiv.clientWidth);
+        document.body.removeChild(scrollDiv);
 
-    gotoHome: function ( ) {
-        RouteState.merge(
-            {
-                list:'',
-                project:'',
-                image:'',
-                page:''
-            },
-            true
-        );
-    },
+        return scrollbarWidth;
+    };
 
-    render: function() {
-
-        var project_links = [];
-        if ( PhiModel.product_nav ) {
-            var product,style;
-
-            var list_arr;
-            if ( RouteState.route.list instanceof Array ) {
-                list_arr = RouteState.route.list;
-            }else{
-                list_arr = [RouteState.route.list];
-            }
-
-            for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
-                product = PhiModel.product_nav[p];
-                style = {"width":(100/PhiModel.product_nav.length) + "%"};
-                var filter;
-                var color_style = PhiModel.style.text_highlight_color;
-                for ( var f=0; f<product.filters.length; f++ ) {
-                    filter = product.filters[f];
-                    if ( list_arr.indexOf( filter ) == -1 ) {
-                        color_style = false;
-                        break;
-                    }
-                }
-                if ( color_style ) {
-                    style.color = color_style;
-                }
-                project_links.push(
-                    React.createElement("div", {className: "homePage_link", 
-                        style:  style, key:  product.title, 
-                        onClick:  this.gotoTag.bind( this , product.filters) }, 
-                         product.title
-                    )
-                );
-            }
-
+    addClass = function addClass(el, classNames) {
+        if (el.classList) {
+            return classNames.forEach(function(cl) {
+                el.classList.add(cl);
+            });
         }
 
-        return  React.createElement("div", {className: "homePage"}, 
-                    React.createElement("div", {className: "homePage_gradOffset"}, 
-                        React.createElement("div", {className: "homePage_logo", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "homePage_logo_small", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "homePage_centerNav"}, 
-                             project_links 
-                        )
-                    ), 
-                    React.createElement("div", {className: "homePage_rightGradient"})
-                );
+        el.className += ' ' + classNames.join(' ');
+    };
+
+    removeClass = function removeClass(el, classNames) {
+        if (el.classList) {
+            return classNames.forEach(function(cl) {
+                el.classList.remove(cl);
+            });
+        }
+
+        el.className = el.className.replace(new RegExp('(^|\\b)' + classNames.join('|') + '(\\b|$)', 'gi'), ' ');
+    };
+
+    function GeminiScrollbar(config) {
+        this.element = null;
+        this.autoshow = false;
+        this.createElements = true;
+
+        Object.keys(config || {}).forEach(function (propertyName) {
+            this[propertyName] = config[propertyName];
+        }, this);
+
+        SCROLLBAR_WIDTH = getScrollbarWidth();
+
+        this._cache = {events: {}};
+        this._created = false;
+        this._cursorDown = false;
+        this._prevPageX = 0;
+        this._prevPageY = 0;
+
+        this._document = null;
+        this._window = null;
+        this._viewElement = this.element;
+        this._scrollbarVerticalElement = null;
+        this._thumbVerticalElement = null;
+        this._scrollbarHorizontalElement = null;
+        this._scrollbarHorizontalElement = null;
     }
 
-});
-
-
-var ListPage = React.createClass({displayName: "ListPage",
-
-    openProject: function ( slug ) {
-        RouteState.merge(
-            {
-                project:slug
-            }
-        );
-    },
-
-    componentDidMount: function() {
-        var me = this;
-        RouteState.addDiffListener(
-    		"list",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "examples_list"
-    	);
-
-        RouteState.addDiffListener(
-    		"thumbs",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "examples_list"
-    	);
-
-        $(".nano").nanoScroller();
-    },
-
-    componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "examples_list" );
-    },
-
-    componentDidUpdate: function () {
-        $(".nano").nanoScroller();
-
-        // compensate for animation...
-        setTimeout( function () {
-            $(".nano").nanoScroller();
-        },400);
-    },
-
-    toggleThumbs: function () {
-        RouteState.toggle({
-            thumbs:"thumbs"
-        },{
-            thumbs:""
-        });
-    },
-
-    renderRows: function( list , rows ) {
-
-        var tagTitle = PhiModel.tag_titles[list.title];
-
-        if ( !tagTitle )
-            tagTitle = list.title.capitalizeEachWord();
-
-        rows.push(
-            React.createElement("div", {className: "listPage_header", 
-                key:  "listPage_header" }, 
-                tagTitle
-            )
-        );
-
-        var image;
-        for ( var i=0; i<list.projects.length; i++ ) {
-            item = list.projects[i];
-
-            image = "";
-            if ( item.image )
-                image = React.createElement("div", {className: "listPage_rowImage"}, 
-                    React.createElement("div", {className: "listPage_rowImageChild", 
-                        style: {
-                            backgroundImage:
-                                "url('"+item.image+"')"
-                        }})
-                )
-
-            var className = "listPage_row index_" + i%3;
-            rows.push(
-                React.createElement("div", {className:  className, 
-                    onClick:  this.openProject.bind( this , item.slug), 
-                    key:  "listPage_row_" + item.slug}, 
-                    React.createElement("div", {className: "listPage_rowText"}, 
-                        React.createElement("div", {className: "listPage_rowTitle"}, 
-                             item.title
-                        ), 
-                        React.createElement("div", {className: "listPage_rowSubTitle"}, 
-                             item.medium
-                        ), 
-                        React.createElement("div", {className: "listPage_rowDescription"}, 
-                             item.summary
-                        )
-                    ), 
-                     image 
-                )
-            );
+    GeminiScrollbar.prototype.create = function create() {
+        if (SCROLLBAR_WIDTH === 0) {
+            addClass(this.element, [CLASSNAMES.prevented]);
+            return this;
         }
 
-        rows.push(
-            React.createElement("div", {className: "listPage_spacer", 
-                key: "listPage_spacer"}
-            )
-        );
-        return rows;
-    },
-
-    render: function() {
-
-        var rows = [];
-
-        var project_list;
-        for ( var i=0; i<PhiModel.project_list.length; i++ ) {
-            project_list = PhiModel.project_list[i];
-            this.renderRows( project_list, rows );
+        if (this._created === true) {
+            console.warn('calling on a already-created object');
+            return this;
         }
 
-        return  React.createElement("div", {className: "nano listPage"}, 
-                    React.createElement("div", {className: "nano-content"}, 
-                        React.createElement("div", {className: "listPage_rowContainer"}, 
-                             rows 
-                        )
-                    )
-                    /*<div className="listPage_typeToggle"
-                        onClick={ this.toggleThumbs }></div>*/ 
-                );
-    }
-
-});
-
-
-var Page = React.createClass({displayName: "Page",
-
-    componentDidMount: function() {
-        var me = this;
-        RouteState.addDiffListener(
-    		"page",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "page_listeners"
-    	);
-    },
-
-    componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "page_listeners" );
-    },
-
-    render: function() {
-
-        var content = "No Page";
-        if ( PhiModel.page && PhiModel.page.content )
-            content = PhiModel.page.content;
-
-        return  React.createElement("div", {className: "page"}, 
-                    React.createElement("div", {className: "page_content", 
-                        dangerouslySetInnerHTML: { __html:content}})
-                )
-    }
-
-});
-
-
-var PhiTheme = React.createClass({displayName: "PhiTheme",
-
-    refreshPhiModelState: function () {
-
-        // mobile opens new projects/list half way down...
-        if (
-            RouteState.route.project == "" ||
-            RouteState.prev_route.project == ""
-        ) {
-            $(window).scrollTop(0);
+        if (this.autoshow) {
+            addClass(this.element, [CLASSNAMES.autoshow]);
         }
 
-        if ( RouteState.route.page ) {
-            PhiModel.page = false;//PhiModel.pages[ RouteState.route.page ];
-            var page;
-            for ( var p=0; p<PhiModel.pages.length; p++ ) {
-                page = PhiModel.pages[p];
-                if ( page.title.slugify() == RouteState.route.page ) {
-                    PhiModel.page = page;
-                    break;
-                }
+        this._document = document;
+        this._window = window;
+
+        if (this.createElements === true) {
+            this._viewElement = document.createElement('div');
+            this._scrollbarVerticalElement = document.createElement('div');
+            this._thumbVerticalElement = document.createElement('div');
+            this._scrollbarHorizontalElement = document.createElement('div');
+            this._thumbHorizontalElement = document.createElement('div');
+            while(this.element.childNodes.length > 0) {
+                this._viewElement.appendChild(this.element.childNodes[0]);
             }
-            if ( !PhiModel.page ) {
-                PhiModel.page = {};
-                RouteState.merge(
-                    {page:""}
-                )
-            }
-        }else{
-            PhiModel.page = {};
+
+            this._scrollbarVerticalElement.appendChild(this._thumbVerticalElement);
+            this._scrollbarHorizontalElement.appendChild(this._thumbHorizontalElement);
+            this.element.appendChild(this._scrollbarVerticalElement);
+            this.element.appendChild(this._scrollbarHorizontalElement);
+            this.element.appendChild(this._viewElement);
+        } else {
+            this._viewElement = this.element.querySelector('.' + CLASSNAMES.view);
+            this._scrollbarVerticalElement = this.element.querySelector('.' + CLASSNAMES.verticalScrollbar.split(' ').join('.'));
+            this._thumbVerticalElement = this._scrollbarVerticalElement.querySelector('.' + CLASSNAMES.thumb);
+            this._scrollbarHorizontalElement = this.element.querySelector('.' + CLASSNAMES.horizontalScrollbar.split(' ').join('.'));
+            this._thumbHorizontalElement = this._scrollbarHorizontalElement.querySelector('.' + CLASSNAMES.thumb);
         }
 
-        if ( RouteState.route.project ) {
-            PhiModel.project = PhiModel.slugs[ RouteState.route.project ];
-            if ( !PhiModel.project ) {
-                PhiModel.project = {};
-                RouteState.merge(
-                    {project:""}
-                )
-            }
-        }else{
-            PhiModel.project = {};
+        addClass(this.element, [CLASSNAMES.element]);
+        addClass(this._viewElement, [CLASSNAMES.view]);
+        addClass(this._scrollbarVerticalElement, CLASSNAMES.verticalScrollbar.split(/\s/));
+        addClass(this._scrollbarHorizontalElement, CLASSNAMES.horizontalScrollbar.split(/\s/));
+        addClass(this._thumbVerticalElement, [CLASSNAMES.thumb]);
+        addClass(this._thumbHorizontalElement, [CLASSNAMES.thumb]);
+
+        this._scrollbarVerticalElement.style.display = '';
+        this._scrollbarHorizontalElement.style.display = '';
+
+        this._created = true;
+
+        return this._bindEvents().update();
+    };
+
+    GeminiScrollbar.prototype.update = function update() {
+        if (SCROLLBAR_WIDTH === 0) {
+            return this;
         }
 
-        var list = RouteState.route.list;
-        PhiModel.project_list = [];
-
-        if ( list && list != "" ) {
-            if ( list instanceof Array && list.length > 0 ) {
-                PhiModel.project_list = [];
-                for ( var l=0; l<list.length; l++ ) {
-                    if ( PhiModel.tags[list[l]] )
-                        PhiModel.project_list.push( PhiModel.tags[list[l]] );
-                }
-            }else{
-                if ( PhiModel.tags[list] ) {
-                    PhiModel.project_list = [PhiModel.tags[list]];
-                }else if ( list.length > 0 ){
-                    PhiModel.project_list = [{
-                        title:"No Projects Found",
-                        projects:[]
-                    }];
-                }
-            }
+        if (this._created === false) {
+            console.warn('calling on a not-yet-created object');
+            return this;
         }
 
-        this.forceUpdate();
-    },
+        var heightPercentage, widthPercentage;
 
-    componentWillMount: function(){
-        this.refreshPhiModelState();
+        this._viewElement.style.width = ((this.element.offsetWidth + SCROLLBAR_WIDTH).toString() + 'px');
+        this._viewElement.style.height = ((this.element.offsetHeight + SCROLLBAR_WIDTH).toString() + 'px');
 
-        var me = this;
-        this.route_listener = RouteState.addDiffListener(
-    		"project",
-    		function ( route , prev_route ) {
-                me.refreshPhiModelState();
-    		},
-            "home"
-    	);
+        heightPercentage = (this._viewElement.clientHeight * 100 / this._viewElement.scrollHeight);
+        widthPercentage = (this._viewElement.clientWidth * 100 / this._viewElement.scrollWidth);
 
-        this.route_listener_list = RouteState.addDiffListener(
-    		"list",
-    		function ( route , prev_route ) {
-                me.refreshPhiModelState();
-    		},
-            "home"
-    	);
+        this._thumbVerticalElement.style.height = (heightPercentage < 100) ? (heightPercentage + '%') : '';
+        this._thumbHorizontalElement.style.width = (widthPercentage < 100) ? (widthPercentage + '%') : '';
 
-        this.route_listener_list = RouteState.addDiffListener(
-    		"page",
-    		function ( route , prev_route ) {
-                me.refreshPhiModelState();
-    		},
-            "home"
-    	);
+        this._scrollHandler();
 
-        this.route_listener_list = RouteState.addDiffListener(
-    		"private",
-    		function ( route , prev_route ) {
-                PhiModel.reprocessProjects();
-                me.refreshPhiModelState();
-    		},
-            "home"
-    	);
-    },
+        return this;
+    };
 
-    componentDidMount: function() {
-
-    },
-
-    componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "home" );
-    },
-
-    gotoPage: function ( page ) {
-        RouteState.merge(
-            {
-                page:page,
-                list:"",
-                image:"",
-                project:""
-            }
-        );
-    },
-
-    render: function() {
-
-        // bottom links are dynamic...
-        var page_links = [];
-        if ( PhiModel.pages ) {
-            var page,style,page_str;
-
-            for ( var p=0; p<PhiModel.pages.length; p++ ) {
-                page = PhiModel.pages[p];
-                page_str = page.title.slugify();
-                style = {"width":(100/PhiModel.pages.length) + "%"};
-                if ( RouteState.route.page == page_str ) {
-                    style.color = PhiModel.style.text_highlight_color;
-                }
-                page_links.push(
-                    React.createElement("div", {className: "homePage_bottomNavLink", 
-                        key:  "homePage_bottomNavLink_" + p, 
-                        style:  style, 
-                        onClick:  this.gotoPage.bind( this , page_str) }, 
-                         page.title
-                    )
-                );
-            }
-
+    GeminiScrollbar.prototype.destroy = function destroy() {
+        if (SCROLLBAR_WIDTH === 0) {
+            return this;
         }
 
-        return  React.createElement("div", {className: "phiTheme"}, 
-                    React.createElement(HomePage, null), 
-                    React.createElement(SlideShow, null), 
-                    React.createElement("div", {className: "contentArea"}, 
-                        React.createElement(Page, null)
-                    ), 
-
-                    React.createElement(ListPage, null), 
-                    React.createElement(ProjectPage, null), 
-
-                    /*needed here for layering*/ 
-                    React.createElement("div", {className: "phitheme_copyrightNav"}, 
-                        React.createElement("div", {className: "homePage_bottomNav"}, 
-                             page_links, 
-                            React.createElement("div", {className: "homePage_copyright"}, 
-                                 PhiModel.copyright
-                            )
-                        )
-                    )
-
-                );
-    }
-
-});
-
-
-var ProjectPage = React.createClass({displayName: "ProjectPage",
-
-    componentDidMount: function() {
-        var me = this;
-        RouteState.addDiffListener(
-    		"project",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "contenttitle_listeners"
-    	);
-
-        RouteState.addDiffListener(
-    		"private",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "contenttitle_listeners"
-    	);
-    },
-
-    componentWillUnmount: function(){
-        RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
-    },
-
-    closeProject: function () {
-        RouteState.merge({project:''})
-    },
-
-    prevProject: function () {
-        var project = PhiModel.getPrevProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
-    },
-
-    nextProject: function () {
-        var project = PhiModel.getNextProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
-    },
-
-    gotoProject: function ( nav_link ) {
-        RouteState.merge({
-            project:nav_link.project,
-            list:nav_link.list
-        });
-    },
-
-    openSlideShow: function () {
-        RouteState.toggle(
-            {slideshow:'slideshow'},
-            {slideshow:''}
-        );
-    },
-
-    render: function() {
-
-        var project = PhiModel.project;
-        var nav_links_dom = "";
-        if ( project.navigation_links ) {
-            var nav_link;
-
-            // filter for private
-            var filtered_children = [];
-            var total_links = project.navigation_links.length;
-            for ( var p=0; p<total_links; p++ ) {
-                nav_link = project.navigation_links[p];
-                if (
-                    nav_link.private === true &&
-                    RouteState.route.private != "private"
-                ) {
-                    continue;
-                }
-                filtered_children.push( nav_link );
-            }
-
-            // put links together with filtered list
-            var total_filtered_links = filtered_children.length;
-            var nav_links_children = [];
-            for ( var p=0; p<total_filtered_links; p++ ) {
-                nav_link = filtered_children[p];
-
-                if ( nav_link.internal && nav_link.internal == true ) {
-                    nav_links_children.push(
-                        React.createElement("div", {className: "projectPage_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
-                            React.createElement("div", {className: "projectPage_navLinkButton", 
-                                onClick: 
-                                    this.gotoProject.bind( this , nav_link)
-                                }, 
-                                 nav_link.title
-                            )
-                        )
-                    );
-                }else{
-                    nav_links_children.push(
-                        React.createElement("div", {className: "projectPage_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
-                            React.createElement("a", {className: "projectPage_navLinkButton", 
-                                href:  nav_link.location, target: "nav_link"}, 
-                                 nav_link.title
-                            )
-                        )
-                    );
-                }
-
-
-            }
-
-            nav_links_dom = React.createElement("div", {className: "projectPage_navLinks"}, 
-                                 nav_links_children 
-                            );
+        if (this._created === false) {
+            console.warn('calling on a not-yet-created object');
+            return this;
         }
 
-        var pseudo_edit = "false";
-        if ( RouteState.route.edit == "edit" ) {
-            pseudo_edit = "true";
+        this._unbinEvents();
+
+        removeClass(this.element, [CLASSNAMES.element, CLASSNAMES.autoshow]);
+
+        if (this.createElements === true) {
+            this.element.removeChild(this._scrollbarVerticalElement);
+            this.element.removeChild(this._scrollbarHorizontalElement);
+            while(this._viewElement.childNodes.length > 0) {
+                this.element.appendChild(this._viewElement.childNodes[0]);
+            }
+            this.element.removeChild(this._viewElement);
+        } else {
+            this._viewElement.style.width = '';
+            this._viewElement.style.height = '';
+            this._scrollbarVerticalElement.style.display = 'none';
+            this._scrollbarHorizontalElement.style.display = 'none';
         }
 
-        fullimage = '';
-        fullimage_title = '';
-        var total_images = false;
-        if ( project.images ) {
-            var image_index = 0;
-            total_images = project.images.length;
+        this._created = false;
+        this._document = this._window = null;
 
-            if ( RouteState.route.image ) {
-                image_index = RouteState.route.image-1;
-            }
+        return null;
+    };
 
-            fullimage = PhiModel.project.images[image_index].image_url;
-            fullimage_title = PhiModel.project.images[image_index].title;
+    GeminiScrollbar.prototype.getViewElement = function() {
+        return this._viewElement;
+    };
+
+    GeminiScrollbar.prototype._bindEvents = function() {
+        this._cache.events.scrollHandler = this._scrollHandler.bind(this);
+        this._cache.events.clickVerticalTrackHandler = this._clickVerticalTrackHandler.bind(this);
+        this._cache.events.clickHorizontalTrackHandler = this._clickHorizontalTrackHandler.bind(this);
+        this._cache.events.clickVerticalThumbHandler = this._clickVerticalThumbHandler.bind(this);
+        this._cache.events.clickHorizontalThumbHandler = this._clickHorizontalThumbHandler.bind(this);
+        this._cache.events.mouseUpDocumentHandler = this._mouseUpDocumentHandler.bind(this);
+        this._cache.events.mouseMoveDocumentHandler = this._mouseMoveDocumentHandler.bind(this);
+        this._cache.events.resizeWindowHandler = this.update.bind(this);
+
+        this._viewElement.addEventListener('scroll', this._cache.events.scrollHandler);
+        this._scrollbarVerticalElement.addEventListener('mousedown', this._cache.events.clickVerticalTrackHandler);
+        this._scrollbarHorizontalElement.addEventListener('mousedown', this._cache.events.clickHorizontalTrackHandler);
+        this._thumbVerticalElement.addEventListener('mousedown', this._cache.events.clickVerticalThumbHandler);
+        this._thumbHorizontalElement.addEventListener('mousedown', this._cache.events.clickHorizontalThumbHandler);
+        this._document.addEventListener('mouseup', this._cache.events.mouseUpDocumentHandler);
+        this._window.addEventListener('resize', this._cache.events.resizeWindowHandler);
+
+        return this;
+    };
+
+    GeminiScrollbar.prototype._unbinEvents = function() {
+        this._viewElement.removeEventListener('scroll', this._cache.events.scrollHandler);
+        this._scrollbarVerticalElement.removeEventListener('mousedown', this._cache.events.clickVerticalTrackHandler);
+        this._scrollbarHorizontalElement.removeEventListener('mousedown', this._cache.events.clickHorizontalTrackHandler);
+        this._thumbVerticalElement.removeEventListener('mousedown', this._cache.events.clickVerticalThumbHandler);
+        this._thumbHorizontalElement.removeEventListener('mousedown', this._cache.events.clickHorizontalThumbHandler);
+        this._document.removeEventListener('mouseup', this._cache.events.mouseUpDocumentHandler);
+        this._document.removeEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler);
+        this._window.removeEventListener('resize', this._cache.events.resizeWindowHandler);
+
+        return this;
+    };
+
+    GeminiScrollbar.prototype._scrollHandler = function() {
+        var viewElement, x, y;
+
+        viewElement = this._viewElement;
+        y = ((viewElement.scrollTop * 100) / viewElement.clientHeight);
+        x = ((viewElement.scrollLeft * 100) / viewElement.clientWidth);
+
+        this._thumbVerticalElement.style.msTransform = 'translateY(' + y + '%)';
+        this._thumbVerticalElement.style.webkitTransform = 'translateY(' + y + '%)';
+        this._thumbVerticalElement.style.transform = 'translateY(' + y + '%)';
+
+        this._thumbHorizontalElement.style.msTransform = 'translateX(' + x + '%)';
+        this._thumbHorizontalElement.style.webkitTransform = 'translateX(' + x + '%)';
+        this._thumbHorizontalElement.style.transform = 'translateX(' + x + '%)';
+    };
+
+    GeminiScrollbar.prototype._clickVerticalTrackHandler = function(e) {
+        var offset = Math.abs(e.target.getBoundingClientRect().top - e.clientY);
+        var thumbHalf = (this._thumbVerticalElement.offsetHeight / 2);
+        var thumbPositionPercentage = ((offset - thumbHalf) * 100 / this._scrollbarVerticalElement.offsetHeight);
+
+        this._viewElement.scrollTop = (thumbPositionPercentage * this._viewElement.scrollHeight / 100);
+    };
+
+    GeminiScrollbar.prototype._clickHorizontalTrackHandler = function(e) {
+        var offset = Math.abs(e.target.getBoundingClientRect().left - e.clientX);
+        var thumbHalf = (this._thumbHorizontalElement.offsetWidth / 2);
+        var thumbPositionPercentage = ((offset - thumbHalf) * 100 / this._scrollbarHorizontalElement.offsetWidth);
+
+        this._viewElement.scrollLeft = (thumbPositionPercentage * this._viewElement.scrollWidth / 100);
+    };
+
+    GeminiScrollbar.prototype._clickVerticalThumbHandler = function(e) {
+        this._startDrag(e);
+        this._prevPageY = (e.currentTarget.offsetHeight - (e.clientY - e.currentTarget.getBoundingClientRect().top));
+    };
+
+    GeminiScrollbar.prototype._clickHorizontalThumbHandler = function(e) {
+        this._startDrag(e);
+        this._prevPageX = (e.currentTarget.offsetWidth - (e.clientX - e.currentTarget.getBoundingClientRect().left));
+    };
+
+    GeminiScrollbar.prototype._startDrag = function(e) {
+        e.stopImmediatePropagation();
+        this._cursorDown = true;
+        addClass(document.body, [CLASSNAMES.disable]);
+        this._document.addEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler);
+        this._document.onselectstart = function() {return false;};
+    };
+
+    GeminiScrollbar.prototype._mouseUpDocumentHandler = function() {
+        this._cursorDown = false;
+        this._prevPageX = this._prevPageY = 0;
+        removeClass(document.body, [CLASSNAMES.disable]);
+        this._document.removeEventListener('mousemove', this._cache.events.mouseMoveDocumentHandler);
+        this._document.onselectstart = null;
+    };
+
+    GeminiScrollbar.prototype._mouseMoveDocumentHandler = function(e) {
+        if (this._cursorDown === false) {
+            return void 0;
         }
 
-        return  React.createElement("div", {className: "c-projectPage"}, 
+        var offset, thumbClickPosition, thumbPositionPercentage;
 
-                    React.createElement("div", {className: "c-projectPage__titleSection"}, 
-
-                        React.createElement("div", {className: "c-projectPage__titleSection__titles"}, 
-                            React.createElement("div", {className: "c-projectPage__totalImgs", 
-                                onClick:  this.openSlideShow}, 
-                                React.createElement("div", {className: "c-projectPage__totalImgs__num"}, 
-                                     total_images 
-                                ), 
-                                React.createElement("div", {className: "c-projectPage__totalImgs__images"}, 
-                                    "images"
-                                )
-                            ), 
-                            React.createElement("div", {className: "c-projectPage__title"}, 
-                                 project.title
-                            ), 
-                            React.createElement("div", {className: "c-projectPage__subTitle"}, 
-                                 project.medium
-                            )
-                        )
-
-                    ), 
-                    React.createElement("div", {className: "c-projectPage__previewImage", style: {
-                            'background-image':'url(\'' + fullimage + '\')'}, 
-                            onClick:  this.openSlideShow}
-                    ), 
-                    React.createElement("div", {className: "c-projectPage__body", 
-                        contentEditable:  pseudo_edit, 
-                        dangerouslySetInnerHTML: {__html:project.description}}
-                    ), 
-
-                     nav_links_dom, 
-                    React.createElement("div", {className: "c-projectPage__close", 
-                        onClick:  this.closeProject})
-                );
-    }
-
-});
-
-
-var SlideShow = React.createClass({displayName: "SlideShow",
-
-    componentDidMount: function() {
-        var me = this;
-        RouteState.addDiffListener(
-    		"project",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "project_listeners"
-    	);
-
-        RouteState.addDiffListener(
-    		"image",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "project_listeners"
-    	);
-
-        RouteState.addDiffListener(
-    		"private",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "project_listeners"
-    	);
-    },
-
-    componentWillUnmount: function(){ 
-        RouteState.removeDiffListenersViaClusterId( "project_listeners" );
-    },
-
-    closeProject: function ( e ) {
-        if ( RouteState.route.slideshow == "slideshow" ) {
-            RouteState.merge({slideshow:'',image:''});
-        }else{
-            RouteState.merge({project:'',image:'',slideshow:''});
+        if (this._prevPageY) {
+            offset = ((this._scrollbarVerticalElement.getBoundingClientRect().top - e.clientY) * -1);
+            thumbClickPosition = (this._thumbVerticalElement.offsetHeight - this._prevPageY);
+            thumbPositionPercentage = ((offset - thumbClickPosition) * 100 / this._scrollbarVerticalElement.offsetHeight);
+            this._viewElement.scrollTop = (thumbPositionPercentage * this._viewElement.scrollHeight / 100);
+            return void 0;
         }
 
-        this.stopPropagation( e );
-    },
-
-    _getImageIndex: function () {
-        var image_index = 0;
-        if ( RouteState.route.image ) {
-            image_index = RouteState.route.image-1;
-        }
-        return image_index;
-    },
-
-    prevProject: function ( e ) {
-        var project = PhiModel.getPrevProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug}
-        );
-        this.stopPropagation( e );
-    },
-
-    nextProject: function ( e ) {
-        var project = PhiModel.getNextProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug}
-        );
-        this.stopPropagation( e );
-    },
-
-    nextImage: function ( e ) {
-        var image_index = this._getImageIndex();
-
-        var new_img_index = 0;
-        if ( image_index < PhiModel.project.images.length-1 ) {
-            new_img_index = image_index+1;
-        }
-
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
-        this.stopPropagation( e );
-    },
-
-    prevImage: function ( e ) {
-        var image_index = this._getImageIndex();
-
-        var new_img_index = PhiModel.project.images.length-1;
-        if ( image_index > 0 ) {
-            new_img_index = image_index-1;
-        }
-
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
-        this.stopPropagation( e );
-    },
-
-    imageToFullscreen: function ( e ) {
-        RouteState.toggle(
-            {slideshow:'slideshow'},
-            {slideshow:''}
-        );
-        this.stopPropagation( e );
-    },
-
-    changeImage: function ( index , e ) {
-        RouteState.merge(
-            {image:index+""}
-        );
-        this.stopPropagation( e );
-    },
-
-    stopPropagation: function ( e ) {
-        e.stopPropagation();
-        e.nativeEvent.stopImmediatePropagation();
-    },
-
-    render: function() {
-
-        var fullimage = PhiModel.project.fullimage;
-        var fullimage_title = "";
-        var image_context = "";
-
-        if ( PhiModel.project && PhiModel.project.images ) {
-            var image_index = 0;
-
-            if ( RouteState.route.image ) {
-                image_index = RouteState.route.image-1;
-            }
-
-            fullimage = PhiModel.project.images[image_index].image_url;
-            fullimage_title = PhiModel.project.images[image_index].title;
-
-            image_context = image_index+1 + " / " + PhiModel.project.images.length;
-        }
-
-
-        return  React.createElement("div", {className: "c-slideShow"}, 
-                    React.createElement("div", {className: "c-slideShow__title"}, 
-                         fullimage_title, 
-                        React.createElement("span", {className: "imageIndex"},  image_context )
-                    ), 
-                    React.createElement("img", {src:  fullimage, 
-                        className: "c-slideShow__img"}), 
-                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
-                                    "o-slideshow__btn--close", 
-                        onClick:  this.closeProject}), 
-                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
-                                    "o-slideshow__btn--nextProject", 
-                        onClick:  this.nextImage}), 
-                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
-                                    "o-slideshow__btn--prevProject", 
-                        onClick:  this.prevImage})
-                );
-    }
-
-});
-
-
-
-
-var PhiModelSingleton = function () {
-
-    var model = {
-        style:{
-            text_highlight_color:"#999",// need for runtime...
-            side_gradient:"assets/gradient.png"
-        },
-        copyright:"copyright 2015, PhiTheme.com",
-        tag_titles:[],
-        pages:[],
-        product_nav:[],
-        projects:[],
-        /*
-        pages:[
-            {
-                title:"About",
-                content:"<h1>About Content</h1><p>hello</p>"
-            }
-        ],
-        product_nav:[
-            {
-                title:"Applications",
-                filters:['application']
-            },
-            {
-                title:"Design",
-                filters:['design']
-            }
-        ], 
-        projects:[
-            {
-                title:"QuantifiedProject",
-                medium:"Web Application",
-                tags:["design","web","application"],
-                description:"QuantifiedProject is an application focusing on",
-                image:"../content/products/qp/qp_logo_square.png",
-                fullimage:"../content/products/qp/qp_logo_square.png"
-            }
-        ]
-        */
-
-        reprocessProjects: function () {
-            this.processProjects( this.all_projects );
-        },
-
-        processProjects: function ( all_projects ) {
-            this.all_projects = all_projects;
-
-            // filter out privates
-            this.projects = [];
-            var project;
-            for ( var p=0; p<this.all_projects.length; p++ ) {
-                project = this.all_projects[p];
-                // needs to be relative to route...
-                if (
-                    project.private === true &&
-                    RouteState.route.private != "private"
-                ) {
-
-                }else{
-                    this.projects.push( project );
-                }
-            }
-
-            //some post processing...
-            var project,tag,tag_hash;
-            var new_projects = [];
-            this.tags = {};
-            this.tags_hashed = {};
-            this.slugs = {};
-
-            for ( var p=0; p<this.projects.length; p++ ) {
-                project = this.projects[p];
-
-                project.slug = project.title.slugify();
-                this.slugs[project.slug] = project;
-
-                if ( project.tags ) {
-                    for ( var t=0; t<project.tags.length; t++ ) {
-                        tag = project.tags[t].slugify();
-                        project.tags[t] = tag;//replace with cleaned up tag
-                        tag_hash = tag.hashCodeStr();
-                        if ( !this.tags[ tag ] ) {
-                            this.tags[ tag ] = {
-                                title:tag,
-                                tag:tag,
-                                tag_hash:tag_hash,
-                                projects:[]
-                            }
-                        }
-                        if ( !this.tags_hashed[ tag_hash ] ) {
-                            this.tags_hashed[ tag_hash ] = {
-                                title:tag,
-                                tag:tag,
-                                tag_hash:tag_hash,
-                                projects:[]
-                            }
-                        }
-                        this.tags[ tag ].projects.push( project );
-                        this.tags_hashed[ tag_hash ].projects.push( project );
-                    }
-                }
-            }
-        },
-
-        getProjectIndex: function ( project_slug ) {
-            var list,project;
-            for ( var i=0; i<this.project_list.length; i++ ) {
-                list = this.project_list[i];
-                for ( var p=0; p<list.projects.length; p++ ) {
-                    project = list.projects[p];
-
-                    if ( project.slug == project_slug ) {
-                        return {list:i,project:p};
-                    }
-                }
-            }
-            return {list:-1,project:-1};
-        },
-
-        getFlatProjectList: function () {
-            var flat_list = [];
-            for ( var i=0; i<this.project_list.length; i++ ) {
-                list = this.project_list[i];
-                for ( var p=0; p<list.projects.length; p++ ) {
-                    project = list.projects[p];
-                    flat_list.push( project );
-                }
-            }
-
-            return flat_list;
-        },
-
-        getPrevProject: function ( project_slug ) {
-            var flat_list = this.getFlatProjectList();
-
-            for ( var i=0; i<flat_list.length; i++ ) {
-                project = flat_list[i];
-                if ( project.slug == project_slug ) {
-                    if ( i == 0 ) {
-                        return flat_list[flat_list.length-1];
-                    }else{
-                        return flat_list[i-1];
-                    }
-                }
-            }
-
-            return flat_list[0];
-        },
-
-        getNextProject: function ( project_slug ) {
-            var flat_list = this.getFlatProjectList();
-
-            for ( var i=0; i<flat_list.length; i++ ) {
-                project = flat_list[i];
-                if ( project.slug == project_slug ) {
-                    if ( i == flat_list.length-1 ) {
-                        return flat_list[0];
-                    }else{
-                        return flat_list[i+1];
-                    }
-                }
-            }
-
-            return flat_list[0];
-        },
-
-        getBreakpoint : function () {
-            return window.getComputedStyle(
-                        document.querySelector('body'), ':before')
-                        .getPropertyValue('content')
-                        .replace(/\"/g, '');
+        if (this._prevPageX) {
+            offset = ((this._scrollbarHorizontalElement.getBoundingClientRect().left - e.clientX) * -1);
+            thumbClickPosition = (this._thumbHorizontalElement.offsetWidth - this._prevPageX);
+            thumbPositionPercentage = ((offset - thumbClickPosition) * 100 / this._scrollbarHorizontalElement.offsetWidth);
+            this._viewElement.scrollLeft = (thumbPositionPercentage * this._viewElement.scrollWidth / 100);
         }
     };
 
-    return model;
+    if (typeof exports === 'object') {
+        module.exports = GeminiScrollbar;
+    } else {
+        window.GeminiScrollbar = GeminiScrollbar;
+    }
+})();
+
+
+
+
+var Detail = React.createClass({displayName: "Detail",
+
+    componentWillMount: function() {
+        var me = this;
+        RouteState.addDiffListeners(
+    		["detail","type","detail_index"],
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "Detail"
+    	);
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "Detail" );
+    },
+
+    close: function( type , id ){
+        RS.merge({
+            detail:"",
+            type:"",
+            detail_index:""
+        });
+    },
+
+    goto: function( index ){
+        RS.merge({
+            detail_index:"" + index
+        });
+    },
+
+    render: function() {
+
+        var html = [];
+
+        if ( RS.route.type ) {
+            var css_obj;
+            if ( RS.route.type == "atom" ) {
+                css_obj = CSSModel.atoms[ RS.route.detail ];
+            }else if ( RS.route.type == "utility" ){
+                css_obj = CSSModel.utilities[ RS.route.detail ];
+            }else{
+                css_obj = CSSModel.bases[ RS.route.detail ];
+            }
+
+            var css_obj_html = [],css_obj_item,selected_class;
+            for ( var a=0; a < css_obj.css_array.length; a++ ) {
+                css_obj_item = css_obj.css_array[a];
+                if ( css_obj_item.length > 0 ) {
+                    selected_class = "";
+                    if ( RS.route.detail_index == a ) {
+                        selected_class = "Cmod-Detail__code__item--selected";
+                    }
+                    css_obj_html.push(
+                        React.createElement("div", {className:  "Cmod-Detail__code__item " +
+                            selected_class, 
+                            onClick:  this.goto.bind( this , a) }, 
+                            React.createElement("pre", null,  css_obj_item )
+                        )
+                    );
+                }
+            }
+
+            html.push(
+                React.createElement("div", {className: "Cmod-Detail__code"}, 
+                     css_obj_html 
+                )
+            );
+        }
+
+        var example = "";
+        if ( RS.route.type == "base" ) {
+            example = "( no preview for bases/resets )";
+        }else{
+            if ( RS.route.detail_index ) {
+                //var atom = CSSModel.atoms[ RS.route.detail ];
+                var css_obj_selector = css_obj.selectors[ RS.route.detail_index ];
+
+                var css_obj_class = css_obj_selector.replace( /\./g , "" );
+                example = "<style>";
+                example += ".exampleBox { width: 100px; height: 100px;";
+                example += " background-color: #fff; ";
+                example += " font-family: sans-serif; }</style>"
+
+                example += "<link rel='stylesheet' type='text/css' href='../core.css'>";
+                example += "<div class='exampleBox " + css_obj_class + "'>";
+                example += "<div style='height: 15px;' contenteditable='true'>Content</div></div>";
+            }else{
+                example = "no element selected";
+            }
+        }
+
+
+
+
+        return  React.createElement("div", {className: "Cmod-Detail"}, 
+
+                     html, 
+
+                    React.createElement("div", {className: "Cmod-Detail__preview"}, 
+                        React.createElement(SimpleMagicFrame, {example:  example })
+                    ), 
+
+                    React.createElement("div", {className: "Cmod-Detail__close", 
+                        onClick:  this.close}, "x")
+                );
+    }
+
+});
+
+
+
+
+var SimpleMagicFrame = React.createClass({displayName: "SimpleMagicFrame",
+    render: function() {
+        return React.createElement("iframe", {style: {border: 'none'}, 
+                        className: "Cmod-Detail__preview__iframe"});
+    },
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListeners(
+    		["detail","type"],
+    		function ( route , prev_route ) {
+                me.postProcessElement();
+    		},
+            "rule_magicFrame"
+    	);
+
+        this.renderFrameContents();
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "rule_magicFrame" );
+    },
+
+    renderFrameContents: function() {
+        var doc = this.getDOMNode().contentDocument;
+        if( doc.readyState === 'complete' ) {
+            var content = this.props.example;
+            var ifrm = this.getDOMNode();
+            ifrm = (ifrm.contentWindow) ?
+                        ifrm.contentWindow :
+                            (ifrm.contentDocument.document) ?
+                                ifrm.contentDocument.document : ifrm.contentDocument;
+
+            ifrm.document.open();
+            ifrm.document.write(content);
+            ifrm.document.close();
+        } else {
+            setTimeout( this.renderFrameContents , 0);
+        }
+
+        this.postProcessElement();
+    },
+
+    postProcessElement: function () {
+        if ( !this.isMounted() ) {
+            return;
+        }
+    },
+
+    componentDidUpdate: function() {
+        this.renderFrameContents();
+    },
+    componentWillUnmount: function() {
+        React.unmountComponentAtNode( this.getDOMNode().contentDocument.body );
+    }
+});
+
+
+var RuleCSS = React.createClass({displayName: "RuleCSS",
+
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListener(
+    		"react",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "rule_preview"
+    	);
+
+        $(".ruleDetail_textarea").each( function () {
+            $(this).height( $(this)[0].scrollHeight );
+        });
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "rule_preview" );
+    },
+
+
+    render: function() {
+
+        var rule = this.props.rule;
+
+        if ( !rule ) {
+            return React.createElement("div", null);
+        }
+
+        var compName = rule.name.replace( /\./g , "" );
+        var comp = CSSModel.components[ compName ];
+        var comp_html = "No example";
+        if ( rule.type == "tagged_rule" ) {
+            var sub_comp_info = RuleUtil.replaceComps(
+                rule , rule.metadata.example, [] , this.props.css_info
+            );
+            comp_html = sub_comp_info.html.replace( /<\/div>/g , "</div>\n" );
+        }
+
+        return  React.createElement("div", {className: "ruleCSS"}, 
+                    React.createElement("div", {className: "ruleDetail_code"}, 
+                        React.createElement("div", {className: "ruleDetail_title"}, "CSS"), 
+                        React.createElement("div", {className: "ruleDetail_codeLine"}, 
+                            React.createElement("pre", null,  comp.css_string.trim() )
+                        ), 
+                        React.createElement("div", {className: "ruleDetail_title"}, "HTML"), 
+                        React.createElement("div", {className: "ruleDetail_codeLine"}, 
+                            React.createElement("pre", null,  comp_html.trim() )
+                        )
+                    )
+                );
+    }
+
+});
+
+
+var RuleCSSOrig = React.createClass({displayName: "RuleCSSOrig",
+
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListener(
+    		"react",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "rule_preview"
+    	);
+
+        $(".ruleDetail_textarea").each( function () {
+            $(this).height( $(this)[0].scrollHeight );
+        });
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "rule_preview" );
+    },
+
+    processSelectorIntoHTML: function ( selector ) {
+        var rule_arr = selector.split(" ");
+        var new_rule_arr = [];
+        for ( var i=0; i<rule_arr.length; i++ ) {
+            new_rule_arr.push( rule_arr[i] );
+            new_rule_arr.push( React.createElement("br", null) );
+        }
+        return new_rule_arr;
+    },
+
+    gotoRule: function ( rule_uuid ) {
+        RouteState.merge({tree:rule_uuid});
+    },
+
+    toReact: function () {
+        RouteState.toggle({react:"react"},{react:""});
+    },
+
+    componentDidUpdate: function () {
+        $(".ruleDetail_textarea").each( function () {
+            $(this).height( 10 );
+            $(this).height( $(this)[0].scrollHeight );
+        });
+    },
+
+    getCSSString: function ( rule ) {
+
+        if ( !rule || !rule.metadata || !rule.metadata.pointers )
+            return React.createElement("div", null, "no info");
+
+        var css_str = [];
+
+
+        css_str.push(
+            React.createElement("div", {className: "ruleDetail_title"}, "Full Selector")
+        );
+        css_str.push(
+            React.createElement("div", {className: "ruleDetail_codeLine", 
+                key:  "description" }, 
+                React.createElement("span", {className: "ruleDetail_variableName"}, 
+                     rule.selector
+                )
+            )
+        );
+
+
+        if (
+            rule.metadata.description &&
+            $.trim( rule.metadata.description ).length > 0
+        ) {
+            css_str.push(
+                React.createElement("div", {className: "ruleDetail_title"}, "Description")
+            );
+            for ( var d=0; d<rule.metadata.description.length; d++ ) {
+                css_str.push(
+                    React.createElement("div", {className: "ruleDetail_codeLine", 
+                        key:  "description" }, 
+                        React.createElement("pre", null,  rule.metadata.description[d].content)
+                    )
+                );
+            }
+        }
+
+
+        css_str.push(
+            React.createElement("div", {className: "ruleDetail_title"}, "Based On")
+        );
+
+        if (
+            rule.metadata.pointers.length == 0 &&
+            rule.metadata.extends.length == 0
+        ) {
+            css_str.push(
+                React.createElement("div", {className: "ruleDetail_noneFound"}, "None")
+            );
+        }
+
+        var pointers = rule.metadata.pointers;
+        for ( var p=0; p<pointers.length; p++ ) {
+            css_str.push(
+                React.createElement("div", {className: "ruleDetail_codeLine", 
+                    key:  "pointer_" + p}, 
+                    React.createElement("span", {className: "ruleDetail_variableName"},  pointers[p] )
+                )
+            );
+        }
+        var _extends = rule.metadata.extends;
+        for ( var p=0; p<_extends.length; p++ ) {
+            css_str.push(
+                React.createElement("div", {className: "ruleDetail_codeLine", 
+                    key:  "extends_" + p}, 
+                    React.createElement("span", {className: "ruleDetail_variableName"},  _extends[p] )
+                )
+            );
+        }
+
+
+
+
+        css_str.push(
+            React.createElement("div", {className: "ruleDetail_title"}, "Local Declarations")
+        );
+        if ( rule.metadata && rule.metadata.local ) {
+            var local = rule.metadata.local;
+            for ( var name in local ) {
+                css_str.push(
+                    React.createElement("div", {className: "ruleDetail_codeLine", 
+                        key:  "local_" + name}, 
+                        React.createElement("span", {className: "ruleDetail_variableName"}, 
+                             name ), ": ",  local[name], ";"
+                    )
+                );
+            }
+        }
+
+
+        if ( rule.pseudos && rule.pseudos.length > 0 ) {
+            css_str.push(
+                React.createElement("div", {className: "ruleDetail_title"}, "Pseudo Selectors")
+            );
+            var pseudos = rule.pseudos,pseudo;
+            for ( var p=0; p<pseudos.length; p++ ) {
+                pseudo = pseudos[p];
+                css_str.push(
+                    React.createElement("div", {className: "ruleDetail_codeLine", 
+                        key:  "pseudo_" + p}, 
+                        React.createElement("span", {className: "ruleDetail_selectorSpan"}, 
+                             pseudo.selector
+                        ), " ",  "{" 
+                    )
+                );
+                var local = pseudo.metadata.local;
+                for ( var name in local ) {
+                    css_str.push(
+                        React.createElement("div", {className: "ruleDetail_codeLine indent", 
+                            key:  "local_pseudo_" + name}, 
+                            React.createElement("span", {className: "ruleDetail_variableName"}, 
+                                 name ), ": ",  local[name], ";"
+                        )
+                    );
+                }
+                css_str.push(
+                    React.createElement("div", {className: "ruleDetail_codeLine", 
+                        key:  "pseudo_close" + p}, 
+                         "}" 
+                    )
+                );
+            }
+        }
+
+
+        if ( rule.states && rule.states.length > 0 ) {
+            css_str.push(
+                React.createElement("div", {className: "ruleDetail_title"}, "States")
+            );
+            var states = rule.states,state;
+            for ( var p=0; p<states.length; p++ ) {
+                state = states[p];
+                css_str.push(
+                    React.createElement("div", {className: "ruleDetail_codeLine", 
+                        key:  "state_" + p}, 
+                        React.createElement("span", {className: "ruleDetail_selectorSpan"}, 
+                             state.selector
+                        ), " ",  "{" 
+                    )
+                );
+                var local_obj = state.metadata.local;
+                for ( var name in local_obj ) {
+                    css_str.push(
+                        React.createElement("div", {className: "ruleDetail_codeLine indent", 
+                            key:  "local_state_" + p + "_" + name}, 
+                            React.createElement("span", {className: "ruleDetail_variableName"}, 
+                                 name ), ": ",  local_obj[name], ";"
+                        )
+                    );
+                }
+                css_str.push(
+                    React.createElement("div", {className: "ruleDetail_codeLine", 
+                        key:  "state_close" + p}, 
+                         "}" 
+                    )
+                );
+            }
+        }
+
+        css_str.push(
+            React.createElement("div", {className: "ruleDetail_title"}, 
+                "Example HTML", 
+                React.createElement("div", {className: "ruleDetail_titleButton", 
+                    onClick:  this.toReact}, "React")
+            )
+        );
+
+        var html_obj = RuleUtil.findRuleExample( rule , this.props.css_info , true );
+        var html = html_obj.html;
+        if ( RouteState.route.react == "react" ) {
+            html = html.replace( /class=/gi , "className=");
+        }
+        css_str.push(
+            React.createElement("div", {className: "ruleDetail_codeLine", 
+                key:  "local_html" }, 
+                React.createElement("pre", null, React.createElement("code", null,  vkbeautify.xml( html , "	") ))
+            )
+        );
+
+
+        console.log( rule );
+
+        return css_str;
+    },
+
+    render: function() {
+        var rule =  this.props.css_info.uuid_hash[
+                        this.props.rule_uuid
+                    ];
+
+        var rule = this.props.rule;
+
+        if ( !rule ) {
+            return React.createElement("div", null);
+        }
+
+
+
+        var cssStr = this.getCSSString( rule );
+        return  React.createElement("div", {className: "ruleCSS"}, 
+                    React.createElement("div", {className: "ruleDetail_code"}, 
+                         cssStr 
+                    )
+                );
+    }
+
+});
+
+
+
+var RuleDetail = React.createClass({displayName: "RuleDetail",
+
+    getInitialState: function(){
+        var rule_uuid = RouteState.route.rule;
+        if (
+            !rule_uuid
+            || rule_uuid == ""
+        ) {
+            rule_uuid = RouteState.route.tree;
+        }
+
+        return {
+            tree_rule_uuid:RouteState.route.tree,
+            rule_uuid:rule_uuid,
+            tag:RouteState.route.tag
+        };
+    },
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListener(
+    		"tree",
+    		function ( route , prev_route ) {
+                me.setState({
+                    tree_rule_uuid:route.tree
+                });
+    		},
+            "rule_detail"
+    	);
+
+        RouteState.addDiffListener(
+    		"tag",
+    		function ( route , prev_route ) {
+                me.setState({
+                    tag:route.tag
+                });
+    		},
+            "rule_detail"
+    	);
+
+        RouteState.addDiffListener(
+    		"detailTab",
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "rule_detail"
+    	);
+
+        var me = this;
+        RouteState.addDiffListener(
+    		"rule",
+    		function ( route , prev_route ) {
+                var rule_uuid = route.rule;
+                if (
+                    !rule_uuid
+                    || rule_uuid == ""
+                ) {
+                    rule_uuid = me.state.tree_uuid;
+                }
+
+                me.setState({
+                    rule_uuid:rule_uuid
+                });
+    		},
+            "rule_detail"
+    	);
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "rule_detail" );
+    },
+
+
+
+    closeDetail: function () {
+        RouteState.merge(
+            {
+                rule:"",detailTab:""
+            }
+        );
+    },
+
+    close: function () {
+        RouteState.merge({tree:"",tag:"",rule:"",detailTab:""});
+    },
+
+    toRoot: function () {
+        RouteState.merge({rule:""});
+    },
+
+    render: function() {
+
+        if ( this.state.tag ) {
+            var rules_by_tag = this.props.css_info.tags_hash[this.state.tag];
+
+            var tree_rule = {
+                name:this.state.tag + " (tag)",
+                children:rules_by_tag,
+                type:"tag"
+            }
+        }else{
+            var tree_rule =  this.props.css_info.uuid_hash[
+                            this.state.tree_rule_uuid
+                        ];
+
+            if ( !tree_rule )
+                tree_rule = {name:"no rule",children:[]};
+        }
+
+        var rule =  this.props.css_info.uuid_hash[
+                        this.state.rule_uuid
+                    ];
+
+        if ( !rule ) {
+            rule = tree_rule;
+        }
+
+        console.log( rule );
+
+        var content = "";
+        if ( RouteState.route.detailTab == "code" ) {
+            content = React.createElement(RuleCSS, {
+                        css_info:  this.props.css_info, 
+                        rule_uuid:  tree_rule.rule_uuid, 
+                        rule:  tree_rule });
+        }else if ( RouteState.route.detailTab == "overview" ) {
+            content = React.createElement(RuleOverview, {
+                        css_info:  this.props.css_info, 
+                        rule:  rule });
+        }else if ( RouteState.route.detailTab == "example" ) {
+            content = React.createElement(RulePreview, {
+                        css_info:  this.props.css_info, 
+                        rule_uuid:  this.state.rule_uuid, 
+                        rule:  rule });
+        }
+
+        return  React.createElement("div", {className: "ruleDetail"}, 
+
+                    React.createElement("div", {className: "ruleDetail_header"}, 
+                        React.createElement("div", {className: "ruleDetail_title"}, 
+                            React.createElement("div", {className: "ruleDetail_close", 
+                                onClick:  this.close}, "< back")
+                            /*<div className="ruleDetail_showTree"
+                                onClick={ this.closeDetail }></div> */ 
+                        )
+                    ), 
+
+                    React.createElement("div", {className: "ruleDetail_contentContainer"}, 
+                         content 
+                    ), 
+
+                    React.createElement("div", {className: "ruleDetail_ruleNestingContainer"}, 
+                        React.createElement(RuleNesting, {
+                            css_info:  this.props.css_info, 
+                            rule:  tree_rule })
+                    ), 
+
+                    React.createElement("div", {className: "ruleDetail_ruleNavPlaceholder"}, 
+                        React.createElement(RuleDetailNav, {
+                            css_info:  this.props.css_info, 
+                            rule_uuid:  this.state.rule_uuid, 
+                            rule:  rule })
+                    )
+
+
+                );
+    }
+
+});
+
+
+var RuleDetailNav = React.createClass({displayName: "RuleDetailNav",
+
+    gotoRule: function ( rule_uuid ) {
+        RouteState.merge({rule:rule_uuid});
+    },
+
+    viewRuleDetailViaSelector: function ( selector ) {
+        var rule = this.props.css_info.selector_hash[selector];
+        if ( rule ) {
+            this.viewRuleDetail( rule.uuid );
+        }
+    },
+
+    viewRuleDetail: function ( uuid ) {
+        // want the tree not the rule....
+        var parent = findTopMostParent( uuid , this.props.css_info );
+        RouteState.toggle(
+            {
+                tree:parent.uuid,
+                rule:uuid
+            },{
+                tree:"",
+                rule:""
+            }
+        );
+    },
+
+    change_tab: function ( tab_name ) {
+        RouteState.merge(
+            {detailTab:tab_name}
+        );
+    },
+
+    closeDetail: function () {
+        RouteState.merge(
+            {
+                rule:"",detailTab:""
+            }
+        );
+    },
+
+    render: function() {
+        var rule = this.props.rule;
+
+        if ( !rule.name )
+            return React.createElement("div", null, "no rule");
+
+        var name = rule.name;
+        if ( rule.direct_child_selector ) {
+            name = "> " + name;
+        }
+
+        return  React.createElement("div", {className: "ruleDetailNav"}, 
+                    React.createElement("div", {className: "ruleDetailNav_title"}, 
+                        React.createElement("div", {className: "ruleDetailNav_titleText"}, 
+                             name 
+                        ), 
+                        React.createElement("div", {className: "ruleDetailNav_typeIcon"}, 
+                            React.createElement(TypeIcon, {rule:  rule })
+                        )
+                    ), 
+
+                    React.createElement("div", {className: "ruleDetail_headerNav"}, 
+                        React.createElement("div", {className: "ruleDetail_item_example", 
+                            onClick: 
+                                this.change_tab.bind( this , "example")
+                            }, 
+                            "example"
+                        ), 
+                        React.createElement("div", {className: "ruleDetail_item_css", 
+                            onClick: 
+                                this.change_tab.bind( this , "code")
+                            }, 
+                            "code"
+                        )
+                    )
+                );
+    }
+
+});
+
+
+
+var RuleNesting = React.createClass({displayName: "RuleNesting",
+
+    render: function() {
+        var rule = this.props.rule;
+        if ( !rule )
+            return React.createElement("div", null, "no rule found");
+
+        var content =
+            React.createElement(RuleNestingColumn, React.__spread({},  this.props, 
+                {rule:  rule, index:  0 }));
+
+        return  React.createElement("div", {className: "ruleNesting"}, 
+                     content 
+                );
+    }
+
+});
+
+
+
+var RuleNestingColumn = React.createClass({displayName: "RuleNestingColumn",
+
+    maxChildHeight: function ( rule , is_vertical , max_height ) {
+        if ( !is_vertical )
+            is_vertical = false;
+
+        if ( !rule )
+            return 0;
+
+        if ( !max_height )
+            max_height = 1;
+
+        if ( !is_vertical ) {
+            max_height += Math.max( 0 , rule.children.length-1 );
+        }else{
+            max_height += Math.max( 0 , rule.children.length );
+        }
+
+        var child;
+        var child_total = rule.children.length;
+        for ( var i=0; i<child_total; i++ ) {
+            child = rule.children[i];
+            max_height = this.maxChildHeight( child , is_vertical , max_height );
+        }
+
+        return max_height;
+    },
+
+    gotoRule: function ( rule_uuid ) {
+        var detailTab = "example";
+        if ( RouteState.route.detailTab ) {
+            detailTab = RouteState.route.detailTab;
+        }
+
+        RouteState.merge(
+            {
+                rule:rule_uuid,
+                detailTab:detailTab,
+                rulestate:""
+            }
+        );
+    },
+
+    render: function() {
+        // want the parents as well...
+        var rule = this.props.rule;
+
+        if ( !rule )
+            return React.createElement("div", null, "no rule");
+
+        var child;
+        var children = [];
+        var total = rule.children.length;
+        var is_last,has_children;
+        for ( var i=0; i<total; i++ ) {
+            child = rule.children[i];
+            children.push(
+                React.createElement(RuleNestingColumn, React.__spread({},  this.props, 
+                    {key:  "ruleNestingColumn_" + child.uuid, 
+                    rule:  child, index:  this.props.index+1}))
+            );
+        }
+        var last_child = rule.children[total-1];
+
+        // HORIZONTAL TREE MAX
+        var max_height = this.maxChildHeight( rule );
+        var last_child_height = this.maxChildHeight( last_child );
+        if ( rule.children.length > 1 ) {
+            max_height -= last_child_height-1;
+        }
+        if ( max_height == 1) {
+            max_height = 0;
+        }
+        if ( rule.children.length == 1 ) {
+            max_height = 0;
+        }
+
+        // STACKED MAX
+        var stack_max_height = this.maxChildHeight( rule , true );
+        var last_child_stacked_height = this.maxChildHeight( last_child , true );
+        stack_max_height -= last_child_stacked_height;
+        if (
+            rule.children.length == 0
+        ) {
+            stack_max_height = 0;
+        }
+
+        var extra_class = ( rule.children.length == 0 ) ?
+                            " no_children" : "";
+
+        var rule_title = "";
+        var extra_title_class = "";
+        if ( this.props.index == 0 ) {
+            // extra_class += " first_one";
+            // extra_title_class += " first_title";
+        }
+
+        if ( rule.uuid == RouteState.route.rule )
+            extra_title_class += " selected";
+
+        var name = rule.name;
+        if ( rule.direct_child_selector ) {
+            name = "> " + name;
+        }
+
+        rule_title =
+            React.createElement("div", {className:  "ruleNestingColumn_title" + extra_title_class, 
+                onClick: 
+                    this.gotoRule.bind( this , rule.uuid)
+                }, 
+                React.createElement("div", {className: "ruleNesting_titleText"}, 
+                     name 
+                ), 
+                React.createElement("div", {className: "ruleNesting_typeIcon"}, 
+                    React.createElement(TypeIcon, {rule:  rule })
+                )
+            );
+
+
+        return  React.createElement("div", {className:  "ruleNestingColumn" + extra_class, 
+                    key:  rule.uuid +"-"+ rule.children.length}, 
+
+                    React.createElement("div", {className:  "ruleNestingColumn_line" + extra_class, 
+                        style: {height:
+                            (( max_height ) * 30 ) + "px"
+                        }}
+                    ), 
+
+                    React.createElement("div", {className: 
+                            "ruleNestingColumn_stackedLine" + extra_class, 
+                        
+                        style: {height:
+                            (( stack_max_height ) * 30 ) + "px"
+                        }}
+                    ), 
+
+                    React.createElement("div", {className: 
+                            "ruleNestingColumn_lineCover" + extra_class
+                        }
+                    ), 
+
+                     rule_title, 
+                    React.createElement("div", {className: 
+                            "ruleNestingColumn_children" + extra_class
+                        }, 
+                         children 
+                    ), 
+
+                    React.createElement("div", {style: {clear:"both"}})
+                );
+    }
+
+});
+
+
+
+var RuleOverview = React.createClass({displayName: "RuleOverview",
+
+    gotoRule: function ( rule_uuid ) {
+        RouteState.merge({rule:rule_uuid});
+    },
+
+    viewRuleDetail: function ( uuid ) {
+        // want the tree not the rule....
+        var parent = findTopMostParent( uuid , this.props.css_info );
+        RouteState.toggle(
+            {
+                tree:parent.uuid,
+                rule:uuid
+            }
+        );
+    },
+
+    viewRuleDetailViaSelector: function ( selector ) {
+        var rule = this.props.css_info.selector_hash[selector];
+        if ( rule ) {
+            this.viewRuleDetail( rule.uuid );
+        }
+    },
+
+    render: function() {
+        var rule = this.props.rule;
+
+        var children = [];
+        var parents = [];
+        var states = [];
+        var relationships = [];
+        var duplicates = [];
+
+        // CHILDRENS
+        if ( rule.children ) {
+            for ( var r=0; r<rule.children.length; r++ ) {
+                var child = rule.children[r];
+                children.push(
+                    React.createElement("div", {className: "ruleOverview_subName", 
+                        key:  "ruleoverview_" + child.uuid, 
+                        onClick: 
+                            this.gotoRule.bind( this , child.uuid)
+                        }, 
+                         child.name
+                    )
+                );
+
+            }
+        }
+
+        // PARENTs (SELECTOR)
+        var parent = rule;
+        var count = 0;
+        while ( parent.parent_rule_uuid ) {
+            parent = this.props.css_info.uuid_hash[ parent.parent_rule_uuid ];
+            if ( parent ) {
+                parents.unshift(
+                    React.createElement("div", {className: "ruleOverview_subName", 
+                        key:  "ruleoverview_parent_" + parent.uuid, 
+                        onClick: 
+                            this.gotoRule.bind( this , parent.uuid)
+                        }, 
+                         parent.name
+                    )
+                );
+            }else{
+                parent = {parent_rule_uuid:false};
+            }
+        }
+        parents.push(
+            React.createElement("div", {className: "ruleOverview_subName", 
+                key:  "ruleoverview_rule_" + rule.uuid, 
+                onClick: 
+                    this.gotoRule.bind( this , rule.uuid)
+                }, 
+                 rule.name
+            )
+        );
+
+
+        var parent_back =
+            React.createElement("div", {
+                className: "ruleOverview_parentPlaceholder"}
+            );
+
+        if ( rule.parent_rule_uuid ) {
+            parent = this.props.css_info.uuid_hash[ rule.parent_rule_uuid ];
+            parent_back =
+                React.createElement("div", {className: "ruleOverview_parentLink", 
+                    onClick: 
+                        this.gotoRule.bind(
+                            this , rule.parent_rule_uuid
+                        )
+                    }
+                );
+        }
+
+        // STATES
+        if ( rule.states ) {
+            for ( var r=0; r<rule.states.length; r++ ) {
+                states.push(
+                    React.createElement("div", {className: "ruleOverview_stateSubName", 
+                        key:  "ruleoverview_state_" + rule.states[r].uuid, 
+                        title:  rule.states[r].selector}, 
+                         rule.states[r].selector
+                    )
+                );
+            }
+        }
+
+        // RELATIONSHIPS
+        if ( rule.relationships ) {
+            for ( var r=0; r<rule.relationships.length; r++ ) {
+                var relationship =  this.props.css_info.selector_hash[
+                                        rule.relationships[r]
+                                    ];
+                if ( relationship ) {
+                    relationships.push(
+                        React.createElement("div", {className: "ruleOverview_subName", 
+                            key:  "ruleoverview_relation_" + relationship.uuid, 
+                            onClick: 
+                                this.viewRuleDetail.bind( this , relationship.uuid), 
+                            title:  relationship.selector}, 
+                             relationship.name
+                        )
+                    );
+                }
+            }
+        }
+
+        // DUPS
+        var name_rule = this.props.css_info.name_hash[ rule.name ];
+        if ( name_rule && name_rule.is_duplicate ) {
+            var unique_selectors = {};
+            for ( var r=0; r<name_rule.source.length; r++ ) {
+                var child = name_rule.source[r];
+                if ( !unique_selectors[child.selector] ) {
+                    unique_selectors[child.selector] = true;
+                    duplicates.push(
+                        React.createElement("div", {className: "ruleOverview_subName", 
+                            key:  "ruleoverview_dup_" + child.uuid, 
+                            onClick: 
+                                this.viewRuleDetailViaSelector.bind(
+                                    this , child.selector
+                                ), 
+                            title:  child.selector}, 
+                             child.selector
+                        )
+                    );
+                }
+            }
+        }
+
+        return  React.createElement("div", {className: "ruleOverview"}, 
+                    React.createElement("div", {className: "ruleOverview_context"}, 
+                        React.createElement("div", {className: "ruleOverview_subTitle"}, 
+                            "full selector"
+                        ), 
+                         parents, 
+                        React.createElement("div", {className: "ruleOverview_subTitle"}, 
+                            "children"
+                        ), 
+                         children, 
+                        React.createElement("div", {className: "ruleOverview_subTitle"}, 
+                            "states"
+                        ), 
+                         states, 
+                        React.createElement("div", {className: "ruleOverview_subTitle"}, 
+                            "relationships"
+                        ), 
+                         relationships, 
+                        React.createElement("div", {className: "ruleOverview_subTitle"}, 
+                            "duplicate names"
+                        ), 
+                         duplicates, 
+                        React.createElement("div", {className: "list_bottom_padding"})
+                    )
+                );
+    }
+
+});
+
+
+var RulePreview = React.createClass({displayName: "RulePreview",
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListeners(
+    		["rulestate","bg","outline"],
+    		function ( route , prev_route ) {
+                me.refreshDisplayedState();
+    		},
+            "rule_preview"
+    	);
+
+        this.refreshDisplayedState();
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "rule_preview" );
+    },
+
+    refreshDisplayedState: function () {
+        var state,state_name;
+        var rule = this.props.rule;
+
+        if ( !rule )
+            return;
+
+        for ( var s=0; s<rule.states.length; s++ ) {
+            state = rule.states[s];
+            state_name = state.state_info.states_by_index.join(" ");
+            if ( RouteState.route.rulestate ) {
+                if ( s == RouteState.route.rulestate-1 ) {
+                    $( ".state_" + s ).addClass("selected");
+                    $( ".state_" + s ).html( state_name );
+                }else{
+                    $( ".state_" + s ).removeClass("selected");
+                    $( ".state_" + s ).html( s );
+                }
+            }else{
+                $( ".state_" + s ).removeClass("selected");
+                $( ".state_" + s ).html( s );
+            }
+        }
+
+        if ( RouteState.route.bg ) {
+            $( ".rulePreview_toggleBGColor" ).addClass("selected");
+        }else{
+            $( ".rulePreview_toggleBGColor" ).removeClass("selected");
+        }
+
+        if ( RouteState.route.outline == "outline" ) {
+            $( ".rulePreview_outline" ).addClass("selected");
+        }else{
+            $( ".rulePreview_outline" ).removeClass("selected");
+        }
+
+    },
+
+    toggleBGColor: function () {
+        RouteState.toggle({
+            bg:"white"
+        },{
+            bg:""
+        });
+    },
+
+    outlineElement: function () {
+        RouteState.toggle({
+            outline:"outline"
+        },{
+            outline:""
+        });
+    },
+
+    changeBackgroundColor: function () {
+        RouteState.toggle({
+            bg:"#fff"
+        },{
+            bg:""
+        });
+    },
+
+    changeState: function ( index ) {
+        RouteState.toggle({
+            rulestate:index
+        },{
+            rulestate:""
+        });
+    },
+
+    showHTML: function () {
+        var example = this.findRuleExample( this.props.rule );
+    },
+
+    componentDidUpdate: function() {
+        var rule = this.props.rule;
+        var rule_dom = $(".rulePreview_iframe").contents().find( rule.selector );
+
+        if (
+            rule_dom.css("display") == "none" ||
+            rule_dom.css("visibility") == "hidden"
+        ) {
+            // changing state would be circular...
+            $(".rulePreview_visibility").removeClass("visible");
+        }else{
+            $(".rulePreview_visibility").addClass("visible");
+        }
+
+        this.refreshDisplayedState();
+    },
+
+
+    getRuleHTML: function ( rule ) {
+        var html = "";
+        /*html = "<style>";
+        html += ".exampleBox { width: 100px; height: 100px;";
+        html += " background-color: #fff; ";
+        html += " font-family: sans-serif; }</style>"
+        */
+
+        var example = "No example";
+        if ( rule.type == "tagged_rule" ) {
+            var sub_comp_info = RuleUtil.replaceComps(
+                rule , rule.metadata.example, [] , this.props.css_info
+            );
+            example = sub_comp_info.html;
+        }
+
+        html += "<link rel='stylesheet' type='text/css' href='../core.css'>";
+        html += "<link rel='stylesheet' type='text/css' href='../components.css'>";
+        html += example;
+
+        return html;
+    },
+
+    render: function() {
+        var rule = this.props.rule;
+
+        if ( !rule )
+            return React.createElement("div", null);
+
+        //var example = RuleUtil.findRuleExample( rule , this.props.css_info );
+        //example = example.all;
+
+        example = this.getRuleHTML( rule );
+
+        this.ele_border = false;
+
+        var states = [],state,state_class;
+
+        if ( rule.states && rule.states.length > 0 ) {
+
+            states.push(
+                React.createElement("div", {className: "rulePreview_navLabel", 
+                    key:  "rulePreview_navLabel" }, 
+                    "states"
+                )
+            );
+
+            for ( var s=0; s<rule.states.length; s++ ) {
+                state = rule.states[s];
+                state_class = "rulePreview_state state_" + s;
+
+                states.push(
+                    React.createElement("div", {className:  state_class, 
+                            title:  state.raw_selector, 
+                            key:  "rulePreview_state_" + state.raw_selector, 
+                            onClick: 
+                                this.changeState.bind( this , s+1+"")
+                            }, 
+                         s 
+                    )
+                );
+            }
+
+            states.push(
+                React.createElement("div", {className: "rulePreview_stateApplied", 
+                    key:  "rulePreview_stateApplied" }
+                )
+            );
+        }
+
+        return  React.createElement("div", {className: "rulePreview"}, 
+                    React.createElement("div", {className: "rulePreview_stage"}, 
+                        React.createElement(MagicFrame, {example:  example, rule:  rule })
+                    ), 
+                    React.createElement("div", {className: "rulePreview_nav"}, 
+                         states, 
+                        React.createElement("div", {className: "rulePreview_toggleBGColor", 
+                            onClick:  this.toggleBGColor}, 
+                            "bg color"
+                        ), 
+                        React.createElement("div", {className: "rulePreview_outline", 
+                            onClick:  this.outlineElement}, 
+                            "outline"
+                        )
+                    )
+                );
+    }
+
+});
+
+var MagicFrame = React.createClass({displayName: "MagicFrame",
+    render: function() {
+        return React.createElement("iframe", {style: {border: 'none'}, 
+                        className: "rulePreview_iframe"});
+    },
+
+    componentDidMount: function() {
+        var me = this;
+        RouteState.addDiffListeners(
+    		["outline","bg","rulestate"],
+    		function ( route , prev_route ) {
+                me.postProcessElement();
+    		},
+            "rule_magicFrame"
+    	);
+
+        this.renderFrameContents();
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "rule_magicFrame" );
+    },
+
+    renderFrameContents: function() {
+        var doc = this.getDOMNode().contentDocument;
+        if( doc.readyState === 'complete' ) {
+            var content = this.props.example;
+            var ifrm = this.getDOMNode();
+            ifrm = (ifrm.contentWindow) ?
+                        ifrm.contentWindow :
+                            (ifrm.contentDocument.document) ?
+                                ifrm.contentDocument.document : ifrm.contentDocument;
+
+            ifrm.document.open();
+            ifrm.document.write(content);
+            ifrm.document.close();
+        } else {
+            setTimeout( this.renderFrameContents , 0);
+        }
+
+        this.postProcessElement();
+    },
+
+    postProcessElement: function () {
+        if ( !this.isMounted() ) {
+            return;
+        }
+
+        var rule = this.props.rule;
+        var doc = this.getDOMNode().contentDocument;
+
+        var rule_dom = $(doc).contents().find( rule.selector );
+
+        if ( RouteState.route.outline == "outline" ) {
+            rule_dom.css("border", "1px solid #f00" );
+        }else{
+            rule_dom.css( "border", "" );
+        }
+
+        // make sure it is always visible....
+        //rule_dom.css("display", "block" );
+        if ( rule_dom.css("display") == "none" ) {
+            rule_dom.css("display", "block" );
+        }
+
+        var frame_bg = "#eee";
+        if ( RouteState.route.bg == "white" ) {
+            frame_bg = "#fff";
+        }
+
+        var body = $(doc).contents().find( "body" );
+        body.css("background-color", frame_bg );
+
+        //need to remove previous state without refresh entire page...
+        if (
+            RouteState.prev_route.rulestate
+            && rule.states
+            && rule.states.length > 0
+        ) {
+            var raw_selector =  rule.states[
+                                    RouteState.prev_route.rulestate-1
+                                ].raw_selector;
+            var class_arr = raw_selector.split(" ");
+
+            var cls,cls_arr,cls_build=[];
+
+            for ( var s=0; s<class_arr.length; s++ ) {
+                cls = class_arr[s];
+                cls_arr = cls.split(".");
+                cls_build.push( "." + cls_arr[1] );
+                // TODO: apply more if there are more than one state...
+                if (
+                    cls_arr.length > 2
+                ) {
+                    $(doc).contents().find( cls_build.join(" ") )
+                        .removeClass( cls_arr[2] );
+                }else if (
+                    cls_arr[0].length > 0
+                ) {
+                    $(doc).contents().find( cls_arr[0] )
+                        .removeClass( cls_arr[1] );
+                }
+            }
+        }
+
+        if ( RouteState.route.rulestate ) {
+            var raw_selector =  rule.states[
+                                    RouteState.route.rulestate-1
+                                ].raw_selector;
+            var class_arr = raw_selector.split(" ");
+
+            var cls,cls_arr,cls_build=[];
+
+            for ( var s=0; s<class_arr.length; s++ ) {
+                cls = class_arr[s];
+                cls_arr = cls.split(".");
+                cls_build.push( "." + cls_arr[1] );
+                // TODO: apply more if there are more than one state...
+                if (
+                    cls_arr.length > 2
+                ) {
+                    $(doc).contents().find( cls_build.join(" ") )
+                        .addClass( cls_arr[2] );
+                }else if (
+                    cls_arr[0].length > 0
+                ) {
+                    $(doc).contents().find( cls_arr[0] )
+                        .addClass( cls_arr[1] );
+                }
+            }
+        }
+
+    },
+
+    componentDidUpdate: function() {
+        this.renderFrameContents();
+    },
+    componentWillUnmount: function() {
+        React.unmountComponentAtNode( this.getDOMNode().contentDocument.body );
+    }
+});
+
+
+
+
+var StyleGuide = React.createClass({displayName: "StyleGuide",
+
+    componentWillMount: function() {
+        var me = this;
+        RouteState.addDiffListeners(
+    		["page"],
+    		function ( route , prev_route ) {
+                me.forceUpdate();
+    		},
+            "StyleGuide"
+    	);
+    },
+
+    componentWillUnmount: function(){
+        RouteState.removeDiffListenersViaClusterId( "StyleGuide" );
+    },
+
+    goto: function( type , id ){
+        RS.merge({
+            detail:id,
+            type:type,
+            detail_index:""+0
+        });
+    },
+
+    getSchemeShortcut: function ( css_obj, base ) {
+        var scheme = CSSModel.schemes[ css_obj.scheme ];
+        if ( scheme ) {
+            return scheme.shortcut.replace( "@base" , base );
+        }else{
+            return "no scheme found";
+        }
+    },
+
+    getLeftColumn: function( group ){
+
+        var atom,atom_html,col_left;
+        atom_html = [];
+        atom_html.push(
+            React.createElement("div", {className: "Cmod-StyleGuide__column__header"}, 
+                "Atoms"
+            )
+        );
+        for ( var atom_name in group.atoms ) {
+            atom = group.atoms[ atom_name ];
+
+            atom_title = atom.selector;
+            if ( atom.scheme ) {
+                atom_title = this.getSchemeShortcut(
+                                    atom,
+                                    atom.selector.replace( /\@var_name/g , atom.base )
+                                );
+            }
+            if ( atom.variable ) {
+                var variable = CSSModel.variables[ atom.variable ];
+                atom_title = this.getSchemeShortcut(
+                                    variable,
+                                    atom.selector.replace( /\@var_name/g , variable.base )
+                                );
+            }
+
+            atom_html.push(
+                React.createElement("div", {className: "Cmod-StyleGuide__column__item", 
+                    onClick:  this.goto.bind( this , "atom" , atom_name), 
+                    dangerouslySetInnerHTML:  {__html:atom_title} }
+                )
+            );
+        }
+
+        if ( atom_html.length == 1 ) {
+            atom_html = [];
+        }
+
+        col_left = [];
+        col_left.push(
+            React.createElement("div", {className: "Cmod-StyleGuide__column"}, 
+                 atom_html 
+            )
+        );
+        return col_left;
+    },
+
+
+
+    getRightColumn: function( group ){
+        var scheme;
+
+        var bases,base_html;
+        base_html = [];
+        base_html.push(
+            React.createElement("div", {className: "Cmod-StyleGuide__column__header"}, 
+                "Resets/Bases"
+            )
+        );
+        for ( var base_name in group.bases ) {
+            base = group.bases[ base_name ];
+            base_html.push(
+                React.createElement("div", {className: "Cmod-StyleGuide__column__item", 
+                    onClick:  this.goto.bind( this , "base" , base_name), 
+                    dangerouslySetInnerHTML:  {__html:base.selector} }
+                )
+            );
+        }
+        if ( base_html.length == 1 ) {
+            base_html = [];
+        }
+
+        var utilities,utility_html,utility_title;
+        utility_html = [];
+        utility_html.push(
+            React.createElement("div", {className: "Cmod-StyleGuide__column__header"}, 
+                "Utilities"
+            )
+        );
+        for ( var utility_name in group.utilities ) {
+            utility = group.utilities[ utility_name ];
+
+            utility_title = utility.selector;
+            if ( utility.scheme ) {
+                scheme = CSSModel.schemes[ utility.scheme ];
+                utility_title = this.getSchemeShortcut(
+                                        utility,
+                                        utility.base
+                                    );
+            }
+
+            utility_html.push(
+                React.createElement("div", {className: "Cmod-StyleGuide__column__item", 
+                    onClick:  this.goto.bind( this , "utility" , utility_name), 
+                    dangerouslySetInnerHTML:  {__html:utility_title} }
+                )
+            );
+        }
+
+        if ( utility_html.length == 1 ) {
+            utility_html = [];
+        }
+
+
+        var col_right = [];
+        col_right.push(
+            React.createElement("div", {className: "Cmod-StyleGuide__column float-right"}, 
+                 utility_html, 
+                 base_html 
+            )
+        );
+        return col_right;
+    },
+
+    viewComp: function ( parent_uuid , uuid ) {
+        RS.merge({
+            tree:parent_uuid,
+            rule:uuid,
+            detailTab:"example"
+        });
+    },
+
+    changePage: function ( page ) {
+        RS.merge({
+            page:page
+        });
+    },
+
+    render: function() {
+        var html = [];
+        if ( RS.route.page == "comps" ) {
+            var component;
+
+            var components = CSSModel.component_data.css_dom
+                .sort(function(a, b)
+                        {
+                            var x=a.name.toLowerCase(),
+                                y=b.name.toLowerCase();
+                            return x<y ? -1 : x>y ? 1 : 0;
+                        }
+                );
+
+            for ( var c=0; c<components.length; c++ ) {
+                component = components[ c ];
+                var col_1 = [];
+                col_1.push(
+                    React.createElement("div", {className: "Cmod-StyleGuide__column float-right"}, 
+                        React.createElement("div", {className: "Cmod-StyleGuide__column__header"}, 
+                            "States"
+                        ), 
+                        React.createElement("div", {className: "Cmod-StyleGuide__column__item"}
+                        )
+                    )
+                );
+
+                var children_html = [],child;
+                for ( var a=0; a<component.children.length; a++ ) {
+                    child = component.children[a];
+                    children_html.push(
+                        React.createElement("div", {className: "Cmod-StyleGuide__column__item", 
+                            onClick:  this.viewComp.bind( this ,
+                                component.uuid,
+                                child.uuid
+                            ), 
+                            dangerouslySetInnerHTML:  {__html:child.name} }
+                        )
+                    );
+                }
+                var col_2 = [];
+                col_2.push(
+                    React.createElement("div", {className: "Cmod-StyleGuide__column"}, 
+                        React.createElement("div", {className: "Cmod-StyleGuide__column__header"}, 
+                            "Children"
+                        ), 
+                         children_html 
+                    )
+                );
+
+                html.push(
+                    React.createElement("div", {className: "Cmod-StyleGuide__group"}, 
+                        React.createElement("div", {className: "Cmod-StyleGuide__group__title"}, 
+                             component.name
+                        ), 
+                         col_1,  col_2 
+                    )
+                );
+            }
+        }else{
+            var group,col_left,col_right;
+            for ( var group_name in CSSModel.groups ) {
+                group = CSSModel.groups[ group_name ];
+
+                col_left = this.getLeftColumn( group );
+                col_right = this.getRightColumn( group );
+
+                html.push(
+                    React.createElement("div", {className: "Cmod-StyleGuide__group"}, 
+                        React.createElement("div", {className: "Cmod-StyleGuide__group__title"}, 
+                             group.title
+                        ), 
+                         col_left,  col_right 
+                    )
+                );
+            }
+        }
+
+
+        return  React.createElement("div", {className: "Cmod-StyleGuide"}, 
+                    React.createElement("div", {className: "Cmod-StyleGuide__mainNav"}, 
+                        React.createElement("div", {className: "Cmod-StyleGuide__mainNav__link component", 
+                            onClick:  this.changePage.bind( this , "comps") }, 
+                            React.createElement("div", null, "Components")), 
+                        React.createElement("div", {className: "Cmod-StyleGuide__mainNav__link core", 
+                            onClick:  this.changePage.bind( this , "") }, 
+                            React.createElement("div", null, "Core"))
+                    ), 
+                    React.createElement("div", {className: "Cmod-StyleGuide__content"}, 
+                         html 
+                    ), 
+
+                    React.createElement(Detail, null), 
+                    React.createElement(RuleDetail, {css_info:  CSSModel.component_data})
+                );
+    }
+
+});
+
+
+
+var TypeIcon = React.createClass({displayName: "TypeIcon",
+
+    render: function() {
+
+        var icon_class = "rule_icon";
+
+
+        if ( this.props.rule.has_error ) {
+            icon_class = "dup_icon";
+        }else if ( this.props.rule.type == "tagged_rule" ) {
+            icon_class = "tagged_icon";
+
+            if ( this.props.rule.metadata ) {
+                if ( this.props.rule.metadata.complete ) {
+                    icon_class = "tagged_icon";
+                }else{
+                    icon_class = "tagged_incomplete_icon";
+                }
+            }else{
+                console.log( this.props.rule );
+            }
+        }
+
+        var extended = "";
+
+        if (
+            this.props.rule.is_extended
+        ) {
+            extended =
+                React.createElement("div", {className: "extendedIcon"}, 
+                    React.createElement("div", {className: "extendedIcon_content"})
+                );
+        }
+
+        //if ( this.props.rule.is_duplicate ) {
+        //    extra_text.push( ( total_stats == 1 ) ? "dup" : "dp" );
+        //}
+
+        var extendee = "";
+        if (
+            this.props.rule.metadata &&
+            this.props.rule.metadata.based_on
+        ) {
+            extendee =
+                React.createElement("div", {className: "extendeeIcon"}, 
+                    React.createElement("div", {className: "extendeeIcon_content"})
+                );
+        }
+
+        //if ( extra_text.length > 0 ) {
+        //    extra_text = <div className="extraText">{ extra_text.join(",") }</div>
+        //}
+
+        return  React.createElement("div", {className: "typeIcon"}, 
+                     extended, 
+                     extendee, 
+                    React.createElement("div", {className:  icon_class })
+                );
+    }
+
+});
+
+
+
+
+var _CSSModel = function () {};
+
+_CSSModel.prototype.process = function ( css_data ) {
+    $.extend( this , css_data );
+
+    // put everything into the groups...
+    this.pushIntoGroup( "variables" );
+    this.pushIntoGroup( "atoms" );
+    this.pushIntoGroup( "bases" );
+    this.pushIntoGroup( "utilities" );
+}
+
+_CSSModel.prototype.processComps = function ( comps_data ) {
+    this.component_data = processRules( comps_data );
+}
+
+_CSSModel.prototype.pushIntoGroup = function ( type ) {
+    var obj_arr = this[type];
+    var type_obj,group;
+    for ( var type_name in obj_arr ) {
+        type_obj = obj_arr[ type_name ];
+        var group = this.getGroup( type_obj.group );
+        group[ type ][ type_name ] = type_obj;
+    }
+}
+
+_CSSModel.prototype.getGroup = function ( group_name ) {
+
+    var groups = this.groups;
+
+    if ( !group_name ) {
+        group_name = "global";
+    }
+
+    if ( !groups[ group_name ] ) {
+        groups[ group_name ] = {title:group_name};
+    }
+    if ( !groups[ group_name ].variables ) {
+        groups[ group_name ].variables = {};
+    }
+    if ( !groups[ group_name ].atoms ) {
+        groups[ group_name ].atoms = {};
+    }
+    if ( !groups[ group_name ].bases ) {
+        groups[ group_name ].bases = {};
+    }
+    if ( !groups[ group_name ].utilities ) {
+        groups[ group_name ].utilities = {};
+    }
+    if ( !groups[ group_name ].components ) {
+        groups[ group_name ].components = {};
+    }
+
+    return groups[ group_name ];
+}
+
+
+var CSSModel = new _CSSModel();
+
+
+// TODO
+// - depth...
+// - (v2) figure out (only) element type selector clusters
+// - (v2) add media...they are being ignored now.
+
+// ISSUES
+// - body.state is creating a bunch of root comps
+// - combo selectors are perceived as unique ( .dog.brown )
+//      "pure" parent lookup could solve this (filter out last parts...":" too)
+// - unique feel too restrictive? ...probably not, it will avoid muddy selection
+
+var install_base;
+
+function processRules ( css_dom ) {
+    // time to make sure things are not time bloating
+    var start = new Date().getTime();
+
+    var rules = css_dom.stylesheet.rules;
+
+    if ( !install_base )
+        install_base = "../";
+
+    // initialize needed data...
+    var returnObj = {
+        install_base:install_base,
+
+        totals:{
+            overall:0,
+            rules:0,
+            rules_extended:0,
+            rules_extendee:0,
+            name_duplicates:0,
+            tagged_rules:0,
+            tagged_completed:0,
+
+            extendable:0,
+            depths:[],
+            depths_rules:[],
+            depths_tagged:[],
+            selectorStringLengthTotal:0,
+            time_to_process:0,
+
+            example_errors:0,
+
+            errors:0
+        },
+        scores:{
+            total_tagged_rules:0,
+            tagged_completed:0,
+            tagged_connected:0,
+            unique_names:0,
+            overall:0
+        },
+
+        selectors:[],
+        names:[],
+        rules:[],
+        tagged_rules:[],
+        incomplete_tagged_rules:[],
+        example_error_names:[],
+        states:[],
+        pseudos:[],
+        depths_all:[],
+
+        extended_rules_hash:{},
+        extended_rules:[],
+        extendee_rules_hash:{},
+        extendee_rules:[],
+
+        css_dom:[],
+
+        duplicates:[],
+
+        // lookups
+        selector_hash:{},
+        name_hash:{},
+        uuid_hash:{},
+        tags_hash:{},
+        tags:[],
+        base_tags_hash:{},
+        base_tags:[],
+        design_tags_hash:{},
+        design_tags:[],
+
+        //global rules...
+        global_rules:[],
+        url_prefix:"",//pulled from the global rules...last one wins
+        ignore:[],
+        fonts:[]
+    }
+
+    // internal hashes
+    var comp_hash = {};
+    var rule_hash = {};
+
+    // need 1:1 relationship selector to rule
+    var selectors = flattenSelectors( rules , returnObj );
+
+    // spliting out into rules, states, pseudo
+    var rules_states = flattenStates( selectors , returnObj );
+    returnObj.states_hash = rules_states.states_hash;
+    returnObj.pseudos_hash = rules_states.pseudos_hash;
+
+    // <RULES>
+    var selector_rule;
+    var selectors = rules_states.selectors;
+    for ( var r=0; r<selectors.length; r++ ) {
+        selector_rule = selectors[r];
+        processSelectorRule( selector_rule , returnObj );
+        processRule( selector_rule , returnObj );
+    }
+    // </RULES>
+
+    var states = rules_states.states;
+    var state;
+    for ( var r=0; r<states.length; r++ ) {
+        state = states[r];
+        processState( state , returnObj );
+    }
+
+    var pseudos = rules_states.pseudos;
+    var pseudo;
+    for ( var r=0; r<pseudos.length; r++ ) {
+        pseudo = pseudos[r];
+        processPseudo( pseudo , returnObj );
+    }
+
+    // <CONTEXTUALIZE>
+    var selector_rule;
+    for ( var r=0; r<returnObj.selectors.length; r++ ) {
+        selector_rule = returnObj.selectors[r];
+        contextualizeRule( selector_rule , returnObj );
+    }
+    // </CONTEXTUALIZE>
+
+    // <NAMES>
+    var rules_name = processRuleNames ( returnObj.selectors );
+    returnObj.names = rules_name.rules_by_name;
+    returnObj.name_hash = rules_name.rule_name_hash;
+    // </NAMES>
+
+    /*
+    // <BASED ON PARENTS>
+    var tagged_rule,based_on_name,based_on_rule;
+    for ( var r=0; r<returnObj.tagged_rules.length; r++ ) {
+        findBasedOnRelationship( returnObj.tagged_rules[r] , returnObj );
+    }
+    // </BASED ON PARENTS>
+    */
+
+    // <DIRECT_CHILDS>
+    this.processRuleDirectChild( returnObj.selectors );
+    // </DIRECT_CHILDS>
+
+    // <DUPS>
+    var name_rule;
+    for ( var r=0; r<returnObj.names.length; r++ ) {
+        name_rule = returnObj.names[r];
+        checkNameRuleForDuplication( name_rule , returnObj );
+    }
+    // </DUPS>
+
+    // <ERRORS>
+    var tagged_rule;
+    for ( var r=0; r<returnObj.tagged_rules.length; r++ ) {
+        tagged_rule = returnObj.tagged_rules[r];
+
+        // now do replacements....
+        tagged_rule.metadata.example_info
+            = __replaceComps( tagged_rule.metadata.example , returnObj );
+
+        // tally errors
+        if ( tagged_rule.metadata.example_info.errors.length > 0 ) {
+            tagged_rule.has_error = true;
+            returnObj.totals.example_errors++;
+            returnObj.example_error_names.push( tagged_rule.name );
+
+            if ( !tagged_rule.is_duplicate )
+                returnObj.totals.errors++;
+        }
+    }
+    // </ERRORS>
+
+    // <VARIABLES>
+    returnObj.variables = [];
+    // </VARIABLES>
+
+    scoreDOM( returnObj );
+
+    returnObj.totals.selectorStringLengthTotal =
+        returnObj.totals.selectorStringLengthTotal/returnObj.totals.overall;
+
+    returnObj.tags.sort();
+
+    console.log( returnObj );
+
+    var end = new Date().getTime();
+    var time = end - start;
+    returnObj.totals.time_to_process = time;
+    return returnObj;
+}
+
+    function isDirectChild ( rule , selector ) {
+        child_arr = selector.split(">");
+        if ( child_arr.length > 1 ) {
+            child_space_arr =   child_arr[
+                                    child_arr.length-1
+                                ].split(" ");
+            if ( child_space_arr.length == 2 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function shouldBeIgnored ( selector , ignore_filters ) {
+        var ignore_filter;
+        for ( var i=0; i<ignore_filters.length; i++ ) {
+            ignore_filter = ignore_filters[i];
+            if ( selector.indexOf( ignore_filter ) !== -1 ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /*
+    function findBasedOnRelationship ( tagged_rule , returnObj ) {
+        if ( tagged_rule.metadata.extends ) {
+            for ( var b=0; b<tagged_rule.metadata.extends.length; b++ ) {
+                based_on_selector = tagged_rule.metadata.extends[b];
+                based_on_rule = returnObj.selector_hash[ based_on_selector ];
+                if ( based_on_rule ) {
+                    based_on_rule.is_extended = true;
+                    if ( !returnObj.extended_rules_hash[based_on_rule.name] ) {
+                        returnObj.extended_rules_hash[based_on_rule.name]
+                            = based_on_rule;
+                        returnObj.extended_rules.push( based_on_rule );
+                        returnObj.totals.rules_extended++;
+                    }
+                    if ( !returnObj.extendee_rules_hash[tagged_rule.name] ) {
+                        returnObj.extendee_rules_hash[tagged_rule.name]
+                            = based_on_rule;
+                        returnObj.extendee_rules.push( tagged_rule );
+                        returnObj.totals.rules_extendee++;
+                    }
+                }
+            }
+        }
+    }
+    */
+
+    function flattenSelectors ( rules , returnObj ) {
+        var selector;
+        var new_rules = [];
+        var child_arr,child_space_arr,raw_selector;
+
+        var rule,cloned_rule,selector_arr;
+        for ( var r=0; r<rules.length; r++ ) {
+            rule = rules[r];
+
+            if ( rule.type == "rule" ) {
+                if ( rule.selectors.length > 1 ) {
+                    for ( var s=0; s<rule.selectors.length; s++ ) {
+                        raw_selector = rule.selectors[s];
+                        selector = raw_selector.replace( /> /g , "" );
+
+                        // make sure it's unique...
+                        cloned_rule = JSON.parse(JSON.stringify(rule));
+                        cloned_rule.selector = selector;
+                        cloned_rule.raw_selector = raw_selector;
+
+                        new_rules.push( cloned_rule );
+                    }
+                }else{
+                    raw_selector = rule.selectors[0];
+                    selector = raw_selector.replace( /> /g , "" );
+
+                    rule.selector = selector;
+                    rule.raw_selector = raw_selector;
+                    new_rules.push( rule );
+                }
+            }else if ( rule.type == "comment" ) {
+                var comment = rule.comment.trim();
+
+                if ( comment.indexOf( "-ctag-metadata:") == 0 ) {
+                    comment = comment.slice( 15 );
+                    returnObj.definitions = JSON.parse( comment );
+                }
+            }
+        }
+
+        // flip them back to rules and process again...
+        rules = new_rules;
+
+        // they are split out, now consolidate repeats
+        var rule_hash = {};
+        var new_rules = [];
+        for ( var r=0; r<rules.length; r++ ) {
+            rule = rules[r];
+            if ( !rule_hash[rule.selector] ) {
+                rule_hash[rule.selector] = rule;
+                new_rules.push( rule );
+                var cloned_rule = JSON.parse(JSON.stringify(rule));
+                rule.source = [cloned_rule];
+            }else{
+                hashed_rule = rule_hash[ rule.selector ];
+                hashed_rule.source.push( rule );
+            }
+        }
+
+        return new_rules;
+    }
+
+    function processRuleNames ( rules ) {
+        var rule_name_hash = {};
+        var rules_by_name = [];
+        for ( var r=0; r<rules.length; r++ ) {
+            rule = rules[r];
+            rule.name = getSelectorName( rule.selector );
+            rule.uuid = getRuleUUID( rule );
+
+            if ( !rule_name_hash[rule.name] ) {
+                rule_name_hash[rule.name] = rule;
+                rules_by_name.push( rule );
+            }else{
+                var hashed_rule = rule_name_hash[ rule.name ];
+                hashed_rule.source.push( rule );
+            }
+        }
+
+        return {
+            rules_by_name:rules_by_name,
+            rule_name_hash:rule_name_hash
+        };
+    }
+
+    function processSelectorRule ( selector_rule , returnObj ) {
+        selector_rule.name = getSelectorName( selector_rule.selector );
+
+        // first look to see if there is a root rule
+        // a root rule will have this rule's selector first...
+        var source_rule;
+        var has_root_selector = false;
+        for ( var d=0; d<selector_rule.source.length; d++ ) {
+            source_rule = selector_rule.source[d];
+            if ( source_rule.selectors[0] == selector_rule.selector ) {
+                has_root_selector = true;
+                break;
+            }
+        }
+
+
+        // see if it is tagged...
+        var tagged_comment = getTaggedCommentInfo ( selector_rule );
+        if ( tagged_comment ) {
+            selector_rule.type = "tagged_rule";
+        }
+
+
+        // give all the source the same name...
+        var source_rule;
+        for ( var d=0; d<selector_rule.source.length; d++ ) {
+            source_rule = selector_rule.source[d];
+            source_rule.name = selector_rule.name;
+        }
+    }
+
+    function processRuleDirectChild ( rules ) {
+        for ( var r=0; r<rules.length; r++ ) {
+            rule = rules[r];
+            rule.direct_child_selector
+                = isDirectChild( rule , rule.raw_selector );
+        }
+    }
+
+    function checkNameRuleForDuplication ( name_rule , returnObj ) {
+        // original selectors are not processed....
+        // this may bite me later...
+        var core_selector = name_rule.raw_selector;
+
+        for ( var d=0; d<name_rule.source.length; d++ ) {
+            source_rule = name_rule.source[d];
+
+            if (
+                core_selector != source_rule.selector &&
+                !source_rule.direct_child_selector
+            ) {
+                var first_selector = source_rule.selectors[0];
+
+                // need one entry that is the same...
+                if ( source_rule.selectors.indexOf( core_selector ) == -1 ) {
+                    name_rule.is_duplicate = true;
+                    name_rule.has_error = true;
+
+                    returnObj.totals.name_duplicates++;
+                    returnObj.duplicates.push( name_rule.name );
+                    returnObj.totals.errors++;
+                    break;
+                }
+            }
+        }
+
+        for ( var d=0; d<name_rule.source.length; d++ ) {
+            source_rule = name_rule.source[d];
+            source_rule.is_duplicate = name_rule.is_duplicate;
+        }
+
+    }
+
+    function bemContextualization ( rule , returnObj ) {
+
+    }
+
+    function contextualizeRule ( rule , returnObj ) {
+        // look up if it is a child of another comp
+        var selector_lookup = rule.selector.split(" ");
+        if ( selector_lookup.length == 1 ) {
+            var BEM_selector = rule.selector.replace( /__/g , "||BEM||" );
+            BEM_selector = BEM_selector.replace( /--/g , "||BEM||" );
+
+            selector_lookup = BEM_selector.split("||BEM||");// BEM children
+        }
+
+        //take out first child selectors
+        var new_selector_lookup = [];
+        var sel_str;
+        for ( var i=0; i<selector_lookup.length; i++ ) {
+            sel_str = selector_lookup[i];
+            if (
+                sel_str != ">" //&&
+                //sel_str != "~" &&
+                //sel_str != "+"
+            ) {
+                new_selector_lookup.push( sel_str );
+            }
+        }
+        selector_lookup = new_selector_lookup;
+
+        var selector_lookup_str;
+        var parent_rule;
+        var index = 0;
+        var has_parent = false;
+
+        while ( selector_lookup.length > 0 ) {
+            selector_lookup.pop();
+            selector_lookup_str = selector_lookup.join(" ");
+
+            if ( selector_lookup_str ) {
+                parent_rule = returnObj.selector_hash[selector_lookup_str];
+                if ( !parent_rule ) {
+                    createNewRule ( selector_lookup_str , returnObj );
+                }
+                parent_rule = returnObj.selector_hash[selector_lookup_str];
+                if ( index == 0 ) {// only add to parent...
+                    parent_rule.children.push( rule );
+                    if ( rule.type == "rule" ) {
+                        parent_rule.total_child_rules++;
+                    }else if ( rule.type == "tagged_rule" ) {
+                        parent_rule.total_child_comps++;
+                    }
+                    rule.parent_rule_uuid = parent_rule.uuid;
+                    has_parent = true;
+                }
+            }
+            index++;
+        }
+
+        // now if it is a root (single selector), add it to root of DOM
+        if ( !has_parent ) {//rule.selector.indexOf(" ") == -1 ) {
+            returnObj.css_dom.push( rule );
+        }
+    }
+
+
+
+function createNewRule ( selector , returnObj ) {
+    var new_rule = {
+        declarations:[],
+        selector:selector,
+        raw_selector:selector,
+        type:"rule",// it's not declared, so default to rule,
+        selectors:[selector],
+        source:[]
+    };
+
+    processRule( new_rule , returnObj );
+    return new_rule;
+}
+
+// Rule is more of a base class, a Comp is a tagged rule...
+// ...every rule/comp will go through this.
+function processRule ( rule , returnObj ) {
+    // some additional properties
+    //var selector_arr = rule.selector.split( " " );
+    rule.name = getSelectorName( rule.selector );//selector_arr.pop();
+    // give a shorter unique id to it
+    //var cssString = ruleToCSSString( rule );
+    // "-" causes Router to get confused
+    // only want something unique, so replacing with an "n"
+    rule.uuid = getRuleUUID( rule );
+    rule.children = [];
+    rule.total_child_rules = 0;// just simple rules, not everything
+    rule.total_child_comps = 0;
+    rule.is_duplicate = false;
+
+    // find depth
+    rule.depth = Math.min( 6 , rule.selector.split(" ").length-1 );
+    if ( !returnObj.totals.depths[ rule.depth ] )
+        returnObj.totals.depths[ rule.depth ] = 0;
+    returnObj.totals.depths[ rule.depth ]++;
+    if ( !returnObj.depths_all[ rule.depth ] )
+        returnObj.depths_all[ rule.depth ] = [];
+    returnObj.depths_all[ rule.depth ].push( rule.uuid );
+
+    rule.metadata = {};
+    rule.states = [];
+    rule.pseudos = [];
+
+    if ( rule.type == "rule" ) {
+        returnObj.totals.rules++;
+        returnObj.rules.push( rule );
+        if ( !returnObj.totals.depths_rules[ rule.depth ] )
+            returnObj.totals.depths_rules[ rule.depth ] = 0;
+        returnObj.totals.depths_rules[ rule.depth ]++;
+    }else if ( rule.type == "tagged_rule" ){
+        processComponent( rule , returnObj );
+    }
+
+    returnObj.totals.overall++;
+
+    // selector hash
+    if ( !returnObj.selector_hash[rule.selector] ) {
+        returnObj.selector_hash[rule.selector] = rule;
+    }else{
+        console.log("ERROR, selector not unique!");
+    }
+
+    returnObj.uuid_hash[ rule.uuid ] = rule;
+
+    //finish up...
+    returnObj.selector_hash[rule.name] = rule;
+    returnObj.selectors.push( rule );
+}
+
+
+
+function scoreDOM ( returnObj ) {
+
+    //80% goal
+    returnObj.scores.total_tagged_rules = Math.min(
+        1,
+        ( returnObj.totals.tagged_rules/returnObj.totals.overall ) / .8
+    );
+
+    // Comps completed = 90%
+    returnObj.scores.tagged_completed = Math.min(
+        1,
+        ( returnObj.totals.tagged_completed/returnObj.totals.tagged_rules ) / .9
+    );
+
+    // Comps connected = 30%
+    returnObj.scores.tagged_extended = Math.min(
+        1,
+        Math.abs(
+            ( returnObj.totals.rules_extended/returnObj.totals.tagged_rules )
+            % .3
+        )
+        / .3
+    );
+
+    // Unique Names = 100%;
+    returnObj.scores.unique_names = Math.max(
+        0,
+        Math.min(
+            1,
+            1 - (
+                    returnObj.totals.name_duplicates/
+                    returnObj.totals.overall
+                ) / .1
+        )
+    );
+
+    returnObj.scores.overall = (
+        returnObj.scores.total_tagged_rules +
+        returnObj.scores.tagged_completed +
+        returnObj.scores.tagged_extended +
+        returnObj.scores.unique_names
+    ) / 4;
+}
+
+
+function _ruleAndChildToCSSString ( rule , pretty ) {
+    var css = [];
+    var new_line = "\n";
+    if ( !pretty ) {
+        new_line = " ";
+    }
+
+    css.push(
+        new_line,
+        this._ruleAndPseudosToCSSString( rule , pretty ),
+        new_line
+    );
+
+    var child;
+    for ( var c=0; c<rule.children.length; c++ ) {
+        child = rule.children[c];
+        css.push(
+            _ruleAndChildToCSSString( child , pretty ),
+            new_line
+        );
+    }
+
+    return css.join("");
+}
+
+function _ruleAndPseudosToCSSString ( rule , pretty ) {
+    var new_line = "\n";
+    if ( !pretty ) {
+        new_line = " ";
+    }
+
+    var css_str = ruleToCSSString( rule , pretty );
+
+    // pseudos now...(recursive)
+    if ( rule.pseudos ) {
+        $.each( rule.pseudos , function ( i , pseudo ) {
+            css_str += new_line + ruleToCSSString( pseudo , pretty );
+        });
+    }
+
+    // states now...(recursive)
+    if ( rule.states ) {
+        $.each( rule.states , function ( i , state ) {
+            css_str += new_line + ruleToCSSString( state , pretty );
+        });
+    }
+
+    return css_str;
+}
+
+
+
+
+function ruleToCSSString ( rule , pretty ) {
+    var source;
+    var css_str = [];
+
+    if ( !rule || !rule.source || rule.source.length == 0 )
+        return "";
+
+    for ( var s=0; s<rule.source.length; s++ ) {
+        source = rule.source[s];
+        css_str.push( _ruleToCSSString( source , pretty ) );
+    }
+
+    var new_line = "\n";
+    if ( !pretty ) {
+        new_line = " ";
+    }
+    return css_str.join(new_line+new_line);
+}
+
+    function _ruleToCSSString ( rule , pretty ) {
+        var tab = "\t";
+        var new_line = "\n";
+        if ( !pretty ) {
+            tab = "";
+            new_line = " ";
+        }
+
+        var all_selectors = rule.selectors.join( "," + new_line );
+
+        // Writting all the selectors makes cascade issues...
+        // "rule.selector" was commented out however, so there
+        // may be a reason not to go with just selector...not sure.
+        // var selector = all_selectors;//rule.selector;
+        var selector = rule.selector;
+        // cons ole.log( all_selectors );
+        // cons ole.log( rule.selector );
+        // cons ole.log( "=====" );
+
+        if ( !selector ) {
+            return "";
+        }
+
+        if ( pretty ) {
+            //selector = selector.replace(/ /g, new_line );
+        }
+
+        var css = [];
+        Array.prototype.push.apply(
+            css,
+            [selector , new_line , "{", new_line]
+        );
+
+        var dec_length = rule.declarations.length;
+        var dec;
+        for ( var i=0; i<dec_length; i++ ) {
+            dec = rule.declarations[i];
+            if ( dec.type == "declaration" ) {
+                Array.prototype.push.apply(
+                    css,
+                    [
+                        tab ,
+                        dec.property, ": ", dec.value,";",
+                        new_line
+                    ]
+                );
+            }else if ( dec.type == "comment" && pretty ) {
+                Array.prototype.push.apply(
+                    css,
+                    [
+                        tab ,
+                        "/*" + dec.comment + "*/",
+                        new_line
+                    ]
+                );
+            }
+        }
+        css.push( "}" );
+
+        var css_str = css.join("");
+        /*if ( img_prefix ) {
+            css_str =   css_str.replace(
+                            /url\(\"/g, "url(\"" + img_prefix
+                        );
+            css_str =   css_str.replace(
+                            /url\(\'/g, "url(\'" + img_prefix
+                        );
+        }*/
+
+        return css_str;
+    }
+
+
+
+function ruleLocalToCSSString ( rule ) {
+
+    var css_str = [];
+    if ( rule.metadata && rule.metadata.local ) {
+        var local = rule.metadata.local;
+        for ( var name in local ) {
+            css_str.push( name + ": " + local[name] + ";" );
+        }
+    }
+
+    if ( rule.metadata && rule.metadata.pointers ) {
+        var pointers = rule.metadata.pointers;
+        for ( var p=0; p<pointers.length; p++ ) {
+            css_str.push( pointers[p] + "();" );
+        }
+    }
+    console.log( rule );
+
+    return css_str.join("\n");
+
+}
+
+
+
+function flattenStates ( rules , returnObj ) {
+    var selector;
+    var new_rules = [];
+    var states = [];
+    var states_hash = {};
+    var pseudos = [];
+    var pseudos_hash = {};
+    var rule,is_state;
+    for ( var r=0; r<rules.length; r++ ) {
+        rule = rules[r];
+        is_state = _checkIfStateOrPseudo( rule );
+
+        if ( is_state == "state" ) {
+            states.push( rule );
+            states_hash[ rule.selector ] = rule;
+        }else if ( is_state == "pseudo" ) {
+            pseudos.push( rule );
+            pseudos_hash[ rule.selector ] = rule;
+        }else{
+            new_rules.push( rule );
+        }
+    }
+    return {
+        selectors:new_rules,
+        states:states,
+        states_hash:states_hash,
+        pseudos:pseudos,
+        pseudos_hash:pseudos_hash
+    };
+}
+
+function _checkIfStateOrPseudo ( rule ) {
+    // States are...anything with joined selectors:
+    // .dog.cat
+    // .dog.cat .figure
+    // p.active li
+    // #me.soiled .frog
+    // .dog:hover
+    // .dog:hover .cat
+    // They get added to the rule that they are a variation of...
+    // (both of them)
+    var selector_arr = rule.selector.split(" ");
+    var selector;
+    var hash_count,colon_count,dot_count;
+    var first_dot,first_hash;
+    //for ( var i=0; i<selector_arr.length; i++ ){
+    // need to go backwards to give precedence to pseudos
+    // TODO: loop through entirely to look for pseudos first...
+
+
+    for ( var i=selector_arr.length-1; i>=0; i-- ){
+        selector = selector_arr[i];
+
+        hash_count = selector.split("#").length - 1;
+        colon_count = selector.split(":").length - 1;
+        dot_count = selector.split(".").length - 1;
+
+        first_dot = selector.indexOf(".");
+        first_hash = selector.indexOf("#");
+
+        if ( colon_count > 0 ) // .dot:hover
+        {
+            // con sole.log( "pseudo" );
+            return "pseudo";
+            break;
+        }
+
+        if ( dot_count > 1 ) { // .dot.cat
+            // con sole.log( "state" );
+            return "state";
+            break;
+        }
+        if ( hash_count == 1 // #dog.cat
+            && dot_count > 0
+        ) {
+            // con sole.log( "state" );
+            return "state";
+            break;
+        }
+        if ( first_dot > 0 ) { // p.dog
+            // con sole.log( "state" );
+            return "state";
+            break;
+        }
+        if ( first_hash > 0 ) { // p#dog
+            // con sole.log( "state" );
+            return "state";
+            break;
+        }
+    }
+    // con sole.log( "rule" );
+    return "rule";
+}
+
+function processState ( state , returnObj ) {
+    state.type = "state";
+    state.state_info = {};
+    state.state_info = _getRuleAndStateInfo( state );
+    returnObj.states.push( state );
+
+    var metadata_info = getCommentInfo( state );
+    state.metadata = metadata_info;
+
+    // now add the state to the right rule...
+    var rule_cumulative = [],rule_cumulative_str;
+    var focused_state, rule;
+
+    //states only apply to things that are affected...
+    var selector = state.state_info.rule_processed_selector;
+    var rule = returnObj.selector_hash[ selector ];
+    if ( !rule ) {
+        rule = createNewRule ( selector , returnObj );
+    }
+    rule.states.push( state );
+}
+
+
+
+function processPseudo ( pseudo , returnObj ) {
+    pseudo.type = "pseudo";
+    pseudo.pseudo_info = {};
+    pseudo.pseudo_info = _getRuleAndStateInfo( pseudo );
+    returnObj.pseudos.push( pseudo );
+
+    var metadata_info = getCommentInfo( pseudo );
+    pseudo.metadata = metadata_info;
+
+    var selector = pseudo.pseudo_info.rule_processed_selector;
+    var rule = returnObj.selector_hash[ selector ];
+    if ( !rule ) {
+        rule = createNewRule ( selector , returnObj );
+    }
+    rule.pseudos.push( pseudo );
+}
+
+    function _getRuleAndStateInfo ( state )
+    {
+        var sel_arr = state.selector.split(" ");
+        var sel;
+        var states_by_index = [];
+        var rules_by_index = [];
+        for ( var i=0; i<sel_arr.length; i++ ) {
+            sel = sel_arr[i];
+            sel = sel.replace(/\./g, "|." );
+            sel = sel.replace(/:/g, "|:" );
+            sel = sel.replace(/#/g, "|#" );
+            sel_sub_arr = sel.split("|");
+
+            if ( sel_sub_arr[0].length == 0 ) {
+                sel_sub_arr.shift();
+            }
+            sel_arr.splice( i , 1 , sel_sub_arr[0] );
+            rules_by_index.push( sel_sub_arr[0] );
+
+            if ( sel_sub_arr.length > 1 ) {
+                sel_sub_arr.shift();
+                states_by_index[i] = sel_sub_arr.join("");
+            }else{
+                states_by_index[i] = "";
+            }
+        }
+
+        var sel_clean_arr = sel_arr.slice(0);
+        var rules_by_index_processed = rules_by_index.slice(0);
+        if (
+            sel_clean_arr[0] == "body" ||
+            sel_clean_arr[0] == "html"
+        ) {
+            sel_clean_arr.shift();
+            rules_by_index_processed.shift();
+
+            if (
+                sel_clean_arr[0] == "body"
+            ) {
+                sel_clean_arr.shift();
+                rules_by_index_processed.shift();
+            }
+        }
+
+        return {
+            rule_processed_selector:sel_clean_arr.join(" "),
+            rule_selector:sel_arr.join(" "),
+            states_by_index:states_by_index,
+            rules_by_index:rules_by_index,
+            rules_processed_by_index:rules_by_index_processed
+        }
+    }
+
+/*
+    function _allPossibleRules ( selector ) {
+        var sel_arr = selector.split(" ");
+        var sel;
+        for ( var i=0; i<sel_arr.length; i++ ) {
+            sel = sel_arr[i];
+            sel = sel.replace(/\./g, "|." );
+            sel = sel.replace(/:/g, "|:" );
+            sel = sel.replace(/#/g, "|#" );
+            sel_sub_arr = sel.split("|");
+            sel_arr.splice( i , 1 , sel_sub_arr );
+        }
+
+        // now traverse all all the possibles.
+        var all_rules = [""];
+        for ( var i=0; i<sel_arr.length; i++ ) {
+            name_arr = sel_arr[i];
+            all_rules = _arrayOfPossibleRules(name_arr , all_rules );
+        }
+
+        return all_rules;
+    }
+        function _arrayOfPossibleRules ( name_arr , all_rules ) {
+            //var all_selectors = [];
+            var name,all_rules,new_rules;
+            var new_all_rules = [];
+            for ( var i=0; i<name_arr.length; i++ ) {
+                name = name_arr[i];
+                if (
+                    name.length > 0
+                    && name.indexOf(":") != 0
+                ) {
+                    new_rules = all_rules.slice(0);
+                    for ( var n=0; n<new_rules.length; n++ ) {
+                        var new_rule_value = new_rules[n];
+                        if ( new_rule_value.length > 0 ) {
+                            new_rules[n] = new_rules[n] + " " + name;
+                        }else{
+                            new_rules[n] = name;
+                        }
+                    }
+                    new_all_rules = new_all_rules.concat( new_rules );
+                }
+            }
+            return new_all_rules;
+        }
+*/
+
+
+
+
+function processComponent ( tagged_rule , returnObj ) {
+
+    tagged_rule.metadata = {
+        global:false,
+        complete:false
+    };
+
+    var metadata_info = getTaggedCommentInfo( tagged_rule );
+    $.extend( tagged_rule.metadata , metadata_info );
+
+    if ( tagged_rule.metadata.tags ) {
+        var tag;
+        var is_base = false;
+        for ( var t=0; t<tagged_rule.metadata.tags.length; t++ ) {
+            tag = tagged_rule.metadata.tags[t];
+            if ( !returnObj.tags_hash[tag] ) {
+                returnObj.tags_hash[tag] = [];
+                returnObj.tags.push( tag );
+            }
+            returnObj.tags_hash[tag].push( tagged_rule );
+
+            if ( tag == "base" ) {
+                is_base = true;
+            }
+        }
+
+        // now sort into base and design level tags...
+        for ( var t=0; t<tagged_rule.metadata.tags.length; t++ ) {
+            tag = tagged_rule.metadata.tags[t];
+
+            if ( is_base ) {
+                // don't hide elements that accidentally don't have second tag
+                //if ( tag != "base" ) {
+                    if ( !returnObj.base_tags_hash[tag] ) {
+                        returnObj.base_tags_hash[tag] = [];
+                        returnObj.base_tags.push( tag );
+                    }
+                    returnObj.base_tags_hash[tag].push( tagged_rule.uuid );
+                //}
+            }else{
+                if ( !returnObj.design_tags_hash[tag] ) {
+                    returnObj.design_tags_hash[tag] = [];
+                    returnObj.design_tags.push( tag );
+                }
+                returnObj.design_tags_hash[tag].push( tagged_rule.uuid );
+            }
+        }
+    }
+
+    __processExample( tagged_rule );
+
+    if (
+        tagged_rule.metadata.tags &&
+        tagged_rule.metadata.example
+    ) {
+        returnObj.totals.tagged_completed++;
+        tagged_rule.metadata.complete = true;
+    }else{
+        returnObj.incomplete_tagged_rules.push( tagged_rule.uuid );
+    }
+
+    returnObj.totals.tagged_rules++;
+    returnObj.tagged_rules.push( tagged_rule );
+    if ( !returnObj.totals.depths_tagged[ tagged_rule.depth ] )
+        returnObj.totals.depths_tagged[ tagged_rule.depth ] = 0;
+    returnObj.totals.depths_tagged[ tagged_rule.depth ]++;
+}
+
+function __processExample ( tagged_rule ) {
+    var template = tagged_rule.metadata.example;
+
+    if ( template && template != "" ) {
+        var clean_name = tagged_rule.name.replace(/\./,"");
+
+        if ( template.indexOf("'") == 0 ) {
+            template = template.slice(1);
+        }
+        if ( template.lastIndexOf("'") == template.length-1 ) {
+            template = template.slice(0,-1);
+        }
+
+        // complete_tally++;
+        if ( template.trim().indexOf("...") == 0 ) {
+            var html_content = template.slice(3);
+            template = "<div class='"+clean_name+"'>"
+                                    + html_content +
+                                "</div>";
+        }else{
+            template =  template.replace(
+                    "...","class='" + clean_name + "'"
+                );
+        }
+
+        var html_rebuilt = [];
+        var tag_arr = template.split("{");
+        var tag_section;
+        for ( var t=0; t<tag_arr.length; t++ ) {
+            tag_section = tag_arr[t];
+            tag_section_arr = tag_section.split("}");
+            if ( tag_section_arr.length == 1 ) {
+                html_rebuilt.push( tag_section );
+            }else{
+                html_rebuilt.push(
+                    "<div comp='"
+                    + $.trim( tag_section_arr[0] )
+                    +"'></div>"
+                    + $.trim( tag_section_arr[1] )
+                );
+            }
+        }
+        tagged_rule.metadata.example = html_rebuilt.join("");
+
+    }
+    return false;
+}
+
+
+function __replaceComps (
+    html_str , css_info, rule_names, errors, times_called
+) {
+    if ( !rule_names )
+        rule_names = [];
+
+    if ( !errors )
+        errors = [];
+
+    if ( !times_called )
+        times_called = 1;
+
+    if ( times_called > 100 ) {
+        return {
+            html:"<div>Error, too many cycles</div>",
+            rule_names:rule_names
+        };
+    }
+
+    if ( html_str ) {
+        html_str = $.trim( html_str );
+    }
+
+    var example_html = $("<div>" +  html_str  + "</div>");
+    var sub_rules = example_html.find("div[comp]");
+    var sub_rule_html,sub_rule,sub_rule_name;
+    var sub_rule_results;
+
+    if ( sub_rules.length > 0 ) {
+        var sub_rule_name_arr = [];
+        for ( var sr=0; sr<sub_rules.length; sr++ ) {
+            sub_rule_html = sub_rules[sr];
+            sub_rule_name = $(sub_rule_html).attr("comp");
+
+            // TODO Look for names..if not found, then look for selectors
+            if ( css_info.name_hash[sub_rule_name] ) {
+                sub_rule = css_info.name_hash[sub_rule_name];
+
+                if (    sub_rule.metadata
+                        && sub_rule.metadata.example )
+                {
+                    sub_rule_name_arr.push( sub_rule_name );
+
+                    $(sub_rule_html).replaceWith(
+                        $( sub_rule.metadata.example )
+                    );
+                    break;
+                }else{
+                    if ( css_info.selector_hash[sub_rule_name] ) {
+                        sub_rule = css_info.selector_hash[sub_rule_name];
+
+                        if (    sub_rule.metadata
+                                && sub_rule.metadata.example )
+                        {
+                            sub_rule_name_arr.push( sub_rule_name );
+                            $(sub_rule_html).replaceWith(
+                                $( sub_rule.metadata.example )
+                            );
+                            break;
+                        }else{
+                            $( sub_rule_html ).replaceWith(
+                                "<div>error '"
+                                + sub_rule_name
+                                + "' [3] not found</div>"
+                            );
+
+                            errors.push( sub_rule_name );
+                        }
+                    }else{
+                        $( sub_rule_html ).replaceWith(
+                            "<div>error '"
+                            + sub_rule_name
+                            + "' [1] not found</div>"
+                        );
+
+                        errors.push( sub_rule_name );
+                    }
+                }
+            }else{
+                if ( css_info.selector_hash[sub_rule_name] ) {
+                    sub_rule = css_info.selector_hash[sub_rule_name];
+                    if (    sub_rule.metadata
+                            && sub_rule.metadata.example )
+                    {
+                        sub_rule_name_arr.push( sub_rule_name );
+
+                        $(sub_rule_html).replaceWith(
+                            $( sub_rule.metadata.example )
+                        );
+                        break;
+                    }else{
+                        $( sub_rule_html ).replaceWith(
+                            "<div>error '"
+                            + sub_rule_name
+                            + "' [4] not found</div>"
+                        );
+
+                        errors.push( sub_rule_name );
+                    }
+                }else{
+                    $(sub_rule_html).replaceWith(
+                        "<div>error template '"
+                        + sub_rule_name
+                        + "' [2] not found</div>"
+                    );
+
+                    errors.push( sub_rule_name );
+                }
+            }
+        }
+
+        return  __replaceComps(
+                    example_html.html(),
+                    css_info,
+                    rule_names.concat( sub_rule_name_arr ),
+                    errors,
+                    times_called + 1
+                );
+    }else{
+        return {
+            html:html_str,
+            rule_names:rule_names,
+            errors:errors
+        };
+    }
 };
 
 
 
 
-var PhiModel = PhiModelSingleton();
-var PhiThemeBootstrap = function () {};
+function findTopMostParent ( uuid , css_info ) {
+    var rule = css_info.uuid_hash[ uuid ];
+    var parent = rule;
+    var count = 0;
 
-PhiThemeBootstrap.run = function ( data_dom ) {
-
-    $(window).ready(function () {
-
-        HTMLtoJSON( $(data_dom) , PhiModel );
-        // some defaults...
-        PhiModel.project = {};
-        PhiModel.page = {};
-
-        RouteState.listenToHash();
-        PhiModel.processProjects( PhiModel.projects );
-
-        console.log( PhiModel );
-
-        //inject CSS here...only want this to happen once...
-        var styles = {};
-        if ( PhiModel.style.line_highlight_color ) {
-            styles[".page .page_content h1"] = {
-                "border-bottom-color":PhiModel.style.line_highlight_color
-            };
-            styles[".listPage .listPage_rowContainer .listPage_header"] = {
-                "border-bottom-color":PhiModel.style.line_highlight_color
-            };
-        }
-        if ( PhiModel.style.text_highlight_color ) {
-            styles[".homePage .homePage_centerNav .homePage_link:hover"] = {
-                "color":PhiModel.style.text_highlight_color
-            };
-        }
-        if ( PhiModel.style.side_gradient ) {
-            styles[".listPage.nano > .nano-pane > .nano-slider"] = {
-                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
-            };
-            styles[".homePage .homePage_rightGradient"] = {
-                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
-            };
-            styles[".homePage"] = {
-                "background-image":"url('"+ PhiModel.style.side_gradient + "')"
-            };
-        }
-        if ( PhiModel.style.home_background_color ) {
-            styles[".homePage"] = styles[".homePage"] || {};
-            styles[".homePage"]['background-color']
-                = PhiModel.style.home_background_color;
-        }
-        if ( PhiModel.style.home_main_nav_text_color ) {
-            styles[".homePage .homePage_centerNav .homePage_link"] = {
-                "color":PhiModel.style.home_main_nav_text_color
-            };
-        }
-        if ( PhiModel.style.home_secondary_nav_text_color ) {
-            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_bottomNavLink"] = {
-                "color":PhiModel.style.home_secondary_nav_text_color
-            };
-            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_copyright"] = {
-                "color":PhiModel.style.home_secondary_nav_text_color
-            };
-        }
-        if ( PhiModel.style.logo ) {
-            styles[".homePage .homePage_logo"] = {
-                "background-image":"url('"+ PhiModel.style.logo + "')"
-            };
-        }
-        if ( PhiModel.style.logo_mark ) {
-            styles[".homePage .homePage_logo_small"] = {
-                "background-image":"url('"+ PhiModel.style.logo_mark + "')"
-            };
-        }
-        $.injectCSS( styles );
-
-
-        React.render(
-            React.createElement(
-                PhiTheme,
-                {
-                    PhiModel:PhiModel
-                }
-            ),
-            document.body
-        );
-    });
+    while ( parent.parent_rule_uuid ) {
+        parent = css_info.uuid_hash[ parent.parent_rule_uuid ];
+    }
+    return parent;
 }
 
+function _getCleanedSelector ( selector ) {
+    var selector_arr = selector.split(" ");
+    var selector_ele,selector_ele_arr,first_letter;
+    var first_colon,first_dot,selector_base;
+    var base_end,new_selector=[];
+    for ( var i=0; i<selector_arr.length; i++ ) {
+        selector_ele = selector_arr[i];
+        //selector_ele_arr = selector_ele.split(".");
+        //body.dog .dog.cat .dot.cat.mouse div.dog #dog.cat .dog:hover
+        first_letter = selector_ele.slice(0,1);
+        first_colon = selector_ele.indexOf( ":" );
+        if ( first_colon == -1 )
+            first_colon = selector_ele.length;
+        first_dot = selector_ele.indexOf( "." , 1 );
+        if ( first_dot == -1 )
+            first_dot = selector_ele.length;
 
-var HTMLtoJSON = function ( html , source ) {
-    var json = _HTMLtoJSON( html , "json" , source );
-    return json;
+        base_end = Math.min( first_colon , first_dot );
+        selector_base = selector_ele.slice( 0 , base_end );
+        new_selector.push( selector_base );
+    }
+    return new_selector.join(" ");
 }
 
-var _HTMLtoJSON = function ( html , set , json_parent ) {
-    var json_parent = json_parent || {};
+function getSelectorName ( selector ) {
+    var selector_arr = selector.split(" ");
+    return selector_arr.pop();
+}
 
-    var getNodeText = function ( node ) {
-        var node = $( node );
-        if ( node.prop("tagName") == "IMG" ) {
-            return node.attr("src");
+function getRuleUUID ( rule ) {
+    if ( !rule || !rule.selector ) {
+        console.log("ERROR: getRuleUUID");
+        return "-1";
+    }
+    return ( rule.selector.hashCode() + "" ).replace("-","n");
+}
+
+    function __cleanUpCTagArg ( value ) {
+        if ( value ) {
+            return value.replace( /\[escaped_quote\]/g , "\"");
         }else{
-            return $.trim( node.text() );
+            return "";
         }
     }
 
-    $(html).each( function(i,e) {
-        var total_json_nodes = 0;
+function getCommentInfo ( rule ) {
+    var ctag_count = 0;
+    var ctag_info = {};
+    var prop;
 
-        // cycle through all of the data
-        $.each( $(e).data(), function( j , f ) {
-            // data-att="value"
-            // j = att
-            // f = value
+    var declarations = [];//rule.declarations;//[];
 
-            if ( j.substring( 0 , set.length ) == set ) {
-                total_json_nodes++;
-                var json_ele;
-                var prop_name;
-                var type = "string";
+    if ( rule.source ) {
+        var source;
+        var first_selector;
+        for ( var s=0; s<rule.source.length; s++ ) {
+            source = rule.source[s];
+            first_selector = source.selectors[0];
+            // want to determine the rule's status via their own
+            // declarations versus extensions.
+            if ( rule.selector == first_selector ) {
+                declarations = source.declarations;
+                break;
+            }
+        }
+    }else{
+        declarations = rule.declarations;
+    }
 
-                var data_prop_name = j.substring( set.length ).toLowerCase();
-                // if it has more than just "data-json"...
-                if ( data_prop_name ) {
-                    prop_name = data_prop_name;
-                    if ( String(f).indexOf( ":attr" ) != -1 ) {
-                        var name_split = String(f).split( ":attr" );
-                        var value = $(e).attr( name_split[0] );
-                        if ( parent_is_array ) {
-                            json_parent.push( value );
-                        }else{
-                            json_parent[prop_name] = value;
-                        }
-                    }else{
-                        if ( parent_is_array ) {
-                            json_parent.push( f );
-                        }else{
-                            json_parent[prop_name] = f;
-                        }
-                    }
-                }else{
-                    prop_name = f;
+    /*if ( rule.selector == ".EXP-advisor" ) {
+        console.log( declarations );
+        console.log( rule );
+        console.log( "HERE" );
+    }*/
 
-                    if ( !f.split )// its an object
-                        return;
+    for ( var i=0; i<declarations.length; i++ ) {
+        declaration = declarations[i];
 
-                    var type_arr = f.split(":");
-                    if ( type_arr.length > 1 ) {
-                        type = type_arr[1].toLowerCase();
-                        prop_name = type_arr[0];
-                    }
+        if ( declaration.type == "comment" ) {
+            var trimmed_comment = $.trim( declaration.comment );
 
-                    var parent_is_array = ( json_parent instanceof Array );
-
-                    switch ( type ) {
-                        case "array" :
-                        case "arr" :
-                            // decorate pre existing elements
-                            if ( parent_is_array ) {
-                                json_ele = [];
-                                json_parent.push( json_ele );
-                            }else{
-                                if ( json_parent[prop_name] ) {
-                                    json_ele = json_parent[prop_name];
-                                }else{
-                                    json_ele = [];
-                                    json_parent[prop_name] = json_ele;
-                                }
-                            }
-
-                            var e_children = $(e).children();
-                            if ( e_children.length > 0 ) {
-                                _HTMLtoJSON( e_children , set , json_ele );
-                            }else{
-                                Array.prototype.push.apply(
-                                    json_ele,
-                                    $(e).text().split(",")
-                                );
-                            }
-                            break;
-                        case "object" :
-                        case "obj" :
-                            // decorate pre existing elements
-                            if ( parent_is_array ) {
-                                json_ele = {};
-                                json_parent.push( json_ele );
-                            }else{
-                                if ( json_parent[prop_name] ) {
-                                    json_ele = json_parent[prop_name];
-                                }else{
-                                    json_ele = {};
-                                    json_parent[prop_name] = json_ele;
-                                }
-                            }
-
-                            _HTMLtoJSON( $(e).children() , set , json_ele );
-                            break;
-                        /*
-                        // and attempt to read a node as an object...too confusing
-                        case "self" :
-                            if ( parent_is_array ) {
-                                json_ele = {};
-                                json_parent.push( json_ele );
-                            }else{
-                                if ( json_parent[prop_name] ) {
-                                    json_ele = json_parent[prop_name];
-                                }else{
-                                    json_ele = {};
-                                    json_parent[prop_name] = json_ele;
-                                }
-                            }
-
-
-                            $.each( $(e)[0].attributes , function(i, attrib) {
-                                var name = attrib.name;
-                                if ( name != "data-json") {
-                                    json_ele[ name ] = attrib.value;
-                                }
-                            });
-
-                            // just jam the text into a text variable...
-                            json_ele.text = $(e).text();
-                            break;
-                        */
-                        case "number" :
-                        case "num" :
-                            if ( parent_is_array ) {
-                                json_parent.push( Number( $(e).text() ) );
-                            }else{
-                                json_parent[prop_name] = Number( $(e).text() );
-                            }
-                            break;
-                        case "boolean" :
-                        case "bool" :
-                            var bool_value = ( $(e).text().toLowerCase() === "true" );
-                            if ( parent_is_array ) {
-                                json_parent.push( bool_value );
-                            }else{
-                                json_parent[prop_name] = bool_value;
-                            }
-                            break;
-                        case "string" :
-                        case "str" :
-                            if ( parent_is_array ) {
-                                json_parent.push( getNodeText( e ) );
-                            }else{
-                                json_parent[prop_name] = getNodeText( e );
-                            }
-
-                            // if some child nodes are found
-                            // attach them to the parent...
-                            if ( $(e).children().length > 0 ) {
-                                _HTMLtoJSON( $(e).children() , set , json_parent );
-                            }
-                            break;
-                        case "html" :
-                            if ( parent_is_array ) {
-                                json_parent.push( $.trim( $(e).html() ) );
-                            }else{
-                                json_parent[prop_name] = $.trim( $(e).html() );
-                            }
-                            
-                            // if some child nodes are found
-                            // attach them to the parent...
-                            if ( $(e).children().length > 0 ) {
-                                _HTMLtoJSON( $(e).children() , set , json_parent );
-                            }
-                            break;
-                    }
+            if (
+                trimmed_comment.indexOf("-ctag-example ") == 0 ||
+                trimmed_comment.indexOf("-ctag-example:") == 0
+            ) {
+                var prop_arr = trimmed_comment.split(":");
+                if ( prop_arr.length > 1 ) {
+                    prop_arr.shift();
+                    var prop_str = prop_arr.join(":").trim().replace( /;/g , "" );
+                    ctag_info = {example:prop_str,example_raw:trimmed_comment};
+                    break;
                 }
             }
-        });
 
-        if ( total_json_nodes == 0  ) {
-            _HTMLtoJSON( $(e).children() , set , json_parent );
+            // add others here...
         }
-    });
+    }
 
-    return json_parent;
+    return ctag_info;
+}
+function getTaggedCommentInfo ( rule ) {
+    var ctag_info = getCommentInfo( rule );
+
+    if (
+        ctag_info.example
+    ) {
+        return ctag_info;
+    }else{
+        return false;
+    }
 }
 
-
-String.prototype.hashCodeStr = function(){
-	var hash = this.hashCode();
-    hash = hash + "";
-    hash = hash.replace("-" , "n" );
-    return hash;
-}
 
 String.prototype.hashCode = function(){
 	var hash = 0;
@@ -22856,204 +25140,244 @@ if (md5('hello') != '5d41402abc4b2a76b9719d911017c592') {
     }
 }
 
-/*
- * jquery.injectCSS.js - jquery css injection plugin
- * Copyright (C) 2013, Robert Kajic (robert@kajic.com)
- * http://kajic.com
- *
- * https://github.com/kajic/jquery-injectCSS
- * Allows for injection of CSS defined as javascript JSS objects.
- *
- * Based on JSS (http://jss-lang.org/).
- *
- * Licensed under the MIT License.
- *
- * Date: 2013-01-08
- * Version: 0.1
- */
 
-(function (jQuery) {
-    'use strict';
 
-    function toCSS(jss, options) {
-        function jsonToCSS(scope, css) {
-            if (scope && !result[scope]) {
-                result[scope] = {};
-            }
-            for (var property in css) {
-                var value = css[property];
-                if (value instanceof Array) {
-                    var values = value;
-                    for (var i = 0; i < values.length; i++) {
-                        addProperty(scope, property, values[i]);
-                    }
-                }
-                else {
-                    switch (typeof(value)) {
-                        case "number":
-                        case "string":
-                            addProperty(scope, property, value);
-                            break;
-                        case "object":
-                            var endChar = property.charAt(property.length - 1);
-                            if (scope && (endChar === "_" || endChar === "-")) {
-                                var variants = value;
-                                for (var key in variants) {
-                                    // key may be a comma separted list
-                                    var list = key.split(/\s*,\s*/);
-                                    for (var j = 0; j < list.length; j++) {
-                                        var valueVariant = variants[key];
-                                        if (valueVariant instanceof Array) {
-                                            var valuesVariant = valueVariant;
-                                            for (var k = 0; k < valuesVariant.length; k++) {
-                                                addProperty(scope, property + list[j], valuesVariant[k]);
-                                            }
-                                        }
-                                        else {
-                                            addProperty(scope, property + list[j], variants[key]);
-                                        }
-                                    }
-                                }
-                            }
-                            else {
-                                jsonToCSS(makeSelectorName(scope, property), value);
-                            }
-                            break;
-                    }
-                }
-            }
+RuleUtil = function(){};
+
+RuleUtil.findRuleRelativeToRule = function (
+    target_rule_name, rule_source, css_info
+) {
+    var target_rule;
+
+    var found_rule = false;
+    // first children...(inheritance causes valid name dups)
+
+
+    if ( css_info.name_hash[target_rule_name] ) {
+        target_rule = css_info.name_hash[target_rule_name];
+        if (    target_rule.metadata
+                && target_rule.metadata.example )
+        {
+            found_rule = true;
         }
-
-        function makePropertyName(n) {
-            return n.replace(/_/g, "-");
-        }
-
-        function makeSelectorName(scope, name) {
-            var snames = [];
-            var names = name.split(/\s*,\s*/);
-            var scopes = scope.split(/\s*,\s*/);
-            for (var s = 0; s < scopes.length; s++) {
-                var currentScope = scopes[s];
-                for (var i = 0; i < names.length; i++) {
-                    var currentName = names[i];
-                    if (currentName.charAt(0) === "&") {
-                        snames.push(currentScope + currentName.substr(1));
-                    } else {
-                        snames.push(currentScope ? currentScope + " " + currentName : currentName);
-                    }
-                }
-            }
-            return snames.join(", ");
-        }
-
-        function addProperty(scope, property, value) {
-
-            if (typeof(value) === "number" && !options.useRawValues) {
-                value = value + "px";
-            }
-
-            var properties = property.split(/\s*,\s*/);
-            for (var i = 0; i < properties.length; i++) {
-                var currentProperty = makePropertyName(properties[i]);
-
-                if (result[scope][currentProperty]) {
-                    result[scope][currentProperty].push(value);
-                } else {
-                    result[scope][currentProperty] = [value];
-                }
-            }
-        }
-
-        // --------------
-
-
-        var result = {};
-
-        if (typeof(jss) === "string") {
-            // evaluate the JSS object:
-            try {
-                eval("var jss = {" + jss + "}");
-            }
-            catch (e) {
-                return "/*\nUnable to parse JSS: " + e + "\n*/";
-            }
-        }
-
-        jsonToCSS("", jss);
-
-        // output result:
-        var ret = "";
-        for (var a in result) {
-            var css = result[a];
-            ret += a + " {\n";
-            for (var i in css) {
-                var values = css[i];    // this is an array !
-                for (var j = 0; j < values.length; j++) {
-                    ret += "\t" + i + ": " + values[j] + ";\n";
-                }
-            }
-            ret += "}\n";
-        }
-        return ret;
     }
 
-    var defaults = {
-        truncateFirst: false,
-        container: null,
-        containerName: "injectCSSContainer",
-        useRawValues: false
-    };
-
-    jQuery.injectCSS = function (jss, options) {
-        options = jQuery.extend({}, defaults, options);
-
-        options.media = options.media || 'all';
-
-        var container = (options.container && jQuery(options.container)) || jQuery("#" + options.containerName);
-        if (!container.length) {
-            container = jQuery("<style></style>").appendTo('head').attr({
-                media: options.media,
-                id: options.containerName,
-                type: 'text/css'
-            });
+    if ( css_info.selector_hash[target_rule_name] ) {
+        target_rule = css_info.selector_hash[target_rule_name];
+        if (    target_rule.metadata
+                && target_rule.metadata.example )
+        {
+            found_rule = true;
         }
+    }
 
-        var containerDomElem = container[0];
-        var isIeStylesheet = containerDomElem.styleSheet !== undefined && containerDomElem.styleSheet.cssText !== undefined;
-
-        var css = "";
-        if (!options.truncateFirst) {
-            css += isIeStylesheet ? containerDomElem.styleSheet.cssText : container.text();
-        }
-        css += toCSS(jss, options);
-
-        if (isIeStylesheet) {
-            containerDomElem.styleSheet.cssText = css;
-        } else {
-            container.text(css); //Others
-        }
-
-        return container;
-    };
-}(jQuery));
-
-
-
-
-
-
-String.prototype.slugify = function ()
-{
-  return this.toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '');            // Trim - from end of text
+    console.log( found_rule );
 }
 
-String.prototype.capitalizeEachWord = function () {
-    return this.replace(/\w\S*/g, function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-}
+
+RuleUtil.replaceComps = function (
+    rule, html_str , rule_names , css_info , times_called
+) {
+
+    if ( !times_called )
+        times_called = 1;
+
+    if ( times_called > 100 ) {
+        return {
+            html:"<div>Error, too many cycles</div>",
+            rule_names:rule_names
+        };
+    }
+
+    var example_html = $("<div>" +  html_str  + "</div>");
+    var sub_rules = example_html.find("div[comp]");
+    var sub_rule_html,sub_rule,sub_rule_name;
+    var sub_rule_results;
+
+    if ( sub_rules.length > 0 ) {
+        var sub_rule_name_arr = [];
+        for ( var sr=0; sr<sub_rules.length; sr++ ) {
+            sub_rule_html = sub_rules[sr];
+            sub_rule_name = $(sub_rule_html).attr("comp");
+
+            RuleUtil.findRuleRelativeToRule(
+                sub_rule_name, rule , css_info
+            );
+
+            // TODO Look for names..if not found, then look for selectors
+            if ( css_info.name_hash[sub_rule_name] ) {
+                sub_rule = css_info.name_hash[sub_rule_name];
+
+                if (    sub_rule.metadata
+                        && sub_rule.metadata.example )
+                {
+                    sub_rule_name_arr.push( sub_rule_name );
+
+                    $(sub_rule_html).replaceWith(
+                        $( sub_rule.metadata.example )
+                    );
+                    break;
+                }else{
+                    if ( css_info.selector_hash[sub_rule_name] ) {
+                        sub_rule = css_info.selector_hash[sub_rule_name];
+
+                        if (    sub_rule.metadata
+                                && sub_rule.metadata.example )
+                        {
+                            sub_rule_name_arr.push( sub_rule_name );
+                            $(sub_rule_html).replaceWith(
+                                $( sub_rule.metadata.example )
+                            );
+                            break;
+                        }else{
+                            $( sub_rule_html ).replaceWith(
+                                "<div>error '"
+                                + sub_rule_name
+                                + "' [3] not found</div>"
+                            );
+                        }
+                    }else{
+                        $( sub_rule_html ).replaceWith(
+                            "<div>error '"
+                            + sub_rule_name
+                            + "' [1] not found</div>"
+                        );
+                    }
+                }
+            }else{
+                if ( css_info.selector_hash[sub_rule_name] ) {
+                    sub_rule = css_info.selector_hash[sub_rule_name];
+                    if (    sub_rule.metadata
+                            && sub_rule.metadata.example )
+                    {
+                        sub_rule_name_arr.push( sub_rule_name );
+
+                        $(sub_rule_html).replaceWith(
+                            $( sub_rule.metadata.example )
+                        );
+                        break;
+                    }else{
+                        $( sub_rule_html ).replaceWith(
+                            "<div>error '"
+                            + sub_rule_name
+                            + "' [4] not found</div>"
+                        );
+                    }
+                }else{
+                    $(sub_rule_html).replaceWith(
+                        "<div>error template '"
+                        + sub_rule_name
+                        + "' [2] not found</div>"
+                    );
+                }
+            }
+        }
+
+        return  RuleUtil.replaceComps(
+                    rule,
+                    example_html.html(),
+                    rule_names.concat( sub_rule_name_arr ),
+                    css_info,
+                    times_called + 1
+                );
+    }else{
+        return {
+            html:html_str.trim(),
+            rule_names:rule_names
+        };
+    }
+};
+
+
+
+RuleUtil.findRuleExample = function ( rule , css_info , html_only ) {
+    var html = ["<div>no example</div>"];
+    var css = [];
+
+    if (
+        rule.metadata
+        && rule.metadata.example
+    ) {
+        if ( !html_only ) {
+            var global_rules = css_info.global_rules;
+            var global_rule;
+            for ( var g=0; g<global_rules.length; g++ ) {
+                global_rule = global_rules[g];
+                css.push(
+                    _ruleAndChildToCSSString(
+                        global_rule , true
+                    )
+                );
+            }
+
+            css.push(
+                _ruleAndPseudosToCSSString( rule , true  )
+            );
+        }
+
+        // create container classes
+        var selector_arr = rule.selector.split(" ");
+        var selector_item;
+        var html = [];
+        for ( var s=0; s<selector_arr.length; s++ ) {
+            selector_item = selector_arr[s];
+            if ( selector_item != rule.name ) {
+                if ( selector_item.indexOf(".") == 0 ) {
+                    html.push(
+                        "<div class='" +
+                            selector_item.replace("."," ").trim()
+                        + "'>"
+                    );
+                }
+            }
+        }
+
+        var sub_comp_info = RuleUtil.replaceComps(
+            rule , rule.metadata.example, [] , css_info
+        );
+
+        html.push( sub_comp_info.html );
+
+        if ( !html_only) {
+            // get the relavent sub component css in there...
+            for ( var i=0; i<sub_comp_info.rule_names.length; i++ ) {
+                var sub_comp_name = sub_comp_info.rule_names[i];
+                var sub_comp_rule = css_info.name_hash[
+                                        sub_comp_name
+                                    ];
+                if ( !sub_comp_rule ) {
+                    sub_comp_rule = css_info.selector_hash[
+                                            sub_comp_name
+                                        ];
+                }
+
+                css.push(
+                    _ruleAndPseudosToCSSString(
+                        sub_comp_rule , true
+                    )
+                );
+            };
+        }
+
+        for ( var s=0; s<selector_arr.length; s++ ) {
+            selector_item = selector_arr[s];
+            if ( selector_item != rule.name ) {
+                if ( selector_item.indexOf(".") == 0 ) {
+                    html.push( "</div>" );
+                }
+            }
+        }
+
+        if ( !html_only ) {
+            //html.push( "<style>" + css.join("") + "</style>" );
+        }
+    }
+
+    var html_str = html.join("");
+    return {
+        html:html_str,
+        css:css,
+        all:html_str + "<style>" + css.join("") + "</style>"
+    }
+    //return html.join("");
+};

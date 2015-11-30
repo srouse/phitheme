@@ -1,0 +1,80 @@
+
+
+
+
+.c-slideShow {
+    /*-ctag-example: ...
+            { .c-slideShow__title }
+            { .c-slideShow__img }
+            { .c-slideShow__nextProject }
+            { .c-slideShow__prevProject }
+            { .c-slideShow__close }
+    */
+    .a-position-fixed;
+    .a-position-bottom-left;
+    .a-height-0;
+    .a-width-100;
+    .a-transition-height;
+    .zIndex( "project" );
+    .a-background-alpha-grey-8;
+    .a-overflow-hidden;
+
+    &__title {
+        /* -ctag-example: "...title"; */
+        .a-position-absolute;
+        .a-position-top-left;
+        .a-text-size-larger;
+        .a-text-color-grey-10;
+        .a-padding-left-large;
+        .a-padding-top;
+
+        .zIndex( "page_title" );
+
+        /*========= MODIFIERS ===========*/
+        & .imageIndex {
+            .a-padding-left;
+            .a-text-size-smaller;
+        }
+    }
+
+    &__img {
+        /* -ctag-example: "<img ... src='http://placehold.it/1200x1000' />"; */
+        .a-transition-all;
+        .a-position-absolute;
+        .a-transform-center;
+
+        max-height: ~"calc(100% - 120px)";
+        max-width: ~"calc(100% - 100px)";
+        .zIndex( "page_img" );
+    }
+
+}
+
+
+.o-slideshow__btn {
+    .a-position-absolute;
+    .a-interactive;
+    .a-hover-background-alpha-grey-5;
+    width: 60px; height: 60px;
+
+    &--close {
+        /* -ctag-example: "..."; */
+        .a-position-top-right;
+
+        background-image: url("../assets/close_icon_white.png");
+    }
+    &--nextProject {
+        /* -ctag-example: "..."; */
+        .a-position-left;
+        .a-transform-vcenter;
+
+        background-image: url("../assets/prev_icon_white.png");
+    }
+    &--prevProject {
+        /* -ctag-example: "..."; */
+        .a-position-right;
+        .a-transform-vcenter;
+
+        background-image: url("../assets/next_icon_white.png");
+    }
+}

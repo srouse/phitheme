@@ -7,6 +7,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-css-parse');
     grunt.loadNpmTasks('grunt-react');
+    grunt.loadNpmTasks('cssmodeling');
 
     var configObj = {
         pkg: '<json:package.json>'
@@ -25,11 +26,12 @@ module.exports = function(grunt) {
         files: {
             'dist/phitheme.less':
             [
+                'dist/csssystem/less/less_mixins.less',
                 'node_modules/nanoscroller/bin/css/nanoscroller.css',
                 'client/Shared/html.less',//fonts there
                 'client/Shared/**/*.less',
                 'client/**/Shared/**/*.less',//process shared less first
-                'client/**/*.less'                
+                'client/**/*.less'
             ]
         }
     }
@@ -59,6 +61,16 @@ module.exports = function(grunt) {
             ]
         }
     };
+    configObj.concat = configObj.concat || {};
+    configObj.concat["phitheme_css"] = {
+        files: {
+            'dist/phitheme.css':
+            [
+                'dist/phitheme.css',
+                'dist/csssystem/core.css'
+            ]
+        }
+    }
 
     configObj.css_parse = {
         dist: {
@@ -70,6 +82,38 @@ module.exports = function(grunt) {
             }
         }
     };
+
+/*================ CSSMODELING =============*/
+    configObj.cssmodeling = configObj.cssmodeling || {};
+    configObj.cssmodeling["phitheme"] = {
+        files: {
+            'dist/csssystem':
+            [
+                'cssmodeling/css_groups.json',
+                'cssmodeling/css_schemes.json',
+                'cssmodeling/css_variables_atoms.json',
+                'cssmodeling/css_utilities.json',
+                'cssmodeling/css_states.json'
+            ]
+        },
+        options: {
+            components:[
+                'client/Shared/**/*.less',
+                //'client/**/*.less'
+            ],
+            type:"less",
+            rootpath:"../../assets/"
+        }
+    };
+    configObj.watch = configObj.watch || {};
+    configObj.watch["cssmodeling"] = {
+        files:[
+            'cssmodeling/*.json'
+        ],
+        tasks: ["default"]
+    };
+/*=============== CSSMODELING =============*/
+
 
     configObj.watch = configObj.watch || {};
     configObj.watch["react"] = {
@@ -85,8 +129,10 @@ module.exports = function(grunt) {
 
     // 'build' was put together in processProjects
     grunt.registerTask( 'default' , [
+        'cssmodeling',
         'concat:phitheme_less',
         'less:phitheme',
+        'concat:phitheme_css',
         'react',
         'concat:phitheme_js',
         'css_parse'

@@ -1,5 +1,5 @@
 
-var ExamplesList = React.createClass({
+var ListPage = React.createClass({
 
     openProject: function ( slug ) {
         RouteState.merge(
@@ -59,8 +59,8 @@ var ExamplesList = React.createClass({
             tagTitle = list.title.capitalizeEachWord();
 
         rows.push(
-            <div className="examplesList_header"
-                key={ "examplesList_header" }>{
+            <div className="listPage_header"
+                key={ "listPage_header" }>{
                 tagTitle
             }</div>
         );
@@ -71,27 +71,27 @@ var ExamplesList = React.createClass({
 
             image = "";
             if ( item.image )
-                image = <div className="examplesList_rowImage">
-                    <div className="examplesList_rowImageChild"
+                image = <div className="listPage_rowImage">
+                    <div className="listPage_rowImageChild"
                         style={{
                             backgroundImage:
                                 "url('"+item.image+"')"
                         }}></div>
                 </div>
 
-            var className = "examplesList_row index_" + i%3;
+            var className = "listPage_row index_" + i%3;
             rows.push(
                 <div className={ className }
                     onClick={ this.openProject.bind( this , item.slug ) }
-                    key={ "examplesList_row_" + item.slug }>
-                    <div className="examplesList_rowText">
-                        <div className="examplesList_rowTitle">
+                    key={ "listPage_row_" + item.slug }>
+                    <div className="listPage_rowText">
+                        <div className="listPage_rowTitle">
                             { item.title }
                         </div>
-                        <div className="examplesList_rowSubTitle">
+                        <div className="listPage_rowSubTitle">
                             { item.medium }
                         </div>
-                        <div className="examplesList_rowDescription">
+                        <div className="listPage_rowDescription">
                             { item.summary }
                         </div>
                     </div>
@@ -101,8 +101,8 @@ var ExamplesList = React.createClass({
         }
 
         rows.push(
-            <div className="examplesList_spacer"
-                key="examplesList_spacer">
+            <div className="listPage_spacer"
+                key="listPage_spacer">
             </div>
         );
         return rows;
@@ -118,13 +118,13 @@ var ExamplesList = React.createClass({
             this.renderRows( project_list, rows );
         }
 
-        return  <div className="nano examplesList">
+        return  <div className="nano listPage">
                     <div className="nano-content">
-                        <div className="examplesList_rowContainer">
+                        <div className="listPage_rowContainer">
                             { rows }
                         </div>
                     </div>
-                    { /*<div className="examplesList_typeToggle"
+                    { /*<div className="listPage_typeToggle"
                         onClick={ this.toggleThumbs }></div>*/ }
                 </div>;
     }

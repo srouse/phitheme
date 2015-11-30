@@ -3,15 +3,19 @@
 /* like to see zindex in one location... */
 
 
-.zIndex( @loc ) when ( @loc = "identityNav" )
+.zIndex( @loc ) when ( @loc = "homePage" )
 {
 	z-index: 4000;
 }
 
-
-.zIndex( @loc ) when ( @loc = "contentTitleSection" )
+.zIndex( @loc ) when ( @loc = "projectPage" )
 {
 	z-index: 2000;
+}
+
+.zIndex( @loc ) when ( @loc = "project" )
+{
+	z-index: 6000;
 }
 
 .zIndex( @loc ) when ( @loc = "contentArea" )
@@ -27,10 +31,7 @@
 		z-index: 2500;
 	}
 
-	.zIndex( @loc ) when ( @loc = "project" )
-	{
-		z-index: 2000;
-	}
+
 		.zIndex( @loc ) when ( @loc = "page_title" )
 		{
 			z-index: 200;
@@ -40,7 +41,7 @@
 			z-index: 100;
 		}
 
-.zIndex( @loc ) when ( @loc = "examplesList" )
+.zIndex( @loc ) when ( @loc = "listPage" )
 {
 	z-index: 3000;
 }

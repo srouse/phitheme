@@ -1,7 +1,7 @@
 
-.identityNav {
+.homePage {
     -ctag-tag: "section";
-    -ctag-example: "...{ .identityNav_gradOffset }";
+    -ctag-example: "...{ .homePage_gradOffset }";
 
     width: 100%; height: 100%;
     background-position: left;
@@ -12,7 +12,7 @@
     transition: height .3s, top .3s, width .3s;
 
     box-shadow: 0px 0px 6px 0px rgba( 0,0,0,.2);
-    .zIndex( "identityNav" );
+    .zIndex( "homePage" );
 
     @media ( max-width: @screen-sm-min ) {
 		width: 100%; height: 100vh; top: 0px;
@@ -38,7 +38,7 @@
     	}
     }
 
-    .identityNav_rightGradient {
+    .homePage_rightGradient {
         -ctag-tag: "graphic";
         -ctag-example: "...";
 
@@ -54,9 +54,9 @@
         }
     }
 
-    .identityNav_gradOffset {
+    .homePage_gradOffset {
         -ctag-tag: "shim";
-        -ctag-example: "...{ .identityNav_logo }{ .identityNav_centerNav }";
+        -ctag-example: "...{ .homePage_logo }{ .homePage_centerNav }";
 
         .calc( width , 90% , -6px );
         height: 100%;
@@ -74,7 +74,7 @@
         }
     }
 
-    .identityNav_logo {
+    .homePage_logo {
         -ctag-tag: "graphic,logo";
         -ctag-example: "...";
 
@@ -116,7 +116,7 @@
         }
     }
 
-    .identityNav_logo_small {
+    .homePage_logo_small {
         -ctag-tag: "graphic,logo";
         -ctag-example: "...";
 
@@ -141,9 +141,9 @@
         }
     }
 
-    .identityNav_centerNav {
+    .homePage_centerNav {
         -ctag-tag: "navigation";
-        -ctag-example: "...{ .identityNav_link }{ .identityNav_link }{ .identityNav_link }";
+        -ctag-example: "...{ .homePage_link }{ .homePage_link }{ .homePage_link }";
 
         width: 50%; height: 40px;
         position: absolute;
@@ -183,7 +183,7 @@
             }
         }
 
-        .identityNav_link {
+        .homePage_link {
             /*<csstag tag="link">
                 <div ...>Projects</div>
             </csstag>*/

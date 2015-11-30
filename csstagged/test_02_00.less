@@ -1,0 +1,34 @@
+
+
+/* test_02_00.less */
+
+/* COMPONENTS */
+// ...
+
+/* OBJECTS */
+.o-box {
+  .a-height-row;
+  .a-width-col-1-2;
+  .a-outline;
+
+  .phone-a-width-col-full;
+  .phone-a-height-row-2;
+}
+
+/* CORE */
+.a-height-row { height:50px; }
+.a-height-row-2 { height: 100px; }
+.a-outline { border: 1px solid red; }
+.a-width-col-1-2 { width: 50%; }
+.a-width-col-1-3 { width: 33.33%; }
+.a-width-col-2-3 { width: 66.66%; }
+.a-width-col-full { width: 100%; }
+
+/* STATE */
+.phone-a-height-row{ @media ( max-width: 480px ) { height: 50px; } }
+.phone-a-height-row-2{ @media ( max-width: 480px ) { height: 100px; } }
+.phone-a-outline { border: 1px solid red; }
+.phone-a-width-col-1-2 { @media ( max-width: 480px ) { width: 50%; } }
+.phone-a-width-col-1-3 { @media ( max-width: 480px ) { width: 33.33%; } }
+.phone-a-width-col-2-3 { @media ( max-width: 480px ) { width: 66.66%; } }
+.phone-a-width-col-full { @media ( max-width: 480px ) { width: 100%; } }
