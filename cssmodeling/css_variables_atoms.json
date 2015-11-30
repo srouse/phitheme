@@ -328,7 +328,7 @@
 			],
 			"atoms":{
 				"float-values":{
-					"group":"position",
+					"group":"positioning",
 					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
 					"selector":".a-@var_name",
 					"declaration_value":"float: _@_@var_name;"
@@ -343,7 +343,7 @@
 			],
 			"atoms":{
 				"clears":{
-					"group":"position",
+					"group":"positioning",
 					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
 					"selector":".a-@var_name",
 					"declaration_value":"clear: _@_@var_name;"
@@ -358,7 +358,7 @@
 			],
 			"atoms":{
 				"float-clears":{
-					"group":"position",
+					"group":"positioning",
 					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
 					"selector":".a-@var_name",
 					"declaration_value":"clear: _@_@var_name; float: _@_@var_name"
@@ -429,6 +429,25 @@
 				}
 			}
 		},
+
+		"border-bottom-size-values":{
+			"base":"border-bottom",
+			"scheme":"size-values",
+			"values":[
+				"1px solid _@_grey-8",
+				"2px solid _@_grey-8","4px solid _@_grey-8","8px solid _@_grey-8",
+				"1px solid _@_grey-9","1px solid _@_grey-10","1px solid _@_grey-10"
+			],
+			"atoms":{
+				"borders-bottom":{
+					"group":"skins",
+					"example":"...border-bottom-size-values",
+					"selector":".a-@var_name",
+					"declaration_value":"border-bottom : _@_@var_name;"
+				}
+			}
+		},
+
 		"overflow-values":{
 			"base":"overflow",
 			"scheme":"overflow-values",
@@ -473,6 +492,7 @@
 
 		"z-indexes":{
 			"base":"zindex",
+			"shortcut":"<em>@base</em>-[ homePage, projectPage, ... ]",
 			"scheme":{"scheme":{"@base":[
 				"-homePage",
 				"-projectPage",
@@ -495,6 +515,97 @@
 					"example":"...z-layer",
 					"selector":".a-@var_name",
 					"declaration_value":"z-index : _@_@var_name;"
+				}
+			}
+		},
+
+		"size-default-values":{
+			"base":"",
+			"scheme":"size-default-values",
+			"values":[
+				"auto","initial","inherit"
+			],
+			"atoms":{
+				"height-default-values":{
+					"group":"sizing",
+					"example":"<div ... style='width: 100%; background-color:#fff;'></div>",
+					"selector":".a-height@var_name",
+					"declaration_value":"height : @var_value;"
+				},
+				"width-default-values":{
+					"group":"sizing",
+					"example":"<div ... style='width: 100%; background-color:#fff;'></div>",
+					"selector":".a-width@var_name",
+					"declaration_value":"width : @var_value;"
+				}
+			}
+		},
+
+		"position-placements-by-names":{
+			"scheme":"position-names",
+			"base":"position",
+			"values":[
+				"0px","0px","0px","0px","0px","0px","0px","0px"
+			],
+			"atoms":{
+				"position-placements":{
+					"group":"positioning",
+					"example":"<div ... style='position:absolute; width: 100%; height: 100%; background-color:#fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_iteration_values":[
+						"top: @var_value; right: @var_value;",
+						"top: @var_value; left: @var_value;",
+						"top: @var_value;",
+						"bottom: @var_value;",
+						"bottom: @var_value; right: @var_value;",
+						"bottom: @var_value; left: @var_value;",
+						"left: @var_value;",
+						"right: @var_value;"
+					]
+				}
+			}
+		},
+
+		"drop-shadows":{
+			"scheme":"position-names",
+			"base":"shadow",
+			"values":[
+				"3px -3px 3px 0 rgba( 0,0,0,.1)",
+				"-3px -3px 3px 0 rgba( 0,0,0,.1)",
+				"0 -3px 3px 0 rgba( 0,0,0,.1)",
+				"0 3px 3px 0 rgba( 0,0,0,.1)",
+				"3px 3px 3px 0 rgba( 0,0,0,.1)",
+				"-3px 3px 3px 0 rgba( 0,0,0,.1)",
+				"-3px 0 3px 0 rgba( 0,0,0,.1)",
+				"3px 0 3px 0 rgba( 0,0,0,.1)"
+			],
+			"atoms":{
+				"drop-shadows":{
+					"group":"skins",
+					"example":"<div ... style='width: 100%; height: 100%; background-color:#fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"box-shadow : @var_value;"
+				}
+			}
+		},
+
+		"misused":{
+			"base":"misused",
+			"shortcut":"<em>@base</em>-[ on, off ]",
+			"scheme":{"scheme":{"@base":[
+				"",
+				"-off"
+			]}},
+			"values":[
+				"2px solid red",
+				"initial"
+			],
+			"atoms":{
+				"misused":{
+					"group":"misc",
+					"example":"...misused",
+					"selector":".a-@var_name",
+					"declaration_value":"border: _@_@var_name;"
 				}
 			}
 		}

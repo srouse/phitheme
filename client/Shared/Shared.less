@@ -2,22 +2,9 @@
 /*
 Mixin's
 */
+
 .calc ( @prop , @percent: 100%  , @diff: 0px ) {
 	@{prop} : calc( @percent ~'+' @diff );
-}
-.hand() {
-	cursor: pointer;
-	cursor: hand;
-}
-.handover( @color : #eee ) {
-	.hand();
-	&:hover {
-		background-color: @color;
-	}
-}
-
-.unhand() {
-	cursor: default;
 }
 
 

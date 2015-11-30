@@ -28,7 +28,7 @@ var SlideShow = React.createClass({
     	);
     },
 
-    componentWillUnmount: function(){ 
+    componentWillUnmount: function(){
         RouteState.removeDiffListenersViaClusterId( "project_listeners" );
     },
 

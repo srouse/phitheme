@@ -55,8 +55,9 @@
     }
 
     .homePage_gradOffset {
-        -ctag-tag: "shim";
-        -ctag-example: "...{ .homePage_logo }{ .homePage_centerNav }";
+        /* -ctag-example: ...
+                { .homePage_logo }
+                { .homePage_centerNav }*/
 
         .calc( width , 90% , -6px );
         height: 100%;
@@ -72,7 +73,7 @@
                 transition: none;
         	}
         }
-    }
+    } 
 
     .homePage_logo {
         -ctag-tag: "graphic,logo";
@@ -83,7 +84,7 @@
         background-image: url("../assets/logo_large.svg");
         background-size: 50% auto;
         transition: all .3s;
-        .hand();
+        .a-interactive;
 
         @media ( max-width: @screen-sm-min ) {
             transition: none;
@@ -125,7 +126,7 @@
         background-image: url("../assets/mark.svg");
         background-size: 56%;
         transition: all .3s;
-        .hand();
+        .a-interactive;
 
         @media ( max-width: @screen-sm-min ) {
             transition: none;
@@ -191,7 +192,7 @@
             float: left;
             font-size: 18px;
             text-align: center;
-            .hand();
+            .a-interactive;
             color: #333;
             transition: all .2s;
 

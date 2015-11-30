@@ -248,7 +248,7 @@ var Page = React.createClass({displayName: "Page",
             content = PhiModel.page.content;
 
         return  React.createElement("div", {className: "page"}, 
-                    React.createElement("div", {className: "page_content", 
+                    React.createElement("div", {className: "page_content o-document", 
                         dangerouslySetInnerHTML: { __html:content}})
                 )
     }
@@ -644,7 +644,7 @@ var SlideShow = React.createClass({displayName: "SlideShow",
     	);
     },
 
-    componentWillUnmount: function(){ 
+    componentWillUnmount: function(){
         RouteState.removeDiffListenersViaClusterId( "project_listeners" );
     },
 

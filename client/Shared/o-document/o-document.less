@@ -1,0 +1,66 @@
+
+
+h1,h2,h3,h4,h5,h6,p,code {
+    /* Should only use these in .o-document */
+    .a-misused;
+}
+
+.o-document {
+    /* -ctag-example: ...
+        <h1>h1 title</h1>
+        <h2>h2 title</h2>
+        { .h3 }*/
+    .a-width-100;
+
+    > h1, > h2, > h3, > h4, > h5, > h6, > p,code {
+        .a-misused-off;
+    }
+
+    > h1, > h2, > h3, > h4, > h5, > h6 {
+        .a-single-line;
+        .a-text-color-darker;
+        .a-width-100;
+    }
+
+    > h1 {
+        .a-text-size-larger;
+        .a-padding-bottom-row-quarter;
+        .a-margin-bottom-row-quarter;
+        .a-border-bottom-largest;
+    }
+    > h2 {
+        .a-text-size-larger;
+        .a-padding-bottom-row-quarter;
+        .a-margin-bottom-row-quarter;
+        .a-border-bottom-larger;
+    }
+    > h3 {
+        .a-text-size-large;
+        .a-padding-bottom-row-quarter;
+        .a-margin-bottom-row-quarter;
+        .a-border-bottom-large;
+    }
+    > h4 {
+        .a-text-size-large;
+        .a-padding-bottom-row-quarter;
+        .a-margin-bottom-row-quarter;
+        .a-border-bottom;
+    }
+    > h5 {
+        .a-text-size-large;
+        .a-padding-bottom-row-quarter;
+        .a-margin-bottom-row-quarter;
+        .a-border-bottom;
+    }
+    > h6 {
+        .a-text-size-large;
+        .a-padding-bottom-row-quarter;
+        .a-margin-bottom-row-quarter;
+        .a-border-bottom;
+    }
+
+    > p {
+        .a-text-size;
+        .a-margin-bottom-row-quarter;
+    }
+}

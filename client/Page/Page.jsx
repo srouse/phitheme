@@ -23,7 +23,7 @@ var Page = React.createClass({
             content = PhiModel.page.content;
 
         return  <div className="page">
-                    <div className="page_content"
+                    <div className="page_content o-document"
                         dangerouslySetInnerHTML={{ __html:content }}></div>
                 </div>
     }

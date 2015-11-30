@@ -97,6 +97,9 @@ module.exports = function(grunt) {
             ]
         },
         options: {
+            resets:[
+                'cssmodeling/resets/**/*.css',
+            ],
             components:[
                 'client/Shared/**/*.less',
                 //'client/**/*.less'

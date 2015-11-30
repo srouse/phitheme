@@ -197,6 +197,10 @@
 			"shortcut":"<em>@base</em>-[ all, none, width, height, left, right, top, bottom ]",
 			"scheme":["@base-all","@base-none","@base-width","@base-height","@base-left","@base-right","@base-top","@base-bottom"]
 		},
+		"size-default-values":{
+			"shortcut":"<em>@base</em>-[ auto, initial, inherit ]",
+			"scheme":["@base-auto","@base-initial","@base-inherit"]
+		},
 		"breakpoint-values":{
 			"shortcut":"<em>@base</em>-[ small[ min, max] , medium[ min, max] , large[ min, max] ]",
 			"scheme":{"@base":

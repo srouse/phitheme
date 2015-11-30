@@ -1,84 +1,39 @@
 
 
-html{
-    -ctag-tag: "global";
-    -ctag-global: "true";
-    -ctag-ignore: ".nano";
-    -ctag-example: "nope";
+body {
 
-    width: 100%; height: 100%;
-    padding: 0px; margin: 0px;
-    // overflow: hidden;
+    .a-text-color;
+    .a-overflow-hidden;
 
-    /*
-    @media ( max-width: @screen-sm-min ) {
-        body.s_project &,
-        body.s_list &,
-        body.s_page & {
-            overflow: visible;
-            height: auto;
-        }
+    font-family: "Avenir LT W01 35 Light";
+
+    .breakpoint-sm-a-overflow-visible;
+    .breakpoint-sm-a-height-auto;
+
+    /**
+     * These values will not show up in content, but can be
+     * queried by JavaScript to know which breakpoint is active.
+     * Add or remove as many breakpoints as you like.
+     * https://www.lullabot.com/articles/importing-css-breakpoints-into-javascript
+     */
+    &:before {
+      content: "smartphone";
+      display: none; /* Prevent from displaying. */
     }
-    */
-
-    body {
-        -ctag-tag: "global";
-        -ctag-example: "no example";
-
-        width: 100%; height: 100%;
-        padding: 0px; margin: 0px;
-        font-family: "Avenir LT W01 35 Light";
-        color: #555;
-        overflow: hidden;
-
-        @media ( max-width: @screen-sm-min ) {
-            &.s_project,
-            &.s_list,
-            &.s_page {
-                overflow: visible;
-                height: auto;
-            }
-        }
-
-        /**
-         * These values will not show up in content, but can be
-         * queried by JavaScript to know which breakpoint is active.
-         * Add or remove as many breakpoints as you like.
-         * https://www.lullabot.com/articles/importing-css-breakpoints-into-javascript
-         */
-        &:before {
-          content: "smartphone";
-          display: none; /* Prevent from displaying. */
-        }
-        @media (min-width: @screen-sm-min ) {
-          &:before {
-            content: "tablet";
-          }
-        }
-        @media (min-width: @screen-md-min ) {
-          &:before {
-            content: "desktop";
-          }
-        }
+    @media (min-width: @screen-sm-min ) {
+      &:before {
+        content: "tablet";
+      }
     }
-
-    * {
-        -ctag-tag: "global";
-        -ctag-example: "...";
-
-        box-sizing: border-box;
-        background-position: center;
-        background-repeat: no-repeat;
+    @media (min-width: @screen-md-min ) {
+      &:before {
+        content: "desktop";
+      }
     }
 }
 
 
-
 @font-face {
-    -ctag-tag: "font";
-    -ctag-global: "true";
-    -ctag-example: "<div>Font that is styled</div>";
-
     font-family: "Avenir LT W01 35 Light";
     src: url("../assets/fonts/3511a780-31ca-4ee1-9083-89b1b7185748.eot?#iefix");
     src: url("../assets/fonts/3511a780-31ca-4ee1-9083-89b1b7185748.eot?#iefix") format("eot"), url("../assets/fonts/c4352a95-7a41-48c1-83ce-d8ffd2a3b118.woff") format("woff"), url("../assets/fonts/3e419b5b-c789-488d-84cf-a64009cc308e.ttf") format("truetype"), url("../assets/fonts/ca038835-1be3-4dc5-ba25-be1df6121499.svg#ca038835-1be3-4dc5-ba25-be1df6121499") format("svg");
