@@ -146,16 +146,16 @@ var SlideShow = React.createClass({
                     <img src={ fullimage }
                         className="c-slideShow__img" />
                     <div className="
-                            o-slideShow__btn--close
+                            o-slideShow__btn o-slideShow__btn--close
                             a-position-top-right"
                         onClick={ this.closeProject }></div>
                     <div className="
-                            o-slideShow__btn--nextProject
+                            o-slideShow__btn o-slideShow__btn--nextProject
                             a-position-left
                             a-transform-vcenter"
                         onClick={ this.nextImage }></div>
                     <div className="
-                            o-slideShow__btn--prevProject
+                            o-slideShow__btn o-slideShow__btn--prevProject
                             a-position-right
                             a-transform-vcenter"
                         onClick={ this.prevImage }></div>
