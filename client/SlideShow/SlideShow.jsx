@@ -139,18 +139,25 @@ var SlideShow = React.createClass({
         return  <div className="c-slideShow">
                     <div className="c-slideShow__title">
                         { fullimage_title }
-                        <span className="imageIndex">{ image_context }</span>
+                        <span className="imageIndex">
+                            { image_context }
+                        </span>
                     </div>
                     <img src={ fullimage }
                         className="c-slideShow__img" />
-                    <div className="o-slideshow__btn
-                                    o-slideshow__btn--close"
+                    <div className="
+                            o-slideShow__btn--close
+                            a-position-top-right"
                         onClick={ this.closeProject }></div>
-                    <div className="o-slideshow__btn
-                                    o-slideshow__btn--nextProject"
+                    <div className="
+                            o-slideShow__btn--nextProject
+                            a-position-left
+                            a-transform-vcenter"
                         onClick={ this.nextImage }></div>
-                    <div className="o-slideshow__btn
-                                    o-slideshow__btn--prevProject"
+                    <div className="
+                            o-slideShow__btn--prevProject
+                            a-position-right
+                            a-transform-vcenter"
                         onClick={ this.prevImage }></div>
                 </div>;
     }

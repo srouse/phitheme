@@ -91,7 +91,11 @@ module.exports = function(grunt) {
             [
                 'cssmodeling/css_groups.json',
                 'cssmodeling/css_schemes.json',
-                'cssmodeling/css_variables_atoms.json',
+                'cssmodeling/css_atoms.json',
+                'cssmodeling/atoms/css_spacing.json',
+                'cssmodeling/atoms/css_sizing.json',
+                'cssmodeling/atoms/css_simple.json',
+                'cssmodeling/atoms/css_skins.json',
                 'cssmodeling/css_utilities.json',
                 'cssmodeling/css_states.json'
             ]
@@ -102,7 +106,7 @@ module.exports = function(grunt) {
             ],
             components:[
                 'client/Shared/**/*.less',
-                //'client/**/*.less'
+                'client/**/*.less'
             ],
             type:"less",
             rootpath:"../../assets/"

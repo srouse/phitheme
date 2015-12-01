@@ -21812,7 +21812,7 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
                     style.color = PhiModel.style.text_highlight_color;
                 }
                 page_links.push(
-                    React.createElement("div", {className: "homePage_bottomNavLink", 
+                    React.createElement("div", {className: "c-phiTheme__copyrightNav__bottomNavLink", 
                         key:  "homePage_bottomNavLink_" + p, 
                         style:  style, 
                         onClick:  this.gotoPage.bind( this , page_str) }, 
@@ -21823,21 +21823,22 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
 
         }
 
-        return  React.createElement("div", {className: "phiTheme"}, 
-                    React.createElement(HomePage, null), 
+        return  React.createElement("div", {className: "c-phiTheme"}, 
+                    React.createElement("div", {className: "c-phiTheme__homePage"}, 
+                        React.createElement(HomePage, null)
+                    ), 
                     React.createElement(SlideShow, null), 
-                    React.createElement("div", {className: "contentArea"}, 
+                    React.createElement("div", {className: "c-phiTheme__contentArea"}, 
                         React.createElement(Page, null)
                     ), 
-
                     React.createElement(ListPage, null), 
                     React.createElement(ProjectPage, null), 
 
                     /*needed here for layering*/ 
-                    React.createElement("div", {className: "phitheme_copyrightNav"}, 
-                        React.createElement("div", {className: "homePage_bottomNav"}, 
+                    React.createElement("div", {className: "c-phiTheme__copyrightNav"}, 
+                        React.createElement("div", {className: "c-phiTheme__copyrightNav__bottomNav"}, 
                              page_links, 
-                            React.createElement("div", {className: "homePage_copyright"}, 
+                            React.createElement("div", {className: "c-phiTheme__copyrightNav__copyright"}, 
                                  PhiModel.copyright
                             )
                         )
@@ -22170,18 +22171,25 @@ var SlideShow = React.createClass({displayName: "SlideShow",
         return  React.createElement("div", {className: "c-slideShow"}, 
                     React.createElement("div", {className: "c-slideShow__title"}, 
                          fullimage_title, 
-                        React.createElement("span", {className: "imageIndex"},  image_context )
+                        React.createElement("span", {className: "imageIndex"}, 
+                             image_context 
+                        )
                     ), 
                     React.createElement("img", {src:  fullimage, 
                         className: "c-slideShow__img"}), 
-                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
-                                    "o-slideshow__btn--close", 
+                    React.createElement("div", {className: 
+                            "o-slideShow__btn--close" + ' ' +
+                            "a-position-top-right", 
                         onClick:  this.closeProject}), 
-                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
-                                    "o-slideshow__btn--nextProject", 
+                    React.createElement("div", {className: 
+                            "o-slideShow__btn--nextProject" + ' ' +
+                            "a-position-left" + ' ' +
+                            "a-transform-vcenter", 
                         onClick:  this.nextImage}), 
-                    React.createElement("div", {className: "o-slideshow__btn" + ' ' +
-                                    "o-slideshow__btn--prevProject", 
+                    React.createElement("div", {className: 
+                            "o-slideShow__btn--prevProject" + ' ' +
+                            "a-position-right" + ' ' +
+                            "a-transform-vcenter", 
                         onClick:  this.prevImage})
                 );
     }

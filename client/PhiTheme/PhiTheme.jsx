@@ -140,7 +140,7 @@ var PhiTheme = React.createClass({
                     style.color = PhiModel.style.text_highlight_color;
                 }
                 page_links.push(
-                    <div className="homePage_bottomNavLink"
+                    <div className="c-phiTheme__copyrightNav__bottomNavLink"
                         key={ "homePage_bottomNavLink_" + p }
                         style={ style }
                         onClick={ this.gotoPage.bind( this , page_str ) }>
@@ -151,21 +151,22 @@ var PhiTheme = React.createClass({
 
         }
 
-        return  <div className="phiTheme">
-                    <HomePage />
+        return  <div className="c-phiTheme">
+                    <div className="c-phiTheme__homePage">
+                        <HomePage />
+                    </div>
                     <SlideShow />
-                    <div className="contentArea">
+                    <div className="c-phiTheme__contentArea">
                         <Page />
                     </div>
-
                     <ListPage />
                     <ProjectPage />
 
                     { /*needed here for layering*/ }
-                    <div className="phitheme_copyrightNav">
-                        <div className="homePage_bottomNav">
+                    <div className="c-phiTheme__copyrightNav">
+                        <div className="c-phiTheme__copyrightNav__bottomNav">
                             { page_links }
-                            <div className="homePage_copyright">
+                            <div className="c-phiTheme__copyrightNav__copyright">
                                 { PhiModel.copyright }
                             </div>
                         </div>

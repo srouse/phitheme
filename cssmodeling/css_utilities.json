@@ -92,7 +92,7 @@
 		},
 
 		"clear-fix":{
-			"group":"sizing",
+			"group":"misc",
 			"selector":".a-clear-fix",
 			"declaration_includes":[
 				"&:before, &:after { content: \" \"; display: table; }",

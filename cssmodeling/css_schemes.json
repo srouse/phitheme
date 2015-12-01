@@ -52,6 +52,18 @@
 						]
 					}
 		},
+		"location-size-values":{
+			"shortcut":"<em>@base</em>-[ top [ -large[ r, st ] , -small[ er, est ], bottom..., left..., right... ]",
+			"scheme":{"@base":
+						[
+							{"":"scheme:size-values"},
+							{"-top":"scheme:size-values"},
+							{"-bottom":"scheme:size-values"},
+							{"-left":"scheme:size-values"},
+							{"-right":"scheme:size-values"}
+						]
+					}
+		},
 		"binary-values":{
 			"shortcut":"<em>@base</em>-[ 0 , 100 ]",
 			"scheme":{"@base":
@@ -121,7 +133,7 @@
 					}
 		},
 		"4-with-quarter-scale":{
-			"shortcut":"<em>@base</em>-[ 0,quarter,half,three-quarters,1,...,11-half,11-three-quarters,12]",
+			"shortcut":"<em>@base</em>-[ 0,quarter,half,three-quarters,1,...,4-half,4-three-quarters]",
 			"scheme":{"@base":
 						[
 							{"":"scheme:quarters-scale"},

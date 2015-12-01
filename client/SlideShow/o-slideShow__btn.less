@@ -1,0 +1,32 @@
+
+
+
+
+.o-slideShow__btn {
+    /* -ctag-example: ...;*/
+    .a-height-row-1-three-quarters;
+    .a-width-row-1-three-quarters;
+    .a-position-absolute;
+    .a-interactive;
+    .a-hover-background-alpha-grey-5;
+}
+
+.o-slideShow__btn {
+
+    &--close {
+        /* -ctag-example: "..."; */
+        &:extend( .o-slideShow__btn all );
+        background-image: url("../assets/close_icon_white.png");
+    }
+    &--nextProject {
+        /* -ctag-example: "..."; */
+        &:extend( .o-slideShow__btn all );
+        background-image: url("../assets/prev_icon_white.png");
+    }
+    &--prevProject {
+        /* -ctag-example: "..."; */
+        &:extend( .o-slideShow__btn all );
+        background-image: url("../assets/next_icon_white.png");
+    }
+
+}

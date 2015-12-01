@@ -1,0 +1,85 @@
+
+.c-phiTheme {
+    /* -ctag-example: ...
+            { .c-phiTheme__homePage }
+            { .c-projectPage }
+            { .c-phiTheme__contentArea }
+            { .c-phiTheme__copyrightNav };*/
+
+    .a-fill-container;
+    .a-background-grey-10;
+    .a-position-relative;
+
+    &__projectPage {}
+
+    &__homePage {
+        /* -ctag-example: ...;*/
+        .a-fill-container;
+        .a-position-absolute;
+        .a-position-top-left;
+        .a-transition-all;
+        .a-zindex-homePage;
+    }
+
+    &__contentArea {
+        /* -ctag-example: ...
+                        ;*/
+        .a-width-phi; .a-height-100;
+        .a-position-absolute;
+        .a-position-top-right;
+        .a-overflow-auto;
+        .a-zindex-contentArea;
+        .a-background-grey-10;
+        .a-display-none;
+    }
+
+    /*needed here for layering*/
+    &__copyrightNav {
+        /* -ctag-example: ...
+                { .c-phiTheme__copyrightNav__bottomNav }
+                */
+
+        .a-position-absolute;
+        .a-position-bottom;
+        .a-width-phi-inv; .a-height-row-1-three-quarters;
+        .a-left-phi-half;
+        .a-transition-all;
+        .a-zindex-phitheme_copyrightNav;
+        .a-overflow-hidden;
+
+        &__bottomNav {
+            /* -ctag-example: ...
+                    { .c-phiTheme__copyrightNav__bottomNavLink }
+                    { .c-phiTheme__copyrightNav__bottomNavLink }
+                    { .c-phiTheme__copyrightNav__copyright };*/
+            .a-width-phi; .a-height-100;
+            .a-position-absolute;
+            .a-left-phi-inv-half;
+            .a-border-top-small;
+        }
+
+        &__bottomNavLink {
+            /* -ctag-example: ...Contact*/
+            .a-text-color-lighter;
+            .a-text-size;
+            .a-text-align-center;
+            .a-margin-top-row-quarter;
+            .a-float-left;
+            .a-interactive-hover;
+
+            width: 50%;
+        }
+
+        &__copyright {
+            /* -ctag-example: ...copyright 2015, Your Company...*/
+            .a-width-100;
+            .a-text-size-smallest;
+            .a-text-color-light;
+            .a-text-align-center;
+            .a-position-absolute;
+            .a-position-bottom;
+            .a-margin-bottom-row-quarter;
+        }
+    }
+
+}

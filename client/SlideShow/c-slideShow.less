@@ -1,0 +1,47 @@
+
+
+.c-slideShow {
+    /*-ctag-example: ...
+            { .c-slideShow__title }
+            { .c-slideShow__img }
+    */
+    .a-position-fixed;
+    .a-position-bottom-left;
+    .a-height-0;
+    .a-width-100;
+    .a-transition-height;
+    .a-zindex-project;
+    .a-background-alpha-grey-8;
+    .a-overflow-hidden;
+
+    &__title {
+        /* -ctag-example: ...title; */
+        .a-position-absolute;
+        .a-position-top-left;
+        .a-text-size-larger;
+        .a-text-color-grey-10;
+        .a-padding-left-large;
+        .a-padding-top;
+
+        .zIndex( "page_title" );
+
+        /*========= MODIFIERS ===========*/
+        & .imageIndex {
+            .a-padding-left;
+            .a-text-size-smaller;
+        }
+
+    }
+
+    &__img {
+        /* -ctag-example: <img ... src='http://placehold.it/1200x1200' />; */
+        .a-transition-all;
+        .a-position-absolute;
+        .a-transform-center;
+
+        max-height: ~"calc(100% - 120px)";
+        max-width: ~"calc(100% - 100px)";
+        .zIndex( "page_img" );
+    }
+
+}
