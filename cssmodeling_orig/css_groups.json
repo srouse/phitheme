@@ -1,17 +1,5 @@
 {
 	"groups":{
-		
-	},
-
-	"sub_groups" :{
-		"animations":{
-			"title":"Animations",
-			"description":"Moving stuff..."
-		},
-		"misc":{
-			"title":"Misc",
-			"description":"Misc utility variables/atoms."
-		},
 		"colors":{
 			"title":"Colors",
 			"description":"Colors used by example. These are the brand colors."
@@ -36,5 +24,17 @@
 			"title":"Interactivity",
 			"description":"Properties that affect interativty of the element."
 		},
+		"skins":{
+			"title":"Skins",
+			"description":"Properties that address the look of the app."
+		},
+		"animations":{
+			"title":"Animations",
+			"description":"Moving stuff..."
+		},
+		"misc":{
+			"title":"Misc",
+			"description":"Misc utility variables/atoms."
+		}
 	}
 }

@@ -1066,7 +1066,7 @@ body.s_project .c-projectPage__container {
   overflow-y: auto;
   overflow-x: hidden;
   transition: width 0.3s;
-  z-index: 3000;
+  z-index: 5000;
   background-color: #DEDEDE;
 }
 .c-projectPage__container {
@@ -6995,7 +6995,7 @@ p {
   z-index: 4000;
 }
 .a-zindex-projectPage {
-  z-index: 3000;
+  z-index: 5000;
 }
 .a-zindex-project {
   z-index: 6000;
@@ -16056,7 +16056,7 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-zindex-projectPage {
-    z-index: 3000 !important;
+    z-index: 5000 !important;
   }
 }
 @media (max-width: 768px) {

@@ -1,7 +1,18 @@
 
 .c-projectPage {
 
-    .s-project-a-width-phi;
+    body.s_project & {
+        .a-width-phi;
+    }
+
+    &__container {
+
+        body.s_project & {
+            width: calc( 61.8vw ~'-' 100px );
+            margin-left: 50px;
+            display: block;
+        }
+    }
 
     .breakpoint-sm-a-width-100;
     .breakpoint-sm-a-position-relative;
@@ -9,13 +20,13 @@
     &__titleSection {
 
         .breakpoint-sm-a-width-100;
-        .breakpoint-sm-a-padding-h-large;
+        .breakpoint-sm-a-padding-h-row-2;
 
         &__titles {}
     }
 
     &__title {}
-        
+
     &__subTitle {}
 
     &__totalImgs {
@@ -27,7 +38,7 @@
     &__body {
 
         .breakpoint-sm-a-width-100;
-        .breakpoint-sm-a-padding-h-large;
+        .breakpoint-sm-a-padding-h-row-2;
         .breakpoint-sm-a-text-size;
 
         > p {}

@@ -21465,7 +21465,8 @@ var HomePage = React.createClass({displayName: "HomePage",
 
             for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
                 product = PhiModel.product_nav[p];
-                style = {"width":(100/PhiModel.product_nav.length) + "%"};
+                style = {};
+                // style = {"width":(100/PhiModel.product_nav.length) + "%"};
                 var filter;
                 var color_style = PhiModel.style.text_highlight_color;
                 for ( var f=0; f<product.filters.length; f++ ) {
@@ -21991,40 +21992,42 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         }
 
         return  React.createElement("div", {className: "c-projectPage"}, 
+                    React.createElement("div", {className: "c-projectPage__container"}, 
+                        React.createElement("div", {className: "c-projectPage__titleSection"}, 
 
-                    React.createElement("div", {className: "c-projectPage__titleSection"}, 
-
-                        React.createElement("div", {className: "c-projectPage__titleSection__titles"}, 
-                            React.createElement("div", {className: "c-projectPage__totalImgs", 
-                                onClick:  this.openSlideShow}, 
-                                React.createElement("div", {className: "c-projectPage__totalImgs__num"}, 
-                                     total_images 
+                            React.createElement("div", {className: "c-projectPage__titleSection__titles"}, 
+                                /* <div className="c-projectPage__totalImgs"
+                                    onClick={ this.openSlideShow }>
+                                    <div className="c-projectPage__totalImgs__num">
+                                        { total_images }
+                                    </div>
+                                    <div className="c-projectPage__totalImgs__images">
+                                        images
+                                    </div>
+                                </div> */ 
+                                React.createElement("div", {className: "c-projectPage__title"}, 
+                                     project.title
                                 ), 
-                                React.createElement("div", {className: "c-projectPage__totalImgs__images"}, 
-                                    "images"
+                                React.createElement("div", {className: "c-projectPage__subTitle"}, 
+                                     project.medium
                                 )
-                            ), 
-                            React.createElement("div", {className: "c-projectPage__title"}, 
-                                 project.title
-                            ), 
-                            React.createElement("div", {className: "c-projectPage__subTitle"}, 
-                                 project.medium
                             )
-                        )
 
-                    ), 
-                    React.createElement("div", {className: "c-projectPage__previewImage", style: {
-                            'background-image':'url(\'' + fullimage + '\')'}, 
-                            onClick:  this.openSlideShow}
-                    ), 
-                    React.createElement("div", {className: "c-projectPage__body", 
-                        contentEditable:  pseudo_edit, 
-                        dangerouslySetInnerHTML: {__html:project.description}}
-                    ), 
+                        ), 
+                        React.createElement("div", {className: "c-projectPage__previewImage", 
+                                onClick:  this.openSlideShow}, 
+                            React.createElement("image", {src:  fullimage })
+                        ), 
+                        React.createElement("div", {className: "c-projectPage__body", 
+                            contentEditable:  pseudo_edit, 
+                            dangerouslySetInnerHTML: {__html:project.description}}
+                        ), 
 
-                     nav_links_dom, 
-                    React.createElement("div", {className: "c-projectPage__close", 
-                        onClick:  this.closeProject})
+                         nav_links_dom, 
+                        React.createElement("div", {className: "c-projectPage__close", 
+                            onClick:  this.closeProject})
+
+                    )
                 );
     }
 

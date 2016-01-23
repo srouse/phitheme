@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         files: {
             'dist/phitheme.less':
             [
-                'dist/csssystem/less/less_mixins.less',
+                'dist/csscore/less/core_mixins.less',
                 'node_modules/nanoscroller/bin/css/nanoscroller.css',
                 'client/Shared/html.less',//fonts there
                 'client/Shared/**/*.less',
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
             'dist/phitheme.css':
             [
                 'dist/phitheme.css',
-                'dist/csssystem/core.css'
+                'dist/csscore/core.css'
             ]
         }
     }
@@ -87,31 +87,39 @@ module.exports = function(grunt) {
     configObj.cssmodeling = configObj.cssmodeling || {};
     configObj.cssmodeling["phitheme"] = {
         files: {
-            'dist/csssystem':
+            'dist/csscore':
             [
-                'cssmodeling/css_groups.json',
                 'cssmodeling/css_schemes.json',
-                'cssmodeling/css_atoms.json',
-                'cssmodeling/atoms/css_spacing.json',
-                'cssmodeling/atoms/css_sizing.json',
-                'cssmodeling/atoms/css_simple.json',
-                'cssmodeling/atoms/css_skins.json',
-                'cssmodeling/css_utilities.json',
-                'cssmodeling/css_states.json'
+                'cssmodeling/systems/css_rows_quartered.json',
+                'cssmodeling/systems/css_12_col_vw_quartered.json',
+                'cssmodeling/systems/css_phi_grid.json',
+                'cssmodeling/systems/css_layouts.json',
+                'cssmodeling/skins/css_phitheme_skin.json',
+                'cssmodeling/systems/css_simple.json',
+                'cssmodeling/css_states.json'//,
+                //'cssmodeling/js/css_simple.js'
             ]
         },
         options: {
             resets:[
-                'cssmodeling/resets/**/*.css',
-            ],
-            components:[
-                'client/Shared/**/*.less',
-                'client/**/*.less'
+                'cssmodeling/_resets/**/*.css'
             ],
             type:"less",
-            rootpath:"../../assets/"
+            var_prefix:"v-"
         }
     };
+
+    configObj.cssmodeling = configObj.cssmodeling || {};
+    configObj.cssmodeling_components = configObj.cssmodeling_components || {};
+    configObj.cssmodeling_components["phitheme"] = {
+        files: {
+            'dist/csscore':
+            [
+                'dist/phitheme.css'
+            ]
+        }
+    };
+
     configObj.watch = configObj.watch || {};
     configObj.watch["cssmodeling"] = {
         files:[
@@ -126,17 +134,28 @@ module.exports = function(grunt) {
     configObj.watch["react"] = {
         files:[
             'client/**/*.jsx',
-            'client/**/*.less',
             'client/**/*.js'
         ],
         tasks: ["default"]
+    };
+
+    configObj.watch = configObj.watch || {};
+    configObj.watch["react"] = {
+        files:[
+            'client/**/*.less'
+        ],
+        tasks: [
+            'concat:phitheme_less',
+            'less:phitheme',
+            'concat:phitheme_css'
+        ]
     };
 
     grunt.initConfig( configObj );
 
     // 'build' was put together in processProjects
     grunt.registerTask( 'default' , [
-        'cssmodeling',
+        'cssmodeling','cssmodeling_components',
         'concat:phitheme_less',
         'less:phitheme',
         'concat:phitheme_css',

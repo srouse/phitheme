@@ -6,13 +6,15 @@
             { .c-slideShow__img }
     */
     .a-position-fixed;
-    .a-position-bottom-left;
-    .a-height-0;
+    .a-left;
+    .a-height-100;
     .a-width-100;
-    .a-transition-height;
+    .a-transition-bottom;
     .a-zindex-project;
     .a-background-alpha-grey-8;
     .a-overflow-hidden;
+
+    bottom: -100%;
 
     &__title {
         /* -ctag-example: ...title; */
@@ -20,14 +22,14 @@
         .a-position-top-left;
         .a-text-size-larger;
         .a-text-color-grey-10;
-        .a-padding-left-large;
-        .a-padding-top;
+        .a-padding-left-row-2;
+        .a-padding-top-row;
 
         .zIndex( "page_title" );
 
         /*========= MODIFIERS ===========*/
         & .imageIndex {
-            .a-padding-left;
+            .a-padding-left-row;
             .a-text-size-smaller;
         }
 

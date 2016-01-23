@@ -50,7 +50,8 @@ var HomePage = React.createClass({
 
             for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
                 product = PhiModel.product_nav[p];
-                style = {"width":(100/PhiModel.product_nav.length) + "%"};
+                style = {};
+                // style = {"width":(100/PhiModel.product_nav.length) + "%"};
                 var filter;
                 var color_style = PhiModel.style.text_highlight_color;
                 for ( var f=0; f<product.filters.length; f++ ) {

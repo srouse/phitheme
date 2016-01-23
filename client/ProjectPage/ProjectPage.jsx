@@ -140,40 +140,42 @@ var ProjectPage = React.createClass({
         }
 
         return  <div className="c-projectPage">
+                    <div className="c-projectPage__container">
+                        <div className="c-projectPage__titleSection">
 
-                    <div className="c-projectPage__titleSection">
+                            <div className="c-projectPage__titleSection__titles">
+                                { /* <div className="c-projectPage__totalImgs"
+                                    onClick={ this.openSlideShow }>
+                                    <div className="c-projectPage__totalImgs__num">
+                                        { total_images }
+                                    </div>
+                                    <div className="c-projectPage__totalImgs__images">
+                                        images
+                                    </div>
+                                </div> */ }
+                                <div className="c-projectPage__title">
+                                    { project.title }
+                                </div>
+                                <div className="c-projectPage__subTitle">
+                                    { project.medium }
+                                </div>
+                            </div>
 
-                        <div className="c-projectPage__titleSection__titles">
-                            <div className="c-projectPage__totalImgs"
+                        </div>
+                        <div className="c-projectPage__previewImage"
                                 onClick={ this.openSlideShow }>
-                                <div className="c-projectPage__totalImgs__num">
-                                    { total_images }
-                                </div>
-                                <div className="c-projectPage__totalImgs__images">
-                                    images
-                                </div>
-                            </div>
-                            <div className="c-projectPage__title">
-                                { project.title }
-                            </div>
-                            <div className="c-projectPage__subTitle">
-                                { project.medium }
-                            </div>
+                            <image src={ fullimage } />
+                        </div>
+                        <div className="c-projectPage__body"
+                            contentEditable={ pseudo_edit }
+                            dangerouslySetInnerHTML={{__html:project.description}}>
                         </div>
 
-                    </div>
-                    <div className="c-projectPage__previewImage" style={{
-                            'background-image':'url(\'' + fullimage + '\')'}}
-                            onClick={ this.openSlideShow }>
-                    </div>
-                    <div className="c-projectPage__body"
-                        contentEditable={ pseudo_edit }
-                        dangerouslySetInnerHTML={{__html:project.description}}>
-                    </div>
+                        { nav_links_dom }
+                        <div className="c-projectPage__close"
+                            onClick={ this.closeProject }></div>
 
-                    { nav_links_dom }
-                    <div className="c-projectPage__close"
-                        onClick={ this.closeProject }></div>
+                    </div>
                 </div>;
     }
 
