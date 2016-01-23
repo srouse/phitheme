@@ -164,6 +164,18 @@
 @v-breakpoint-large-max: 4000px;
 
 
+@v-phitheme-h-padding: @v-row-2;
+
+
+@v-project-page-h-padding: @v-phitheme-h-padding;
+@v-project-page-width: @v-col-8;
+@v-project-page-container-width: @v-col-7;
+
+
+@v-list-width: @v-col-8;
+@v-list-nav-width: 100vw - @v-project-page-width;
+
+
 @v-misused: 2px solid red;
 @v-misused-off: initial;
 
@@ -329,14 +341,14 @@
 
 
 @v-zindex-homePage: 4000;
-@v-zindex-projectPage: 3000;
-@v-zindex-project: 6000;
+@v-zindex-projectPage: 2000;
+@v-zindex-list: 3000;
+@v-zindex-listFull: 1000;
 @v-zindex-contentArea: 1000;
 @v-zindex-contentArea-s-project: 5000;
 @v-zindex-contentArea_screen-sm-min: 2500;
-@v-zindex-identityNav: 4000;
-@v-zindex-page_title: 200;
 @v-zindex-phitheme_copyrightNav: 5000;
+@v-zindex-slideShow: 6000;
 
 
 @v-secondaryNav_width: @v-col-2;
@@ -2009,13 +2021,13 @@
 .a-shadow-right-left () {  box-shadow : @v-shadow-right-left ; }
 .a-zindex-homePage () {  z-index : @v-zindex-homePage; }
 .a-zindex-projectPage () {  z-index : @v-zindex-projectPage; }
-.a-zindex-project () {  z-index : @v-zindex-project; }
+.a-zindex-list () {  z-index : @v-zindex-list; }
+.a-zindex-listFull () {  z-index : @v-zindex-listFull; }
 .a-zindex-contentArea () {  z-index : @v-zindex-contentArea; }
 .a-zindex-contentArea-s-project () {  z-index : @v-zindex-contentArea-s-project; }
 .a-zindex-contentArea_screen-sm-min () {  z-index : @v-zindex-contentArea_screen-sm-min; }
-.a-zindex-identityNav () {  z-index : @v-zindex-identityNav; }
-.a-zindex-page_title () {  z-index : @v-zindex-page_title; }
 .a-zindex-phitheme_copyrightNav () {  z-index : @v-zindex-phitheme_copyrightNav; }
+.a-zindex-slideShow () {  z-index : @v-zindex-slideShow; }
 .a-border-radius () {  border-radius : @v-border-radius ; }
 .a-width-0 () {  width: 0 ; }
 .a-width-100 () {  width: 100% ; }
@@ -2114,6 +2126,9 @@
 .a-fill-container () {  width: 100%;  height: 100%;  }
 .a-mobile-reset () {   .a-position-relative;  .a-width-100;  .a-height-auto;  }
 .a-mobile-nav-reset () {   .a-position-fixed;  .a-top-left;  }
+
+
+
 
 
 
@@ -3795,13 +3810,13 @@
 .breakpoint-md-a-shadow-right-left ( @v-shadow-right-left : @v-shadow-right-left ) { @media ( max-width: @v-breakpoint-medium-min ) {  box-shadow : @v-shadow-right-left  !important;}}
 .breakpoint-md-a-zindex-homePage ( @v-zindex-homePage : @v-zindex-homePage ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-homePage !important;}}
 .breakpoint-md-a-zindex-projectPage ( @v-zindex-projectPage : @v-zindex-projectPage ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-projectPage !important;}}
-.breakpoint-md-a-zindex-project ( @v-zindex-project : @v-zindex-project ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-project !important;}}
+.breakpoint-md-a-zindex-list ( @v-zindex-list : @v-zindex-list ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-list !important;}}
+.breakpoint-md-a-zindex-listFull ( @v-zindex-listFull : @v-zindex-listFull ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-listFull !important;}}
 .breakpoint-md-a-zindex-contentArea ( @v-zindex-contentArea : @v-zindex-contentArea ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-contentArea !important;}}
 .breakpoint-md-a-zindex-contentArea-s-project ( @v-zindex-contentArea-s-project : @v-zindex-contentArea-s-project ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-contentArea-s-project !important;}}
 .breakpoint-md-a-zindex-contentArea_screen-sm-min ( @v-zindex-contentArea_screen-sm-min : @v-zindex-contentArea_screen-sm-min ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-contentArea_screen-sm-min !important;}}
-.breakpoint-md-a-zindex-identityNav ( @v-zindex-identityNav : @v-zindex-identityNav ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-identityNav !important;}}
-.breakpoint-md-a-zindex-page_title ( @v-zindex-page_title : @v-zindex-page_title ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-page_title !important;}}
 .breakpoint-md-a-zindex-phitheme_copyrightNav ( @v-zindex-phitheme_copyrightNav : @v-zindex-phitheme_copyrightNav ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-phitheme_copyrightNav !important;}}
+.breakpoint-md-a-zindex-slideShow ( @v-zindex-slideShow : @v-zindex-slideShow ) { @media ( max-width: @v-breakpoint-medium-min ) {  z-index : @v-zindex-slideShow !important;}}
 .breakpoint-md-a-border-radius ( @v-border-radius : @v-border-radius ) { @media ( max-width: @v-breakpoint-medium-min ) {  border-radius : @v-border-radius  !important;}}
 .breakpoint-md-a-width-0 (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  width: 0  !important;}}
 .breakpoint-md-a-width-100 (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  width: 100%  !important;}}
@@ -3900,6 +3915,9 @@
 .breakpoint-md-a-fill-container (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  width: 100% !important;  height: 100% !important; }}
 .breakpoint-md-a-mobile-reset (  ) { @media ( max-width: @v-breakpoint-medium-min ) {   .breakpoint-md-a-position-relative;  .breakpoint-md-a-width-100;  .breakpoint-md-a-height-auto; }}
 .breakpoint-md-a-mobile-nav-reset (  ) { @media ( max-width: @v-breakpoint-medium-min ) {   .breakpoint-md-a-position-fixed;  .breakpoint-md-a-top-left; }}
+
+
+
 
 
 
@@ -5581,13 +5599,13 @@
 .breakpoint-sm-a-shadow-right-left ( @v-shadow-right-left : @v-shadow-right-left ) { @media ( max-width: @v-breakpoint-small-min ) {  box-shadow : @v-shadow-right-left  !important;}}
 .breakpoint-sm-a-zindex-homePage ( @v-zindex-homePage : @v-zindex-homePage ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-homePage !important;}}
 .breakpoint-sm-a-zindex-projectPage ( @v-zindex-projectPage : @v-zindex-projectPage ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-projectPage !important;}}
-.breakpoint-sm-a-zindex-project ( @v-zindex-project : @v-zindex-project ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-project !important;}}
+.breakpoint-sm-a-zindex-list ( @v-zindex-list : @v-zindex-list ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-list !important;}}
+.breakpoint-sm-a-zindex-listFull ( @v-zindex-listFull : @v-zindex-listFull ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-listFull !important;}}
 .breakpoint-sm-a-zindex-contentArea ( @v-zindex-contentArea : @v-zindex-contentArea ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-contentArea !important;}}
 .breakpoint-sm-a-zindex-contentArea-s-project ( @v-zindex-contentArea-s-project : @v-zindex-contentArea-s-project ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-contentArea-s-project !important;}}
 .breakpoint-sm-a-zindex-contentArea_screen-sm-min ( @v-zindex-contentArea_screen-sm-min : @v-zindex-contentArea_screen-sm-min ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-contentArea_screen-sm-min !important;}}
-.breakpoint-sm-a-zindex-identityNav ( @v-zindex-identityNav : @v-zindex-identityNav ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-identityNav !important;}}
-.breakpoint-sm-a-zindex-page_title ( @v-zindex-page_title : @v-zindex-page_title ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-page_title !important;}}
 .breakpoint-sm-a-zindex-phitheme_copyrightNav ( @v-zindex-phitheme_copyrightNav : @v-zindex-phitheme_copyrightNav ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-phitheme_copyrightNav !important;}}
+.breakpoint-sm-a-zindex-slideShow ( @v-zindex-slideShow : @v-zindex-slideShow ) { @media ( max-width: @v-breakpoint-small-min ) {  z-index : @v-zindex-slideShow !important;}}
 .breakpoint-sm-a-border-radius ( @v-border-radius : @v-border-radius ) { @media ( max-width: @v-breakpoint-small-min ) {  border-radius : @v-border-radius  !important;}}
 .breakpoint-sm-a-width-0 (  ) { @media ( max-width: @v-breakpoint-small-min ) {  width: 0  !important;}}
 .breakpoint-sm-a-width-100 (  ) { @media ( max-width: @v-breakpoint-small-min ) {  width: 100%  !important;}}

@@ -2,21 +2,34 @@
 .listPage {
     -ctag-example: "...{ .listPage_rowContainer }{ .listPage_typeToggle }";
 
-    .zIndex( "listPage" );
-    background-color: #fff;
-    position: absolute;
-    left: @phi-inv; top: 0px;
-    width: @phi; height: 100%;
-    // transition: width .5s, left .3s, top .2s;
+    //.zIndex( "listPage" );
+    .a-background-white;
+    .a-position-left;
+    .a-width-col-7;
+    .a-left-col-3-half;
+    .a-height-100;
+    .a-clear-fix;
+    .a-zindex-list;
+
+    body.s_list & {
+        //.a-width-col-6;
+        //.a-left-col-6;
+
+        width: @v-list-width;
+        left: 100vw - @v-list-width;
+        .a-zindex-listFull;
+    }
 
     body.s_project &,
     body.s-slideshow &,
     body.s_page & {
-        border-right: 1px solid #eee;
+
         box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
-        width: @phi-inv;
-        left: 0px; top: @phi-inv;
-        height: @phi;
+        .a-left;
+        .a-top-phi-inv;
+        .a-height-phi;
+        width: @v-list-nav-width;
+        .a-zindex-list;
     }
 
     @media ( max-width: @screen-sm-min ) {
@@ -43,7 +56,12 @@
         }
 
         .nano-content {
-            padding-top: 30px;
+            padding: @v-phitheme-h-padding;
+            background-color: #eee;
+
+            body.s_project & {
+                .a-padding-row-0;
+            }
 
             @media ( max-width: @screen-sm-min ) {
                 overflow: visible;
@@ -75,8 +93,7 @@
 
 
     .listPage_spacer {
-        -ctag-tag: "shim";
-        -ctag-example: "...";
+        /* -ctag-example: ...;*/
 
         height: 50px;
         width: 10px;
@@ -84,9 +101,7 @@
     }
 
     .listPage_typeToggle {
-        -ctag-tag: "button";
         -ctag-example: "...";
-
 
         width: 50px; height: 50px;
         position: fixed;
@@ -103,14 +118,15 @@
     }
 
     .listPage_rowContainer {
-        -ctag-tag: "container";
-        -ctag-example: "<div class='nano-content'><div ...>{ .listPage_header }{ .listPage_row }{ .listPage_row }{ .listPage_row }</div></div>";
+        /* -ctag-example: <div class='nano-content'><div ...>{ .listPage_header }{ .listPage_row }{ .listPage_row }{ .listPage_row }</div></div>;*/
 
-        //width: @phi;
-        //margin-left: @phi-inv/2;
-        width: 80%;
-        margin-left: 10%;
+        .a-width-100;
+        padding: @v-phitheme-h-padding;
+        .a-background-white;
 
+        body.s_project & {
+            .a-padding-top-row-1;
+        }
 
         @media ( max-width: @screen-sm-min ) {
             width: 90%;
@@ -123,8 +139,7 @@
         }
 
         .listPage_header {
-            -ctag-tag: "row,header";
-            -ctag-example: "...Header";
+            /* -ctag-example: ...Header;*/
 
             float: left;
             width: 100%;//@phi;
@@ -151,16 +166,23 @@
                     { .listPage_rowImage }
                 </div>
             </csstag>*/
-            float: left;
-            width: 100%;
+
+            .a-width-100;
             border-bottom: 1px solid #eee;
-            padding: 30px 0px;
-            position: relative;
-            transition: width .3s;
+            padding-bottom: @v-phitheme-h-padding;
+            padding-top: @v-phitheme-h-padding;
+            //padding: 30px 0px;
+            //position: relative;
+            .a-transition-width;
             .a-interactive;
+            .a-flex-h;
+            .a-align-items-flex-start;
 
             body.s_project & {
-                padding: 20px 0px;
+                //padding: 20px 0px;
+                padding-bottom: @v-phitheme-h-padding / 2;
+                padding-top: @v-phitheme-h-padding / 2;
+                .a-align-items-center;
             }
 
             body.s_thumbs & {
@@ -192,9 +214,12 @@
                         { .listPage_rowDescription }
                     </div>
                 </csstag>*/
-                width: @phi;
-                float: left; clear: left;
+                // width: @phi;
+                .a-flex-item-fill;
+                //.a-margin-right-col-quarter;
+                margin-right: @v-phitheme-h-padding;
 
+                // float: left; clear: left;
 
                 body.s_thumbs & {
                     margin-bottom: 0px;
@@ -221,6 +246,7 @@
                         </div>
                     </csstag>*/
                     .a-text-size-large;
+                    //.a-line-height-row-2;
                     .a-text-color-grey-4;
 
                     body.s_thumbs & {
@@ -234,7 +260,8 @@
                     }
 
                     body.s_project & {
-                        .a-text-size;
+                        .a-text-size-large;
+                        .a-line-height-row-1;
                     }
 
                     @media ( max-width: @screen-sm-min ) {
@@ -257,13 +284,21 @@
                             Project Sub Title
                         </div>
                     </csstag>*/
-                    font-size: 12px;
-                    margin-top: 2px;
-
-                    color: #999;
+                    //font-size: 12px;
+                    //margin-top: 2px;
+                    //color: #999;
+                    .a-text-size-small;
+                    .a-line-height-row;
+                    .a-text-color-grey-5;
 
                     body.s_thumbs & {
                         display: none;
+                    }
+
+                    body.s_project & {
+                        .a-text-size-smaller;
+                        //.a-single-line;
+                        .a-display-none;
                     }
 
                     @media ( max-width: @screen-sm-min ) {
@@ -275,6 +310,7 @@
                         text-align: center;
                     }
                 }
+
                 .listPage_rowDescription {
                     /*<csstag tag="label">
                         <div ...>
@@ -294,11 +330,12 @@
                             tincidunt dignissim purus.
                         </div>
                     </csstag>*/
-                    font-size: 12px;
-                    margin-top: 10px;
-                    padding-right: 20px;
-
-                    color: #777;
+                    //font-size: 12px;
+                    .a-text-size-small;
+                    .a-text-color-grey-6;
+                    //margin-top: 10px;
+                    //padding-right: 20px;
+                    //color: #777;
 
                     body.s_project & {
                         display: none;
@@ -321,14 +358,19 @@
             }
 
             .listPage_rowImage {
-                -ctag-tag: "row";
-                -ctag-example: "<img ... src='../content/posters/oh_poster/oh.png' />";
+                /* -ctag-example: "<img ... src='../content/posters/oh_poster/oh.png' />"; */
 
-                float: right; clear: right;
-                box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .2 );
+                // float: right; clear: right;
+                box-shadow: 0px 0px 6px 0px rgba( 0 , 0 , 0 , .1 );
+                // width: 20%;//25%;//@phi-inv;
+            	// padding-bottom: 20%;//25%;//@phi-inv;// @phinv-phi; /* 16:9 */
+                .a-width-col-1-half;
+                height: @v-col-1-half;
 
-                width: 25%;//25%;//@phi-inv;
-            	padding-bottom: 15%;//25%;//@phi-inv;// @phinv-phi; /* 16:9 */
+                body.s_project & {
+                    .a-width-col-half;
+                    height: @v-col-half;
+                }
 
                 position: relative;
 

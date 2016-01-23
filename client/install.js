@@ -21,15 +21,15 @@ PhiThemeBootstrap.run = function ( data_dom ) {
         //inject CSS here...only want this to happen once...
         var styles = {};
         if ( PhiModel.style.line_highlight_color ) {
-            styles[".page .page_content h1"] = {
+            styles[".page_content h1"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
-            styles[".listPage .listPage_rowContainer .listPage_header"] = {
+            styles[".listPage_header"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
         }
         if ( PhiModel.style.text_highlight_color ) {
-            styles[".homePage .homePage_centerNav .homePage_link:hover"] = {
+            styles[".c-homePage__link:hover"] = {
                 "color":PhiModel.style.text_highlight_color
             };
         }
@@ -37,38 +37,38 @@ PhiThemeBootstrap.run = function ( data_dom ) {
             styles[".listPage.nano > .nano-pane > .nano-slider"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
-            styles[".homePage .homePage_rightGradient"] = {
+            styles[".homePage__rightGradient"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
-            styles[".homePage"] = {
+            styles[".c-homePage"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
         }
         if ( PhiModel.style.home_background_color ) {
-            styles[".homePage"] = styles[".homePage"] || {};
-            styles[".homePage"]['background-color']
+            styles[".c-homePage"] = styles[".c-homePage"] || {};
+            styles[".c-homePage"]['background-color']
                 = PhiModel.style.home_background_color;
         }
         if ( PhiModel.style.home_main_nav_text_color ) {
-            styles[".homePage .homePage_centerNav .homePage_link"] = {
+            styles[".c-homePage__link"] = {
                 "color":PhiModel.style.home_main_nav_text_color
             };
         }
         if ( PhiModel.style.home_secondary_nav_text_color ) {
-            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_bottomNavLink"] = {
+            styles[".c-homePage__bottomNavLink"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
-            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_copyright"] = {
+            styles[".c-homePage__copyright"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
         }
         if ( PhiModel.style.logo ) {
-            styles[".homePage .homePage_logo"] = {
+            styles[".c-homePage__logo"] = {
                 "background-image":"url('"+ PhiModel.style.logo + "')"
             };
         }
         if ( PhiModel.style.logo_mark ) {
-            styles[".homePage .homePage_logo_small"] = {
+            styles[".c-homePage__logo--small"] = {
                 "background-image":"url('"+ PhiModel.style.logo_mark + "')"
             };
         }

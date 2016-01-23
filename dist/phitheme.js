@@ -21480,7 +21480,7 @@ var HomePage = React.createClass({displayName: "HomePage",
                     style.color = color_style;
                 }
                 project_links.push(
-                    React.createElement("div", {className: "homePage_link", 
+                    React.createElement("div", {className: "c-homePage__link", 
                         style:  style, key:  product.title, 
                         onClick:  this.gotoTag.bind( this , product.filters) }, 
                          product.title
@@ -21490,17 +21490,19 @@ var HomePage = React.createClass({displayName: "HomePage",
 
         }
 
-        return  React.createElement("div", {className: "homePage"}, 
-                    React.createElement("div", {className: "homePage_gradOffset"}, 
-                        React.createElement("div", {className: "homePage_logo", 
+        return  React.createElement("div", {className: "c-homePage"}, 
+
+                    React.createElement("div", {className: "c-homePage__content"}, 
+                        React.createElement("div", {className: "c-homePage__logo", 
                             onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "homePage_logo_small", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "homePage_centerNav"}, 
-                             project_links 
-                        )
+                        React.createElement("div", {className: "c-homePage__logo--small", 
+                            onClick:  this.gotoHome})
                     ), 
-                    React.createElement("div", {className: "homePage_rightGradient"})
+                    React.createElement("div", {className: "c-homePage__nav"}, 
+                         project_links 
+                    )
+
+                    /* <div className="c-homePage__rightGradient"></div> */
                 );
     }
 
@@ -21939,9 +21941,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
                 if ( nav_link.internal && nav_link.internal == true ) {
                     nav_links_children.push(
-                        React.createElement("div", {className: "projectPage_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
+                        React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
                             React.createElement("div", {className: "projectPage_navLinkButton", 
                                 onClick: 
                                     this.gotoProject.bind( this , nav_link)
@@ -21952,9 +21952,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                     );
                 }else{
                     nav_links_children.push(
-                        React.createElement("div", {className: "projectPage_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
+                        React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
                             React.createElement("a", {className: "projectPage_navLinkButton", 
                                 href:  nav_link.location, target: "nav_link"}, 
                                  nav_link.title
@@ -21966,9 +21964,6 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
             }
 
-            nav_links_dom = React.createElement("div", {className: "projectPage_navLinks"}, 
-                                 nav_links_children 
-                            );
         }
 
         var pseudo_edit = "false";
@@ -21993,39 +21988,48 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
         return  React.createElement("div", {className: "c-projectPage"}, 
                     React.createElement("div", {className: "c-projectPage__container"}, 
+
                         React.createElement("div", {className: "c-projectPage__titleSection"}, 
 
                             React.createElement("div", {className: "c-projectPage__titleSection__titles"}, 
-                                /* <div className="c-projectPage__totalImgs"
-                                    onClick={ this.openSlideShow }>
-                                    <div className="c-projectPage__totalImgs__num">
-                                        { total_images }
-                                    </div>
-                                    <div className="c-projectPage__totalImgs__images">
-                                        images
-                                    </div>
-                                </div> */ 
                                 React.createElement("div", {className: "c-projectPage__title"}, 
                                      project.title
-                                ), 
-                                React.createElement("div", {className: "c-projectPage__subTitle"}, 
-                                     project.medium
                                 )
+                                /* <div className="c-projectPage__subTitle">
+                                    { project.medium }
+                                </div> */
+                            ), 
+
+                            React.createElement("div", {className: "c-projectPage__close", 
+                                onClick:  this.closeProject})
+
+                        ), 
+
+                        React.createElement("div", {className: "c-projectPage__content"}, 
+
+                            React.createElement("div", {className: "c-projectPage__summary"}, 
+                                React.createElement("div", {className: "c-projectPage__summaryEntry" + ' ' +
+                                        "c-projectPage__summaryEntry--previewImage", 
+                                        onClick:  this.openSlideShow}, 
+                                    React.createElement("image", {src:  fullimage })
+                                ), 
+                                React.createElement("div", {className: "c-projectPage__summaryEntry", 
+                                        onClick:  this.openSlideShow}, 
+                                     "view " + total_images + " images"
+                                ), 
+                                 nav_links_children 
+                            ), 
+
+
+                            React.createElement("div", {className: "c-projectPage__text", 
+                                contentEditable:  pseudo_edit, 
+                                dangerouslySetInnerHTML: {__html:project.description}}
                             )
+                        )
 
-                        ), 
-                        React.createElement("div", {className: "c-projectPage__previewImage", 
-                                onClick:  this.openSlideShow}, 
-                            React.createElement("image", {src:  fullimage })
-                        ), 
-                        React.createElement("div", {className: "c-projectPage__body", 
-                            contentEditable:  pseudo_edit, 
-                            dangerouslySetInnerHTML: {__html:project.description}}
-                        ), 
 
-                         nav_links_dom, 
-                        React.createElement("div", {className: "c-projectPage__close", 
-                            onClick:  this.closeProject})
+
+
 
                     )
                 );
@@ -22403,15 +22407,15 @@ PhiThemeBootstrap.run = function ( data_dom ) {
         //inject CSS here...only want this to happen once...
         var styles = {};
         if ( PhiModel.style.line_highlight_color ) {
-            styles[".page .page_content h1"] = {
+            styles[".page_content h1"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
-            styles[".listPage .listPage_rowContainer .listPage_header"] = {
+            styles[".listPage_header"] = {
                 "border-bottom-color":PhiModel.style.line_highlight_color
             };
         }
         if ( PhiModel.style.text_highlight_color ) {
-            styles[".homePage .homePage_centerNav .homePage_link:hover"] = {
+            styles[".c-homePage__link:hover"] = {
                 "color":PhiModel.style.text_highlight_color
             };
         }
@@ -22419,38 +22423,38 @@ PhiThemeBootstrap.run = function ( data_dom ) {
             styles[".listPage.nano > .nano-pane > .nano-slider"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
-            styles[".homePage .homePage_rightGradient"] = {
+            styles[".homePage__rightGradient"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
-            styles[".homePage"] = {
+            styles[".c-homePage"] = {
                 "background-image":"url('"+ PhiModel.style.side_gradient + "')"
             };
         }
         if ( PhiModel.style.home_background_color ) {
-            styles[".homePage"] = styles[".homePage"] || {};
-            styles[".homePage"]['background-color']
+            styles[".c-homePage"] = styles[".c-homePage"] || {};
+            styles[".c-homePage"]['background-color']
                 = PhiModel.style.home_background_color;
         }
         if ( PhiModel.style.home_main_nav_text_color ) {
-            styles[".homePage .homePage_centerNav .homePage_link"] = {
+            styles[".c-homePage__link"] = {
                 "color":PhiModel.style.home_main_nav_text_color
             };
         }
         if ( PhiModel.style.home_secondary_nav_text_color ) {
-            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_bottomNavLink"] = {
+            styles[".c-homePage__bottomNavLink"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
-            styles[".phiTheme .phitheme_copyrightNav .homePage_bottomNav .homePage_copyright"] = {
+            styles[".c-homePage__copyright"] = {
                 "color":PhiModel.style.home_secondary_nav_text_color
             };
         }
         if ( PhiModel.style.logo ) {
-            styles[".homePage .homePage_logo"] = {
+            styles[".c-homePage__logo"] = {
                 "background-image":"url('"+ PhiModel.style.logo + "')"
             };
         }
         if ( PhiModel.style.logo_mark ) {
-            styles[".homePage .homePage_logo_small"] = {
+            styles[".c-homePage__logo--small"] = {
                 "background-image":"url('"+ PhiModel.style.logo_mark + "')"
             };
         }

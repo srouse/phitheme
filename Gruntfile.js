@@ -22,20 +22,6 @@ module.exports = function(grunt) {
     };
 
     configObj.concat = configObj.concat || {};
-    configObj.concat["phitheme_less"] = {
-        files: {
-            'dist/phitheme.less':
-            [
-                'dist/csscore/less/core_mixins.less',
-                'node_modules/nanoscroller/bin/css/nanoscroller.css',
-                'client/Shared/html.less',//fonts there
-                'client/Shared/**/*.less',
-                'client/**/Shared/**/*.less',//process shared less first
-                'client/**/*.less'
-            ]
-        }
-    }
-
     configObj.concat["phitheme_js"] = {
         files: {
             'dist/phitheme.js':
@@ -52,38 +38,45 @@ module.exports = function(grunt) {
         }
     }
 
+
+
+    //==========LESS=================
+    configObj.concat = configObj.concat || {};
+    configObj.concat["phitheme_less"] = {
+        files: {
+            'dist/phitheme.less':
+            [
+                'dist/csscore/less/core_mixins.less',
+                'client/Shared/html.less',//fonts there
+                'client/Shared/**/*.less',
+                'client/**/Shared/**/*.less',//process shared less first
+                'client/**/*.less'
+            ]
+        }
+    }
     configObj.less = configObj.less || {};
     configObj.less["phitheme"] = {
         files: {
-            'dist/phitheme.css':
+            'dist/phitheme_comps.css':
             [
                 'dist/phitheme.less'
             ]
         }
     };
-    configObj.concat = configObj.concat || {};
-    configObj.concat["phitheme_css"] = {
+    configObj.concat["less_final"] = {
         files: {
             'dist/phitheme.css':
             [
-                'dist/phitheme.css',
+                'dist/phitheme_comps.css',
+                'node_modules/nanoscroller/bin/css/nanoscroller.css',
                 'dist/csscore/core.css'
             ]
         }
     }
 
-    configObj.css_parse = {
-        dist: {
-            files: {
-                'dist/csstagged.json':
-                [
-                    'dist/phitheme.css'
-                ]
-            }
-        }
-    };
 
-/*================ CSSMODELING =============*/
+
+    /*================ CSSMODELING =============*/
     configObj.cssmodeling = configObj.cssmodeling || {};
     configObj.cssmodeling["phitheme"] = {
         files: {
@@ -115,20 +108,22 @@ module.exports = function(grunt) {
         files: {
             'dist/csscore':
             [
-                'dist/phitheme.css'
+                'dist/phitheme_comps.css'
             ]
         }
     };
 
+
+
+
+    // ===========WATCHES==================
     configObj.watch = configObj.watch || {};
     configObj.watch["cssmodeling"] = {
         files:[
-            'cssmodeling/*.json'
+            'cssmodeling/**/*.json'
         ],
         tasks: ["default"]
     };
-/*=============== CSSMODELING =============*/
-
 
     configObj.watch = configObj.watch || {};
     configObj.watch["react"] = {
@@ -136,32 +131,43 @@ module.exports = function(grunt) {
             'client/**/*.jsx',
             'client/**/*.js'
         ],
-        tasks: ["default"]
+        tasks: ["react_only"]
     };
 
     configObj.watch = configObj.watch || {};
-    configObj.watch["react"] = {
+    configObj.watch["less"] = {
         files:[
             'client/**/*.less'
         ],
-        tasks: [
-            'concat:phitheme_less',
-            'less:phitheme',
-            'concat:phitheme_css'
-        ]
+        tasks: ['less_only']
     };
+
+
+
 
     grunt.initConfig( configObj );
 
     // 'build' was put together in processProjects
     grunt.registerTask( 'default' , [
-        'cssmodeling','cssmodeling_components',
+        'cssmodeling',
         'concat:phitheme_less',
         'less:phitheme',
-        'concat:phitheme_css',
+        'concat:less_final',
+        'cssmodeling_components',
         'react',
-        'concat:phitheme_js',
-        'css_parse'
+        'concat:phitheme_js'
+    ] );
+
+    grunt.registerTask( 'less_only' , [
+        'concat:phitheme_less',
+        'less:phitheme',
+        'concat:less_final',
+        'cssmodeling_components',
+    ] );
+
+    grunt.registerTask( 'react_only' , [
+        'react',
+        'concat:phitheme_js'
     ] );
 
 }

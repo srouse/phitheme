@@ -65,7 +65,7 @@ var HomePage = React.createClass({displayName: "HomePage",
                     style.color = color_style;
                 }
                 project_links.push(
-                    React.createElement("div", {className: "homePage_link", 
+                    React.createElement("div", {className: "c-homePage__link", 
                         style:  style, key:  product.title, 
                         onClick:  this.gotoTag.bind( this , product.filters) }, 
                          product.title
@@ -75,17 +75,19 @@ var HomePage = React.createClass({displayName: "HomePage",
 
         }
 
-        return  React.createElement("div", {className: "homePage"}, 
-                    React.createElement("div", {className: "homePage_gradOffset"}, 
-                        React.createElement("div", {className: "homePage_logo", 
+        return  React.createElement("div", {className: "c-homePage"}, 
+
+                    React.createElement("div", {className: "c-homePage__content"}, 
+                        React.createElement("div", {className: "c-homePage__logo", 
                             onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "homePage_logo_small", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "homePage_centerNav"}, 
-                             project_links 
-                        )
+                        React.createElement("div", {className: "c-homePage__logo--small", 
+                            onClick:  this.gotoHome})
                     ), 
-                    React.createElement("div", {className: "homePage_rightGradient"})
+                    React.createElement("div", {className: "c-homePage__nav"}, 
+                         project_links 
+                    )
+
+                    /* <div className="c-homePage__rightGradient"></div> */
                 );
     }
 
@@ -524,9 +526,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
                 if ( nav_link.internal && nav_link.internal == true ) {
                     nav_links_children.push(
-                        React.createElement("div", {className: "projectPage_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
+                        React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
                             React.createElement("div", {className: "projectPage_navLinkButton", 
                                 onClick: 
                                     this.gotoProject.bind( this , nav_link)
@@ -537,9 +537,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                     );
                 }else{
                     nav_links_children.push(
-                        React.createElement("div", {className: "projectPage_navLinkContainer", 
-                            style: {width: 100/total_filtered_links + "%"}, 
-                            key:  "nav_link_" + p}, 
+                        React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
                             React.createElement("a", {className: "projectPage_navLinkButton", 
                                 href:  nav_link.location, target: "nav_link"}, 
                                  nav_link.title
@@ -551,9 +549,6 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
             }
 
-            nav_links_dom = React.createElement("div", {className: "projectPage_navLinks"}, 
-                                 nav_links_children 
-                            );
         }
 
         var pseudo_edit = "false";
@@ -578,39 +573,48 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
         return  React.createElement("div", {className: "c-projectPage"}, 
                     React.createElement("div", {className: "c-projectPage__container"}, 
+
                         React.createElement("div", {className: "c-projectPage__titleSection"}, 
 
                             React.createElement("div", {className: "c-projectPage__titleSection__titles"}, 
-                                /* <div className="c-projectPage__totalImgs"
-                                    onClick={ this.openSlideShow }>
-                                    <div className="c-projectPage__totalImgs__num">
-                                        { total_images }
-                                    </div>
-                                    <div className="c-projectPage__totalImgs__images">
-                                        images
-                                    </div>
-                                </div> */ 
                                 React.createElement("div", {className: "c-projectPage__title"}, 
                                      project.title
-                                ), 
-                                React.createElement("div", {className: "c-projectPage__subTitle"}, 
-                                     project.medium
                                 )
+                                /* <div className="c-projectPage__subTitle">
+                                    { project.medium }
+                                </div> */
+                            ), 
+
+                            React.createElement("div", {className: "c-projectPage__close", 
+                                onClick:  this.closeProject})
+
+                        ), 
+
+                        React.createElement("div", {className: "c-projectPage__content"}, 
+
+                            React.createElement("div", {className: "c-projectPage__summary"}, 
+                                React.createElement("div", {className: "c-projectPage__summaryEntry" + ' ' +
+                                        "c-projectPage__summaryEntry--previewImage", 
+                                        onClick:  this.openSlideShow}, 
+                                    React.createElement("image", {src:  fullimage })
+                                ), 
+                                React.createElement("div", {className: "c-projectPage__summaryEntry", 
+                                        onClick:  this.openSlideShow}, 
+                                     "view " + total_images + " images"
+                                ), 
+                                 nav_links_children 
+                            ), 
+
+
+                            React.createElement("div", {className: "c-projectPage__text", 
+                                contentEditable:  pseudo_edit, 
+                                dangerouslySetInnerHTML: {__html:project.description}}
                             )
+                        )
 
-                        ), 
-                        React.createElement("div", {className: "c-projectPage__previewImage", 
-                                onClick:  this.openSlideShow}, 
-                            React.createElement("image", {src:  fullimage })
-                        ), 
-                        React.createElement("div", {className: "c-projectPage__body", 
-                            contentEditable:  pseudo_edit, 
-                            dangerouslySetInnerHTML: {__html:project.description}}
-                        ), 
 
-                         nav_links_dom, 
-                        React.createElement("div", {className: "c-projectPage__close", 
-                            onClick:  this.closeProject})
+
+
 
                     )
                 );

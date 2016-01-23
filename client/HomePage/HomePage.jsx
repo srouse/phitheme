@@ -65,7 +65,7 @@ var HomePage = React.createClass({
                     style.color = color_style;
                 }
                 project_links.push(
-                    <div className="homePage_link"
+                    <div className="c-homePage__link"
                         style={ style } key={ product.title }
                         onClick={ this.gotoTag.bind( this , product.filters ) }>
                         { product.title }
@@ -75,17 +75,19 @@ var HomePage = React.createClass({
 
         }
 
-        return  <div className="homePage">
-                    <div className="homePage_gradOffset">
-                        <div className="homePage_logo"
+        return  <div className="c-homePage">
+
+                    <div className="c-homePage__content">
+                        <div className="c-homePage__logo"
                             onClick={ this.gotoHome }></div>
-                        <div className="homePage_logo_small"
+                        <div className="c-homePage__logo--small"
                             onClick={ this.gotoHome }></div>
-                        <div className="homePage_centerNav">
-                            { project_links }
-                        </div>
                     </div>
-                    <div className="homePage_rightGradient"></div>
+                    <div className="c-homePage__nav">
+                        { project_links }
+                    </div>
+
+                    {/* <div className="c-homePage__rightGradient"></div> */}
                 </div>;
     }
 

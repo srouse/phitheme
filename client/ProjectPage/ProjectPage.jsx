@@ -87,9 +87,7 @@ var ProjectPage = React.createClass({
 
                 if ( nav_link.internal && nav_link.internal == true ) {
                     nav_links_children.push(
-                        <div className="projectPage_navLinkContainer"
-                            style={{width: 100/total_filtered_links + "%" }}
-                            key={ "nav_link_" + p }>
+                        <div className="c-projectPage__summaryEntry">
                             <div className="projectPage_navLinkButton"
                                 onClick={
                                     this.gotoProject.bind( this , nav_link )
@@ -100,9 +98,7 @@ var ProjectPage = React.createClass({
                     );
                 }else{
                     nav_links_children.push(
-                        <div className="projectPage_navLinkContainer"
-                            style={{width: 100/total_filtered_links + "%" }}
-                            key={ "nav_link_" + p }>
+                        <div className="c-projectPage__summaryEntry">
                             <a className="projectPage_navLinkButton"
                                 href={ nav_link.location } target="nav_link">
                                 { nav_link.title }
@@ -114,9 +110,6 @@ var ProjectPage = React.createClass({
 
             }
 
-            nav_links_dom = <div className="projectPage_navLinks">
-                                { nav_links_children }
-                            </div>;
         }
 
         var pseudo_edit = "false";
@@ -141,39 +134,48 @@ var ProjectPage = React.createClass({
 
         return  <div className="c-projectPage">
                     <div className="c-projectPage__container">
+
                         <div className="c-projectPage__titleSection">
 
                             <div className="c-projectPage__titleSection__titles">
-                                { /* <div className="c-projectPage__totalImgs"
-                                    onClick={ this.openSlideShow }>
-                                    <div className="c-projectPage__totalImgs__num">
-                                        { total_images }
-                                    </div>
-                                    <div className="c-projectPage__totalImgs__images">
-                                        images
-                                    </div>
-                                </div> */ }
                                 <div className="c-projectPage__title">
                                     { project.title }
                                 </div>
-                                <div className="c-projectPage__subTitle">
+                                { /* <div className="c-projectPage__subTitle">
                                     { project.medium }
-                                </div>
+                                </div> */}
                             </div>
 
-                        </div>
-                        <div className="c-projectPage__previewImage"
-                                onClick={ this.openSlideShow }>
-                            <image src={ fullimage } />
-                        </div>
-                        <div className="c-projectPage__body"
-                            contentEditable={ pseudo_edit }
-                            dangerouslySetInnerHTML={{__html:project.description}}>
+                            <div className="c-projectPage__close"
+                                onClick={ this.closeProject }></div>
+
                         </div>
 
-                        { nav_links_dom }
-                        <div className="c-projectPage__close"
-                            onClick={ this.closeProject }></div>
+                        <div className="c-projectPage__content">
+
+                            <div className="c-projectPage__summary">
+                                <div className="c-projectPage__summaryEntry
+                                        c-projectPage__summaryEntry--previewImage"
+                                        onClick={ this.openSlideShow }>
+                                    <image src={ fullimage } />
+                                </div>
+                                <div className="c-projectPage__summaryEntry"
+                                        onClick={ this.openSlideShow }>
+                                    { "view " + total_images + " images" }
+                                </div>
+                                { nav_links_children }
+                            </div>
+
+
+                            <div className="c-projectPage__text"
+                                contentEditable={ pseudo_edit }
+                                dangerouslySetInnerHTML={{__html:project.description}}>
+                            </div>
+                        </div>
+
+
+
+
 
                     </div>
                 </div>;

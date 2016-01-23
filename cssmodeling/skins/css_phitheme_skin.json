@@ -105,6 +105,45 @@
                 "1200px","4000px"
 			]
 		},
+        {
+			"name":"phitheme-vars",
+            "group":"skin",
+			"base":"phitheme",
+			"scheme":{"@base":[
+                "-h-padding"
+            ]},
+			"values":[
+				"_@_v-row-2"
+			]
+		},
+        {
+			"name":"project-page-vars",
+            "group":"skin",
+			"base":"project-page",
+			"scheme":{"@base":[
+                "-h-padding",
+                "-width",
+                "-container-width"
+            ]},
+			"values":[
+				"_@_v-phitheme-h-padding",
+                "_@_v-col-8",
+                "_@_v-col-7"
+			]
+		},
+        {
+			"name":"project-page-vars",
+            "group":"skin",
+			"base":"list",
+			"scheme":{"@base":[
+                "-width",
+                "-nav-width"
+            ]},
+			"values":[
+				"_@_v-col-8",
+                "100vw - _@_v-project-page-width"
+			]
+		},
 		{
 			"name":"misused",
             "group":"skin",
@@ -497,21 +536,19 @@
                 "@base":[
     				"-homePage",
     				"-projectPage",
-    				"-project",
-    				"-contentArea","-contentArea-s-project","-contentArea_screen-sm-min",
-    				"-identityNav",
-    					"-page_title",
-    				"-phitheme_copyrightNav"
+                    "-list","-listFull",
+    				    "-contentArea","-contentArea-s-project","-contentArea_screen-sm-min",
+    				"-phitheme_copyrightNav",
+                    "-slideShow"
                 ]
             },
 			"values":[
 				"4000",
-				"3000",
-				"6000",
-				"1000","5000","2500",
-				"4000",
-					"200",
-				"5000"
+				"2000",
+                "3000","1000",
+				    "1000","5000","2500",
+				"5000",
+                "6000"
 			],
 			"atoms":[
 				{
