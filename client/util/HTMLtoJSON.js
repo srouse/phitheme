@@ -1,6 +1,109 @@
 
-var HTMLtoJSON = function ( html , source ) {
-    var json = _HTMLtoJSON( html , "json" , source );
+var loadCount = 0;
+var HTMLtoJSONImportReplace = function (
+    html_lookup , done_funk
+){
+    var elements_to_load = [];
+
+    if ( !$(html_lookup) ) {
+        console.log( "Didn't find " + html_lookup );
+        return;
+    }
+
+    var html_dom = $(html_lookup);//.clone(); // doesn't matter with img src replaced
+
+    _HTMLtoJSONImportReplace( html_dom , done_funk );
+}
+
+    var _HTMLtoJSONImportReplace = function (
+        html_dom , done_funk
+    ){
+        var elements_to_load = [];
+
+        if (
+            html_dom.attr("data-import")// data busted after decorating
+        ) {
+            elements_to_load.push( html_dom );
+        }else{
+            html_dom.find("*[data-import]").each(
+                function( index , element ) {
+                    elements_to_load.push( element );
+                }
+            );
+        }
+
+        if ( elements_to_load.length == 0 ) {
+            done_funk( html_dom );
+        }else{
+            _loadHTMLtoJSONImportReplace(
+                elements_to_load, html_dom,
+                0,
+                done_funk
+            );
+        }
+
+    }
+
+    var _loadHTMLtoJSONImportReplace = function (
+            elements_to_load, html_dom,
+            index,
+            done_funk
+        ) {
+
+        if ( index == elements_to_load.length ) {
+            _HTMLtoJSONImportReplace( html_dom , done_funk );
+        }else{
+            var target_ele = $("<div></div>");
+            var ele = elements_to_load[index];
+            var target_lookup = $(ele).attr("data-import");// data busted after decorating
+
+            // gotta load in html, but without loading in all the images
+            $.get(
+                $(ele).attr("href"),
+                function( data ) {
+
+                    var clean_data = data.replace( /\bsrc=/g , "data-src=");
+                    var target_dom = $( "<div>" + clean_data + "</div>" )
+                                        .find( target_lookup );
+
+                    var ele_attributes = $(ele).get(0).attributes;
+                    var ele_attr_names = [];
+                    $.each( ele_attributes,
+                        function(i, attrib){
+                            ele_attr_names.push( attrib.name );
+                        }
+                    );
+
+                    for ( var i=0; i<ele_attr_names.length; i++ ) {
+                        $(ele).removeAttr( ele_attr_names[i] );
+                    }
+
+                    // var target_dom = target_ele.find( target_lookup );
+                    $.each( target_dom.get(0).attributes,
+                        function(i, attrib){
+                            $(ele).attr( attrib.name , attrib.value );
+                        }
+                    );
+                    $(ele).html( target_dom.html() );
+
+                    index++;
+                    _loadHTMLtoJSONImportReplace(
+                        elements_to_load, html_dom,
+                        index,
+                        done_funk
+                    );
+
+                }
+            );
+        }
+    }
+
+
+
+
+
+var HTMLtoJSON = function ( html_lookup , source ) {
+    var json = _HTMLtoJSON( $( html_lookup ) , "json" , source );
     return json;
 }
 
@@ -10,7 +113,12 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
     var getNodeText = function ( node ) {
         var node = $( node );
         if ( node.prop("tagName") == "IMG" ) {
-            return node.attr("src");
+            if ( node.attr("src") ) {
+                return node.attr("src");
+            }else{
+                // src changed to data-src during imports
+                return node.attr("data-src");
+            }
         }else{
             return $.trim( node.text() );
         }
@@ -32,9 +140,11 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                 var type = "string";
 
                 var data_prop_name = j.substring( set.length ).toLowerCase();
+
                 // if it has more than just "data-json"...
                 if ( data_prop_name ) {
                     prop_name = data_prop_name;
+
                     if ( String(f).indexOf( ":attr" ) != -1 ) {
                         var name_split = String(f).split( ":attr" );
                         var value = $(e).attr( name_split[0] );
@@ -92,6 +202,7 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             break;
                         case "object" :
                         case "obj" :
+
                             // decorate pre existing elements
                             if ( parent_is_array ) {
                                 json_ele = {};
@@ -171,7 +282,7 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }else{
                                 json_parent[prop_name] = $.trim( $(e).html() );
                             }
-                            
+
                             // if some child nodes are found
                             // attach them to the parent...
                             if ( $(e).children().length > 0 ) {

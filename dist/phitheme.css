@@ -475,6 +475,10 @@ body.s_thumbs .listPage .listPage_typeToggle {
   width: 100% ;
   padding: 44px;
   background-color: #fff;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  flex-wrap: wrap;
 }
 body.s_project .listPage .listPage_rowContainer {
   padding-top: 22px;
