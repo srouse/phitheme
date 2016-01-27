@@ -1,0 +1,96 @@
+
+
+@media ( max-width: @screen-sm-min ) {
+
+.c-homePage {
+
+    body.s_project &,
+    body.s_list & {
+        .a-flex-h;
+        align-content: stretch;
+    }
+
+    &__rightGradient {
+        body.s_project &,
+        body.s_list & {
+            .a-display-block;
+        }
+    }
+
+    &__content {
+
+        .a-flex-v;
+
+        body.s_project &,
+        body.s_list & {
+            .a-transition-none;
+        }
+    }
+
+        &__logo {
+            .a-transition-none;
+
+            max-width: @v-col-6;
+            max-height: @v-col-6;
+            .a-margin-top-row-3;
+
+            body.s_list &,
+            body.s_project & {
+                display: none;
+                .a-transition-none;
+            }
+        }
+
+        &__logo--small {
+
+            .a-transition-none;
+            .a-width-col-2;
+            .a-height-row-2;
+            margin-left: @v-row-quarter;
+
+            background-image: url("../assets/mark.svg");
+            background-size: contain;
+            transition: all .3s;
+            .a-interactive;
+
+            body.s_project &,
+            body.s_list & {
+                display: block;
+                .a-transition-none;
+            }
+        }
+
+        &__highlights {
+            .a-width-col-10;
+            .a-height-100
+        }
+            &__highlight {
+                &:nth-of-type( n+2 ) {
+                    .a-display-none;
+                }
+            }
+
+    &__nav {
+
+        .a-transition-none;
+        .a-width-col-10;
+        .a-height-row-3;
+
+        body.s_project &,
+        body.s_list & {
+            .a-margin-right-col-three-quarters;
+            .a-margin-left-col-half;
+            .a-height-row-2;
+            .a-transition-none;
+        }
+
+        .c-homePage__link {
+            .a-text-size-large;
+            .a-transition-none;
+        }
+    }
+
+}
+
+
+}

@@ -41,11 +41,13 @@
     }
     &.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
         border-radius: 0px;
-        background-image: url("../../assets/cs_gradient.png");
+        background-image: url("../assets/gradient.png");
         background-size: 6px 100%;
         background-size: 6px 100%;
         width: 6px;
     }
+
+
 
     /*&.nano {
         .nano-content {
@@ -96,10 +98,12 @@
         /* -ctag-example: <div class='nano-content'><div ...>{ .listPage_header }{ .listPage_row }{ .listPage_row }{ .listPage_row }</div></div>;*/
 
         .a-width-100;
+        min-height: 100%;
 
         // padding: @v-phitheme-h-padding;
         padding-left: @v-phitheme-h-padding;
         padding-right: @v-phitheme-h-padding;
+        margin-bottom: 20px;
 
         .a-background-white;
         .a-flex-h;
@@ -107,6 +111,7 @@
 
         body.s_project & {
             .a-padding-top-row-1;
+            margin-bottom: 0px;
         }
 
         body.s_thumbs & {

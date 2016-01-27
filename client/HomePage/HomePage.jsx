@@ -35,6 +35,14 @@ var HomePage = React.createClass({
         );
     },
 
+    openProject: function ( slug ) {
+        RouteState.merge(
+            {
+                project:slug
+            }
+        );
+    },
+
     render: function() {
 
         var project_links = [];
@@ -75,6 +83,27 @@ var HomePage = React.createClass({
 
         }
 
+        var highlights = PhiModel.getHighlightedProjects();
+        var highlights_html = [],highlight;
+        for ( var h=0; h<highlights.length;h++ ) {
+            highlight = highlights[h];
+            highlights_html.push(
+                <div className="c-homePage__highlight"
+                    onClick={ this.openProject.bind( this , highlight.slug ) }>
+                    <div className="c-homePage__highlight__title">
+                        { highlight.title }
+                    </div>
+                    <div className="c-homePage__highlight__description">
+                        { highlight.summary }
+                    </div>
+                    <div className="c-homePage__highlight__moreBtn">
+                        Read More
+                    </div>
+                </div>
+            );
+        }
+
+
         return  <div className="c-homePage">
 
                     <div className="c-homePage__content">
@@ -82,12 +111,16 @@ var HomePage = React.createClass({
                             onClick={ this.gotoHome }></div>
                         <div className="c-homePage__logo--small"
                             onClick={ this.gotoHome }></div>
+
+                        <div className="c-homePage__highlights">
+                            { highlights_html }
+                        </div>
                     </div>
                     <div className="c-homePage__nav">
                         { project_links }
                     </div>
                     <div className="c-homePage__rightGradient"></div>
-                    
+
                 </div>;
     }
 

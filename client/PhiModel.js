@@ -29,7 +29,7 @@ var PhiModelSingleton = function () {
                 title:"Design",
                 filters:['design']
             }
-        ], 
+        ],
         projects:[
             {
                 title:"QuantifiedProject",
@@ -41,6 +41,23 @@ var PhiModelSingleton = function () {
             }
         ]
         */
+
+        getHighlightedProjects: function () {
+            if ( !this.highlights )
+                return [];
+
+            var highlights_arr = [],highlight,project;
+            for ( var h=0; h<this.highlights.length;h++ ) {
+                highlight = this.highlights[h];
+                for ( var p=0; p<this.all_projects.length; p++ ) {
+                    project = this.all_projects[p];
+                    if ( project.id == highlight ) {
+                        highlights_arr.push( project );
+                    }
+                }
+            }
+            return highlights_arr;
+        },
 
         reprocessProjects: function () {
             this.processProjects( this.all_projects );

@@ -538,6 +538,10 @@
             "sub_group":"positioning",
             "example":"<div ... style='height: 100px; background-color:#fff;'></div>",
 			"selector":".a-mobile-reset",
+            "declaration_lines":[
+				"left: auto;","right: auto;",
+				"top: auto;","bottom: auto;"
+			],
 			"declaration_includes":[
 				"_inc_a-position-relative;",
                 "_inc_a-width-100;",

@@ -35,6 +35,14 @@ var HomePage = React.createClass({displayName: "HomePage",
         );
     },
 
+    openProject: function ( slug ) {
+        RouteState.merge(
+            {
+                project:slug
+            }
+        );
+    },
+
     render: function() {
 
         var project_links = [];
@@ -75,19 +83,44 @@ var HomePage = React.createClass({displayName: "HomePage",
 
         }
 
+        var highlights = PhiModel.getHighlightedProjects();
+        var highlights_html = [],highlight;
+        for ( var h=0; h<highlights.length;h++ ) {
+            highlight = highlights[h];
+            highlights_html.push(
+                React.createElement("div", {className: "c-homePage__highlight", 
+                    onClick:  this.openProject.bind( this , highlight.slug) }, 
+                    React.createElement("div", {className: "c-homePage__highlight__title"}, 
+                         highlight.title
+                    ), 
+                    React.createElement("div", {className: "c-homePage__highlight__description"}, 
+                         highlight.summary
+                    ), 
+                    React.createElement("div", {className: "c-homePage__highlight__moreBtn"}, 
+                        "Read More"
+                    )
+                )
+            );
+        }
+
+
         return  React.createElement("div", {className: "c-homePage"}, 
 
                     React.createElement("div", {className: "c-homePage__content"}, 
                         React.createElement("div", {className: "c-homePage__logo", 
                             onClick:  this.gotoHome}), 
                         React.createElement("div", {className: "c-homePage__logo--small", 
-                            onClick:  this.gotoHome})
+                            onClick:  this.gotoHome}), 
+
+                        React.createElement("div", {className: "c-homePage__highlights"}, 
+                             highlights_html 
+                        )
                     ), 
                     React.createElement("div", {className: "c-homePage__nav"}, 
                          project_links 
                     ), 
                     React.createElement("div", {className: "c-homePage__rightGradient"})
-                    
+
                 );
     }
 
@@ -122,7 +155,9 @@ var ListPage = React.createClass({displayName: "ListPage",
             "examples_list"
     	);
 
-        Ps.initialize( $(".listPage")[0] );
+        Ps.initialize( $(".listPage")[0] , {
+            suppressScrollX: true
+        });
     },
 
     componentWillUnmount: function(){

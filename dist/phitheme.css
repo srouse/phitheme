@@ -1,59 +1,3 @@
-/** initial setup **/
-.nano {
-  position : relative;
-  width    : 100%;
-  height   : 100%;
-  overflow : hidden;
-}
-.nano > .nano-content {
-  position      : absolute;
-  overflow      : scroll;
-  overflow-x    : hidden;
-  top           : 0;
-  right         : 0;
-  bottom        : 0;
-  left          : 0;
-}
-.nano > .nano-content:focus {
-  outline: thin dotted;
-}
-.nano > .nano-content::-webkit-scrollbar {
-  display: none;
-}
-.has-scrollbar > .nano-content::-webkit-scrollbar {
-  display: block;
-}
-.nano > .nano-pane {
-  background : rgba(0,0,0,.25);
-  position   : absolute;
-  width      : 10px;
-  right      : 0;
-  top        : 0;
-  bottom     : 0;
-  visibility : hidden\9; /* Target only IE7 and IE8 with this hack */
-  opacity    : .01;
-  -webkit-transition    : .2s;
-  -moz-transition       : .2s;
-  -o-transition         : .2s;
-  transition            : .2s;
-  -moz-border-radius    : 5px;
-  -webkit-border-radius : 5px;
-  border-radius         : 5px;
-}
-.nano > .nano-pane > .nano-slider {
-  background: #444;
-  background: rgba(0,0,0,.5);
-  position              : relative;
-  margin                : 0 1px;
-  -moz-border-radius    : 3px;
-  -webkit-border-radius : 3px;
-  border-radius         : 3px;
-}
-.nano:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
-  visibility : visible\9; /* Target only IE7 and IE8 with this hack */
-  opacity    : 0.99;
-}
-
 /* perfect-scrollbar v0.6.10 */
 .ps-container{-ms-touch-action:none;touch-action:none;overflow:hidden !important;-ms-overflow-style:none}@supports (-ms-overflow-style: none){.ps-container{overflow:auto !important}}@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none){.ps-container{overflow:auto !important}}.ps-container.ps-active-x>.ps-scrollbar-x-rail,.ps-container.ps-active-y>.ps-scrollbar-y-rail{display:block;background-color:transparent}.ps-container.ps-in-scrolling{pointer-events:none}.ps-container.ps-in-scrolling.ps-x>.ps-scrollbar-x-rail{background-color:#eee;opacity:0.9}.ps-container.ps-in-scrolling.ps-x>.ps-scrollbar-x-rail>.ps-scrollbar-x{background-color:#999}.ps-container.ps-in-scrolling.ps-y>.ps-scrollbar-y-rail{background-color:#eee;opacity:0.9}.ps-container.ps-in-scrolling.ps-y>.ps-scrollbar-y-rail>.ps-scrollbar-y{background-color:#999}.ps-container>.ps-scrollbar-x-rail{display:none;position:absolute;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;opacity:0;-webkit-transition:background-color .2s linear, opacity .2s linear;-moz-transition:background-color .2s linear, opacity .2s linear;-o-transition:background-color .2s linear, opacity .2s linear;transition:background-color .2s linear, opacity .2s linear;bottom:3px;height:8px}.ps-container>.ps-scrollbar-x-rail>.ps-scrollbar-x{position:absolute;background-color:#aaa;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-transition:background-color .2s linear;-moz-transition:background-color .2s linear;-o-transition:background-color .2s linear;transition:background-color .2s linear;bottom:0;height:8px}.ps-container>.ps-scrollbar-y-rail{display:none;position:absolute;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;opacity:0;-webkit-transition:background-color .2s linear, opacity .2s linear;-moz-transition:background-color .2s linear, opacity .2s linear;-o-transition:background-color .2s linear, opacity .2s linear;transition:background-color .2s linear, opacity .2s linear;right:3px;width:8px}.ps-container>.ps-scrollbar-y-rail>.ps-scrollbar-y{position:absolute;background-color:#aaa;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-transition:background-color .2s linear;-moz-transition:background-color .2s linear;-o-transition:background-color .2s linear;transition:background-color .2s linear;right:0;width:8px}.ps-container:hover.ps-in-scrolling{pointer-events:none}.ps-container:hover.ps-in-scrolling.ps-x>.ps-scrollbar-x-rail{background-color:#eee;opacity:0.9}.ps-container:hover.ps-in-scrolling.ps-x>.ps-scrollbar-x-rail>.ps-scrollbar-x{background-color:#999}.ps-container:hover.ps-in-scrolling.ps-y>.ps-scrollbar-y-rail{background-color:#eee;opacity:0.9}.ps-container:hover.ps-in-scrolling.ps-y>.ps-scrollbar-y-rail>.ps-scrollbar-y{background-color:#999}.ps-container:hover>.ps-scrollbar-x-rail,.ps-container:hover>.ps-scrollbar-y-rail{opacity:0.6}.ps-container:hover>.ps-scrollbar-x-rail:hover{background-color:#eee;opacity:0.9}.ps-container:hover>.ps-scrollbar-x-rail:hover>.ps-scrollbar-x{background-color:#999}.ps-container:hover>.ps-scrollbar-y-rail:hover{background-color:#eee;opacity:0.9}.ps-container:hover>.ps-scrollbar-y-rail:hover>.ps-scrollbar-y{background-color:#999}
 
@@ -255,6 +199,11 @@ input {
   border-bottom: 1px solid #eee;
   padding-top: 22px;
 }
+@media (max-width: 768px) {
+  .o-pageHeader {
+    padding-top: 0;
+  }
+}
 .o-pageHeader__title {
   flex: 1;
   font-size: 22px;
@@ -286,6 +235,90 @@ input {
 body.s_thumbs .o-pageHeader__thumbsBtn {
   background-image: url("../assets/list_icon.png");
 }
+html {
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+* {
+  box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-weight: 300;
+  padding: 0px;
+  margin: 0px;
+}
+body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  font-size: 13px;
+  line-height: 16.5px;
+  color: #B3B3B3;
+}
+body h1[data-json],
+body h2[data-json],
+body h3[data-json],
+body h4[data-json],
+body h5[data-json],
+body h6[data-json],
+body p[data-json] {
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 4px 0px;
+  margin: 0px;
+}
+body h1[data-json] {
+  font-size: 19px;
+  line-height: 38.5px;
+  line-height: 22px;
+}
+body h2[data-json] {
+  font-size: 16px;
+  line-height: 33px;
+}
+body a[data-json],
+body a[data-import] {
+  color: #B3B3B3;
+  text-decoration: none;
+}
+body img[data-json] {
+  max-width: 200px;
+  max-height: 200px;
+}
+body div[data-json='pages:array'],
+body div[data-json='copyright'],
+body div[data-json='product_nav:array'],
+body div[data-json='images:array'] {
+  display: none;
+}
+body div[data-json='style:object'] {
+  float: left ;
+  width: 24.999vw;
+  padding-left: 8.333vw;
+}
+body div[data-json='projects:array'] {
+  float: right ;
+  width: 58.331vw;
+  padding-right: 8.333vw;
+}
+body.body--loaded {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  margin: 0px;
+}
 .c-homePage {
   /* -ctag-example: ...
             { .homePage_gradOffset }; */
@@ -310,7 +343,7 @@ body.s_thumbs .o-pageHeader__thumbsBtn {
 }
 body.s_project .c-homePage__rightGradient,
 body.s_list .c-homePage__rightGradient,
-body.s_page .c-homePage__rightGradient {
+body.s_project .c-homePage__rightGradient {
   display: none;
 }
 .c-homePage__content {
@@ -324,70 +357,67 @@ body.s_page .c-homePage__rightGradient {
   justify-content: center;
   align-items: center;
 }
-@media (max-width: 768px) {
-  body.s_project .c-homePage__content,
-  body.s_list .c-homePage__content,
-  body.s_page .c-homePage__content {
-    transition: none;
-  }
-}
 .c-homePage__logo {
   /* -ctag-example: ...;*/
-  width: 24.999vw;
-  height: 176px;
+  width: 100%;
+  height: 100%;
+  max-width: 16.666vw;
+  max-height: 16.666vw;
+  margin-top: 11px;
   background-image: url("../assets/logo_large.svg");
   background-size: contain;
   transition: all 0.3s;
   cursor: hand ;
   cursor: pointer ;
 }
-@media (max-width: 768px) {
-  .c-homePage__logo {
-    transition: none;
-  }
-}
 body.s_list .c-homePage__logo,
-body.s_page .c-homePage__logo {
-  width: 24.999vw;
-  height: 176px;
-  margin-left: 0px;
-}
-@media (max-width: 768px) {
-  body.s_list .c-homePage__logo,
-  body.s_page .c-homePage__logo {
-    display: none;
-    transition: none;
-  }
-}
-@media (max-width: 768px) {
-  body.s_project .c-homePage__logo {
-    display: none;
-    transition: none;
-  }
+body.s_project .c-homePage__logo {
+  margin-left: 0;
 }
 .c-homePage__logo--small {
   /* -ctag-example: ...;*/
   display: none;
-  width: 16.666vw;
-  height: 110px;
-  background-image: url("../assets/mark.svg");
-  background-size: contain;
-  transition: all .3s;
+}
+.c-homePage__highlights {
+  /* -ctag-example: ...;*/
+  width: 41.665vw;
+  height: 100% ;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4.1665vw;
+}
+body.s_list .c-homePage__highlights,
+body.s_project .c-homePage__highlights {
+  display: none;
+}
+.c-homePage__highlight {
+  /* -ctag-example: ...;*/
   cursor: hand ;
   cursor: pointer ;
 }
-@media (max-width: 768px) {
-  .c-homePage__logo--small {
-    transition: none;
-  }
+.c-homePage__highlight:nth-of-type( n+1 ) {
+  margin-top: 22px;
 }
-@media (max-width: 768px) {
-  body.s_project .c-homePage__logo--small,
-  body.s_list .c-homePage__logo--small,
-  body.s_page .c-homePage__logo--small {
-    display: block;
-    transition: none;
-  }
+.c-homePage__highlight__title {
+  /* -ctag-example: ...Title;*/
+  font-size: 19px;
+  line-height: 38.5px;
+  color: #4D4D4D;
+}
+.c-homePage__highlight__description {
+  /* -ctag-example: ...Description of something.;*/
+  font-size: 13px;
+  line-height: 22px;
+  color: #808080;
+}
+.c-homePage__highlight__moreBtn {
+  /* -ctag-example: ...Read more;*/
+  font-size: 14px;
+  line-height: 22px;
+  color: #4D4D4D;
+  padding-top: 5.5px;
 }
 .c-homePage__nav {
   /* -ctag-example: ...
@@ -395,31 +425,21 @@ body.s_page .c-homePage__logo {
                 { .homePage_link }
                 { .homePage_link };*/
   width: 41.665vw;
-  height: 88px;
+  height: 66px;
   transition: all 0.3s;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-between;
 }
-@media (max-width: 768px) {
-  .c-homePage__nav {
-    transition: none;
-  }
-}
 body.s_list .c-homePage__nav {
   width: 80%;
 }
 body.s_project .c-homePage__nav,
-body.s_page .c-homePage__nav {
+body.s_list .c-homePage__nav {
   width: 80%;
-  height: 66px;
-}
-@media (max-width: 768px) {
-  body.s_project .c-homePage__nav,
-  body.s_page .c-homePage__nav {
-    transition: none;
-  }
+  height: 44px;
+  margin-bottom: 5.5px;
 }
 .c-homePage__nav .c-homePage__link {
   /* -ctag-example: ...Projects*/
@@ -438,18 +458,83 @@ body.s_page .c-homePage__nav {
 .c-homePage__nav .c-homePage__link:hover {
   color: #999;
 }
+body.s_list .c-homePage__nav .c-homePage__link,
+body.s_project .c-homePage__nav .c-homePage__link {
+  font-size: 16px;
+  line-height: 33px;
+}
 @media (max-width: 768px) {
+  body.s_project .c-homePage,
+  body.s_list .c-homePage {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    align-content: stretch;
+  }
+  body.s_project .c-homePage__rightGradient,
+  body.s_list .c-homePage__rightGradient {
+    display: block;
+  }
+  .c-homePage__content {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+  }
+  body.s_project .c-homePage__content,
+  body.s_list .c-homePage__content {
+    transition: none;
+  }
+  .c-homePage__logo {
+    transition: none;
+    max-width: 49.998vw;
+    max-height: 49.998vw;
+    margin-top: 66px;
+  }
+  body.s_list .c-homePage__logo,
+  body.s_project .c-homePage__logo {
+    display: none;
+    transition: none;
+  }
+  .c-homePage__logo--small {
+    transition: none;
+    width: 16.666vw;
+    height: 44px;
+    margin-left: 5.5px;
+    background-image: url("../assets/mark.svg");
+    background-size: contain;
+    transition: all .3s;
+    cursor: hand ;
+    cursor: pointer ;
+  }
+  body.s_project .c-homePage__logo--small,
+  body.s_list .c-homePage__logo--small {
+    display: block;
+    transition: none;
+  }
+  .c-homePage__highlights {
+    width: 83.33vw;
+    height: 100% ;
+  }
+  .c-homePage__highlight:nth-of-type( n+2 ) {
+    display: none;
+  }
+  .c-homePage__nav {
+    transition: none;
+    width: 83.33vw;
+    height: 66px;
+  }
+  body.s_project .c-homePage__nav,
+  body.s_list .c-homePage__nav {
+    margin-right: 6.24975vw;
+    margin-left: 4.1665vw;
+    height: 44px;
+    transition: none;
+  }
   .c-homePage__nav .c-homePage__link {
     font-size: 16px;
     line-height: 33px;
     transition: none;
   }
-}
-body.s_list .c-homePage__nav .c-homePage__link,
-body.s_project .c-homePage__nav .c-homePage__link,
-body.s_page .c-homePage__nav .c-homePage__link {
-  font-size: 16px;
-  line-height: 33px;
 }
 .listPage {
   /* -ctag-example: ...
@@ -523,7 +608,7 @@ body.s_page .listPage {
 }
 .listPage.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
   border-radius: 0px;
-  background-image: url("../../assets/cs_gradient.png");
+  background-image: url("../assets/gradient.png");
   background-size: 6px 100%;
   width: 6px;
 }
@@ -539,8 +624,10 @@ body.s_project .listPage .o-pageHeader {
 .listPage__rowContainer {
   /* -ctag-example: <div class='nano-content'><div ...>{ .listPage_header }{ .listPage_row }{ .listPage_row }{ .listPage_row }</div></div>;*/
   width: 100% ;
+  min-height: 100%;
   padding-left: 44px;
   padding-right: 44px;
+  margin-bottom: 20px;
   background-color: #fff;
   display: flex;
   flex-flow: row nowrap;
@@ -549,6 +636,7 @@ body.s_project .listPage .o-pageHeader {
 }
 body.s_project .listPage__rowContainer {
   padding-top: 22px;
+  margin-bottom: 0px;
 }
 body.s_thumbs .listPage__rowContainer {
   justify-content: space-between;
@@ -743,12 +831,14 @@ body.s_thumbs .listPage__rowImageChild {
 }
 @media (max-width: 768px) {
   body.s_list .listPage {
-    margin-top: 44px;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
     position: relative ;
     width: 100% ;
     height: auto ;
-    left: auto;
-    top: auto;
+    margin-top: 66px;
   }
   body.s_project .listPage {
     display: none;
@@ -887,82 +977,22 @@ body.s_thumbs .listPage__rowImageChild {
             { .c-phiTheme__copyrightNav };*/
   /*needed here for layering*/
 }
-@media (max-width: 768px) {
-  .c-phiTheme {
-    height: auto  !important;
-  }
-}
 body.s_project .c-phiTheme .c-projectPage {
   left: 38.197%;
 }
 body.s_project .c-phiTheme .c-projectPage__container {
   display: block;
 }
-@media (max-width: 768px) {
-  .c-phiTheme__homePage {
-    width: 100%  !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__homePage {
-    height: 44px !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__homePage {
-    position: fixed  !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__homePage {
-    border-bottom: 1px solid #CCCCCC !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__homePage {
-    transition: none !important;
-  }
-}
-body.s_list .c-phiTheme__homePage {
+body.s_list .c-phiTheme__homePage,
+body.s_project .c-phiTheme__homePage {
   width: 38.197%;
 }
-body.s_page .c-phiTheme__homePage,
-body.s_project .c-phiTheme__homePage {
+body.s_project.s_list .c-phiTheme__homePage {
   height: 38.197%;
   width: 38.197%;
 }
 body.s_page .c-phiTheme__contentArea {
   display: block;
-}
-@media (max-width: 768px) {
-  .c-phiTheme__contentArea {
-    width: auto  !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__contentArea {
-    position: relative  !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__contentArea {
-    z-index: 2500 !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__copyrightNav {
-    position: relative  !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__copyrightNav {
-    display: block !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-phiTheme__copyrightNav {
-    width: 100%  !important;
-  }
 }
 body.s_list .c-phiTheme__copyrightNav {
   position: absolute;
@@ -977,6 +1007,46 @@ body.s_slideshow .c-phiTheme__copyrightNav {
 }
 body.s_project .c-phiTheme__copyrightNav {
   display: none;
+}
+@media (max-width: 768px) {
+  .c-phiTheme {
+    /* -ctag-example: ...
+            { .c-phiTheme__homePage }
+            { .c-phiTheme__contentArea }
+            { .c-phiTheme__copyrightNav };*/
+    height: auto ;
+    /*needed here for layering*/
+  }
+  body.s_project .c-phiTheme .c-projectPage {
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    position: relative ;
+    width: 100% ;
+    height: auto ;
+  }
+  .c-phiTheme__homePage {
+    width: 100% ;
+    position: fixed ;
+    border-bottom: 1px solid #CCCCCC;
+    transition: none;
+  }
+  body.s_project .c-phiTheme__homePage,
+  body.s_list .c-phiTheme__homePage,
+  body.s_project.s_list .c-phiTheme__homePage {
+    width: 100% ;
+    height: 66px;
+  }
+  .c-phiTheme__copyrightNav {
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    position: relative ;
+    width: 100% ;
+    height: auto ;
+  }
 }
 .c-projectPage {
   /*-ctag-example: ...
@@ -1002,13 +1072,14 @@ body.s_project .c-projectPage {
 }
 .c-projectPage.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
   border-radius: 0px;
-  background-image: url("../../assets/cs_gradient.png");
+  background-image: url("../assets/gradient.png");
   background-size: 6px 100%;
   width: 6px;
 }
 .c-projectPage__container {
   padding-left: 44px;
   padding-right: 44px;
+  margin-bottom: 20px;
   background-color: #fff;
   display: none;
   min-height: calc(100vh - 40px);
@@ -1153,6 +1224,7 @@ body.s_project .c-projectPage {
   padding-left: 22px;
   padding-top: 22px;
   width: 24.999vw;
+  margin-bottom: 44px;
 }
 @media (max-width: 768px) {
   .c-projectPage__text {
@@ -1166,40 +1238,51 @@ body.s_project .c-projectPage {
 }
 @media (max-width: 768px) {
   .c-projectPage {
-    width: 100%  !important;
+    left: auto;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    position: relative ;
+    width: 100% ;
+    height: auto ;
+    margin-top: 66px;
   }
-}
-@media (max-width: 768px) {
-  .c-projectPage {
-    position: relative  !important;
-  }
-}
-@media (max-width: 768px) {
   .c-projectPage__titleSection {
-    width: 100%  !important;
+    width: 100% ;
+    padding-left: 44px;
+    padding-right: 44px;
   }
-}
-@media (max-width: 768px) {
-  .c-projectPage__titleSection {
-    padding-left: 44px !important;
-    padding-right: 44px !important;
+  .c-projectPage__content {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    flex-direction: column-reverse;
   }
-}
-@media (max-width: 768px) {
+  .c-projectPage__container {
+    padding-left: 8.333vw;
+    padding-right: 8.333vw;
+    min-height: calc(100vh - 106px);
+  }
+  .c-projectPage__summary {
+    width: 100% ;
+  }
+  .c-projectPage__summaryEntry--previewImage {
+    height: 220px;
+  }
+  .c-projectPage__navLinkButton {
+    justify-content: center;
+  }
   .c-projectPage__body {
-    width: 100%  !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-projectPage__body {
-    padding-left: 44px !important;
-    padding-right: 44px !important;
-  }
-}
-@media (max-width: 768px) {
-  .c-projectPage__body {
-    font-size: 14px !important;
+    width: 100% ;
+    padding-left: 44px;
+    padding-right: 44px;
+    font-size: 14px;
     line-height: 22px;
+  }
+  .c-projectPage__text {
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 22px;
   }
 }
 .c-slideShow {
@@ -1314,392 +1397,6 @@ body.s_slideshow .c-slideShow {
   }
 }
 
-/* ==========RESET (from file: cssmodeling/_resets/normalize.css)===========*/
-/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
-/**
- * 1. Set default font family to sans-serif.
- * 2. Prevent iOS and IE text size adjust after device orientation change,
- *    without disabling user zoom.
- */
-html {
-  font-family: sans-serif;
-  /* 1 */
-  -ms-text-size-adjust: 100%;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  /* 2 */
-}
-/**
- * Remove default margin.
- */
-body {
-  margin: 0;
-}
-/* HTML5 display definitions
-   ========================================================================== */
-/**
- * Correct `block` display not defined for any HTML5 element in IE 8/9.
- * Correct `block` display not defined for `details` or `summary` in IE 10/11
- * and Firefox.
- * Correct `block` display not defined for `main` in IE 11.
- */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-menu,
-nav,
-section,
-summary {
-  display: block;
-}
-/**
- * 1. Correct `inline-block` display not defined in IE 8/9.
- * 2. Normalize vertical alignment of `progress` in Chrome, Firefox, and Opera.
- */
-audio,
-canvas,
-progress,
-video {
-  display: inline-block;
-  /* 1 */
-  vertical-align: baseline;
-  /* 2 */
-}
-/**
- * Prevent modern browsers from displaying `audio` without controls.
- * Remove excess height in iOS 5 devices.
- */
-audio:not([controls]) {
-  display: none;
-  height: 0;
-}
-/**
- * Address `[hidden]` styling not present in IE 8/9/10.
- * Hide the `template` element in IE 8/9/10/11, Safari, and Firefox < 22.
- */
-[hidden],
-template {
-  display: none;
-}
-/* Links
-   ========================================================================== */
-/**
- * Remove the gray background color from active links in IE 10.
- */
-a {
-  background-color: transparent;
-}
-/**
- * Improve readability of focused elements when they are also in an
- * active/hover state.
- */
-a:active,
-a:hover {
-  outline: 0;
-}
-/* Text-level semantics
-   ========================================================================== */
-/**
- * Address styling not present in IE 8/9/10/11, Safari, and Chrome.
- */
-abbr[title] {
-  border-bottom: 1px dotted;
-}
-/**
- * Address style set to `bolder` in Firefox 4+, Safari, and Chrome.
- */
-b,
-strong {
-  font-weight: bold;
-}
-/**
- * Address styling not present in Safari and Chrome.
- */
-dfn {
-  font-style: italic;
-}
-/**
- * Address variable `h1` font-size and margin within `section` and `article`
- * contexts in Firefox 4+, Safari, and Chrome.
- */
-h1 {
-  font-size: 2em;
-  margin: 0.67em 0;
-}
-/**
- * Address styling not present in IE 8/9.
- */
-mark {
-  background: #ff0;
-  color: #000;
-}
-/**
- * Address inconsistent and variable font size in all browsers.
- */
-small {
-  font-size: 80%;
-}
-/**
- * Prevent `sub` and `sup` affecting `line-height` in all browsers.
- */
-sub,
-sup {
-  font-size: 75%;
-  line-height: 0;
-  position: relative;
-  vertical-align: baseline;
-}
-sup {
-  top: -0.5em;
-}
-sub {
-  bottom: -0.25em;
-}
-/* Embedded content
-   ========================================================================== */
-/**
- * Remove border when inside `a` element in IE 8/9/10.
- */
-img {
-  border: 0;
-}
-/**
- * Correct overflow not hidden in IE 9/10/11.
- */
-svg:not(:root) {
-  overflow: hidden;
-}
-/* Grouping content
-   ========================================================================== */
-/**
- * Address margin not present in IE 8/9 and Safari.
- */
-figure {
-  margin: 1em 40px;
-}
-/**
- * Address differences between Firefox and other browsers.
- */
-hr {
-  box-sizing: content-box;
-  height: 0;
-}
-/**
- * Contain overflow in all browsers.
- */
-pre {
-  overflow: auto;
-}
-/**
- * Address odd `em`-unit font size rendering in all browsers.
- */
-code,
-kbd,
-pre,
-samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
-}
-/* Forms
-   ========================================================================== */
-/**
- * Known limitation: by default, Chrome and Safari on OS X allow very limited
- * styling of `select`, unless a `border` property is set.
- */
-/**
- * 1. Correct color not being inherited.
- *    Known issue: affects color of disabled elements.
- * 2. Correct font properties not being inherited.
- * 3. Address margins set differently in Firefox 4+, Safari, and Chrome.
- */
-button,
-input,
-optgroup,
-select,
-textarea {
-  color: inherit;
-  /* 1 */
-  font: inherit;
-  /* 2 */
-  margin: 0;
-  /* 3 */
-}
-/**
- * Address `overflow` set to `hidden` in IE 8/9/10/11.
- */
-button {
-  overflow: visible;
-}
-/**
- * Address inconsistent `text-transform` inheritance for `button` and `select`.
- * All other form control elements do not inherit `text-transform` values.
- * Correct `button` style inheritance in Firefox, IE 8/9/10/11, and Opera.
- * Correct `select` style inheritance in Firefox.
- */
-button,
-select {
-  text-transform: none;
-}
-/**
- * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
- *    and `video` controls.
- * 2. Correct inability to style clickable `input` types in iOS.
- * 3. Improve usability and consistency of cursor style between image-type
- *    `input` and others.
- */
-button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
-  -webkit-appearance: button;
-  /* 2 */
-  cursor: pointer;
-  /* 3 */
-}
-/**
- * Re-set default cursor for disabled elements.
- */
-button[disabled],
-html input[disabled] {
-  cursor: default;
-}
-/**
- * Remove inner padding and border in Firefox 4+.
- */
-button::-moz-focus-inner,
-input::-moz-focus-inner {
-  border: 0;
-  padding: 0;
-}
-/**
- * Address Firefox 4+ setting `line-height` on `input` using `!important` in
- * the UA stylesheet.
- */
-input {
-  line-height: normal;
-}
-/**
- * It's recommended that you don't attempt to style these elements.
- * Firefox's implementation doesn't respect box-sizing, padding, or width.
- *
- * 1. Address box sizing set to `content-box` in IE 8/9/10.
- * 2. Remove excess padding in IE 8/9/10.
- */
-input[type="checkbox"],
-input[type="radio"] {
-  box-sizing: border-box;
-  /* 1 */
-  padding: 0;
-  /* 2 */
-}
-/**
- * Fix the cursor style for Chrome's increment/decrement buttons. For certain
- * `font-size` values of the `input`, it causes the cursor style of the
- * decrement button to change from `default` to `text`.
- */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  height: auto;
-}
-/**
- * 1. Address `appearance` set to `searchfield` in Safari and Chrome.
- * 2. Address `box-sizing` set to `border-box` in Safari and Chrome.
- */
-input[type="search"] {
-  -webkit-appearance: textfield;
-  /* 1 */
-  box-sizing: content-box;
-  /* 2 */
-}
-/**
- * Remove inner padding and search cancel button in Safari and Chrome on OS X.
- * Safari (but not Chrome) clips the cancel button when the search input has
- * padding (and `textfield` appearance).
- */
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration {
-  -webkit-appearance: none;
-}
-/**
- * Define consistent border, margin, and padding.
- */
-fieldset {
-  border: 1px solid #c0c0c0;
-  margin: 0 2px;
-  padding: 0.35em 0.625em 0.75em;
-}
-/**
- * 1. Correct `color` not being inherited in IE 8/9/10/11.
- * 2. Remove padding so people aren't caught out if they zero out fieldsets.
- */
-legend {
-  border: 0;
-  /* 1 */
-  padding: 0;
-  /* 2 */
-}
-/**
- * Remove default vertical scrollbar in IE 8/9/10/11.
- */
-textarea {
-  overflow: auto;
-}
-/**
- * Don't inherit the `font-weight` (applied by a rule above).
- * NOTE: the default cannot safely be changed in Chrome and Safari on OS X.
- */
-optgroup {
-  font-weight: bold;
-}
-/* Tables
-   ========================================================================== */
-/**
- * Remove most spacing between table cells.
- */
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-td,
-th {
-  padding: 0;
-}
-/* ==========RESET (from file: cssmodeling/_resets/resets.css)===========*/
-html {
-  width: 100%;
-  height: 100%;
-  padding: 0px;
-  margin: 0px;
-}
-body {
-  width: 100%;
-  height: 100%;
-  padding: 0px;
-  margin: 0px;
-}
-* {
-  box-sizing: border-box;
-  background-repeat: no-repeat;
-  background-position: center;
-  position: relative;
-}
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  font-weight: 300;
-  padding: 0px;
-  margin: 0px;
-}
 .a-flex-v {
   display: flex;
   flex-flow: column nowrap;
@@ -1774,6 +1471,10 @@ p {
   height: 100%;
 }
 .a-mobile-reset {
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
   position: relative ;
   width: 100% ;
   height: auto ;
@@ -7510,6 +7211,14 @@ p {
   .breakpoint-sm-a-fill-container {
     width: 100% !important;
     height: 100% !important;
+  }
+}
+@media (max-width: 768px) {
+  .breakpoint-sm-a-mobile-reset {
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
   }
 }
 @media (max-width: 768px) and (max-width: 768px) {

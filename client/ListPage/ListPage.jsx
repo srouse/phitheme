@@ -27,7 +27,9 @@ var ListPage = React.createClass({
             "examples_list"
     	);
 
-        Ps.initialize( $(".listPage")[0] );
+        Ps.initialize( $(".listPage")[0] , {
+            suppressScrollX: true
+        });
     },
 
     componentWillUnmount: function(){

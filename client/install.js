@@ -13,7 +13,11 @@ PhiThemeBootstrap.run = function ( data_dom , route ) {
         HTMLtoJSONImportReplace( data_dom ,
             function ( html_dom ) {
 
+                // return;
+
                 HTMLtoJSON( html_dom , PhiModel );
+
+                $("body").addClass( "body--loaded" );
 
                 // some defaults...
                 PhiModel.project = {};
@@ -25,7 +29,7 @@ PhiThemeBootstrap.run = function ( data_dom , route ) {
                 }
                 PhiModel.processProjects( PhiModel.projects );
 
-                // console.log( PhiModel );
+                console.log( PhiModel );
 
                 //inject CSS here...only want this to happen once...
                 var styles = {};
@@ -43,10 +47,10 @@ PhiThemeBootstrap.run = function ( data_dom , route ) {
                     };
                 }
                 if ( PhiModel.style.side_gradient ) {
-                    styles[".listPage.nano > .nano-pane > .nano-slider"] = {
+                    styles[".listPage.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y"] = {
                         "background-image":"url('"+ PhiModel.style.side_gradient + "')"
                     };
-                    styles[".c-projectPage.nano > .nano-pane > .nano-slider"] = {
+                    styles[".c-projectPage.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y"] = {
                         "background-image":"url('"+ PhiModel.style.side_gradient + "')"
                     };
                     styles[".c-homePage__rightGradient"] = {

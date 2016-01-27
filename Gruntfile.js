@@ -29,7 +29,7 @@ module.exports = function(grunt) {
                 'node_modules/jquery/dist/jquery.min.js',
         		'node_modules/react/dist/react.js',
         		'node_modules/routestate/RouteState.js',
-        		'node_modules/nanoscroller/bin/javascripts/jquery.nanoscroller.js',
+        		// 'node_modules/nanoscroller/bin/javascripts/jquery.nanoscroller.js',
                 'node_modules/perfect-scrollbar/dist/js/min/perfect-scrollbar.min.js',
 
                 'dist/phitheme_jsx.js',
@@ -38,8 +38,6 @@ module.exports = function(grunt) {
             ]
         }
     }
-
-
 
     //==========LESS=================
     configObj.concat = configObj.concat || {};
@@ -50,15 +48,17 @@ module.exports = function(grunt) {
                 'dist/csscore/less/core_mixins.less',
                 'client/Shared/html.less',//fonts there
                 'client/Shared/**/*.less',
-                'client/HomePage/*.less',
+                'client/HomePage/c-homePage.less',
+                'client/HomePage/c-homePage--phone.less',
                 'client/ListPage/ListPage.less',
                 'client/ListPage/ListPage--mobile.less',
                 'client/PhiTheme/c-phiTheme.less',
                 'client/PhiTheme/c-phiTheme--states.less',
+                'client/PhiTheme/c-phiTheme--phone.less',
                 'client/ProjectPage/c-projectPage.less',
-                'client/ProjectPage/c-projectPage--states.less',
+                'client/ProjectPage/c-projectPage--phone.less',
                 'client/SlideShow/c-slideShow.less',
-                'client/SlideShow/c-slideShow--states.less',
+                'client/SlideShow/c-slideShow--states.less'
             ]
         }
     }
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         files: {
             'dist/phitheme.css':
             [
-                'node_modules/nanoscroller/bin/css/nanoscroller.css',
+                // 'node_modules/nanoscroller/bin/css/nanoscroller.css',
                 'node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css',
                 'dist/phitheme_comps.css',
                 'dist/csscore/core.css'
@@ -103,9 +103,7 @@ module.exports = function(grunt) {
             ]
         },
         options: {
-            resets:[
-                'cssmodeling/_resets/**/*.css'
-            ],
+            resets:[],
             type:"less",
             var_prefix:"v-"
         }

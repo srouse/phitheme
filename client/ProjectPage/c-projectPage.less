@@ -28,7 +28,7 @@
     }
     &.ps-container > .ps-scrollbar-y-rail > .ps-scrollbar-y {
         border-radius: 0px;
-        background-image: url("../../assets/cs_gradient.png");
+        background-image: url("../assets/gradient.png");
         background-size: 6px 100%;
         background-size: 6px 100%;
         width: 6px;
@@ -38,6 +38,9 @@
         //.a-margin-v-row-2;
         padding-left: @v-phitheme-h-padding;
         padding-right: @v-phitheme-h-padding;
+        // padding-bottom: @v-phitheme-h-padding;
+        margin-bottom: 20px;
+
         .a-background-white;
         // box-shadow: 0px 0px 8px rgba( 0,0,0,.1);
         .a-display-none;
@@ -99,11 +102,13 @@
         .a-flex-h;
         flex-direction: row-reverse;
         .a-align-items-flex-start;
+        // .a-margin-bottom-row-2;
     }
 
         &__summary {
             .a-flex-item-fill;
             .a-flex-v;
+
 
             &--noDescription {
                 height: calc( 100vh ~'-' 150px );
@@ -143,7 +148,6 @@
 
                     img {
                         max-width: calc( 100% ~'-' ( @v-project-page-h-padding  ) );
-                        // max-width: calc( 100% ~'-' 10px );
                         max-height: calc( 100% ~'-' ( @v-project-page-h-padding  ) );
                         box-shadow: 0px 0px 8px rgba( 0,0,0,.1);
                         position: absolute;
@@ -173,9 +177,8 @@
             .a-text-color-grey-5;
             padding-left: @v-project-page-h-padding / 2;
             .a-padding-top-row-1;
-            //padding-right: @v-project-page-h-padding;
-            // .a-flex-item-fill;
             .a-width-col-3;
+            .a-margin-bottom-row-2;
 
             .breakpoint-sm-a-width-100;
 

@@ -37,7 +37,6 @@ var HTMLtoJSONImportReplace = function (
         }else{
             _loadHTMLtoJSONImportReplace(
                 elements_to_load, html_dom,
-                0,
                 done_funk
             );
         }
@@ -46,15 +45,15 @@ var HTMLtoJSONImportReplace = function (
 
     var _loadHTMLtoJSONImportReplace = function (
             elements_to_load, html_dom,
-            index,
             done_funk
         ) {
 
-        if ( index == elements_to_load.length ) {
+        if ( elements_to_load.length == 0 ) {
             _HTMLtoJSONImportReplace( html_dom , done_funk );
         }else{
             var target_ele = $("<div></div>");
-            var ele = elements_to_load[index];
+            //var ele = elements_to_load[index];
+            var ele = elements_to_load.shift();//.pop();//
             var target_lookup = $(ele).attr("data-import");// data busted after decorating
 
             // gotta load in html, but without loading in all the images
@@ -86,10 +85,9 @@ var HTMLtoJSONImportReplace = function (
                     );
                     $(ele).html( target_dom.html() );
 
-                    index++;
+                    //index++;
                     _loadHTMLtoJSONImportReplace(
                         elements_to_load, html_dom,
-                        index,
                         done_funk
                     );
 

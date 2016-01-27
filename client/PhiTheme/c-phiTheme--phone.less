@@ -1,0 +1,46 @@
+
+@media ( max-width: @screen-sm-min ) {
+
+
+.c-phiTheme {
+    /* -ctag-example: ...
+            { .c-phiTheme__homePage }
+            { .c-phiTheme__contentArea }
+            { .c-phiTheme__copyrightNav };*/
+
+    .a-height-auto;
+
+    .c-projectPage {
+        body.s_project & {
+            .a-mobile-reset;
+        }
+    }
+
+    &__homePage {
+        .a-width-100;
+        .a-position-fixed;
+        .a-border-bottom;
+        .a-transition-none;
+
+        body.s_project &,
+        body.s_list &,
+        body.s_project.s_list & {
+            .a-width-100;
+            .a-height-row-3;
+        }
+    }
+
+    /*needed here for layering*/
+    &__copyrightNav {
+        .a-mobile-reset;
+
+        &__bottomNav {}
+
+        &__bottomNavLink {}
+
+        &__copyright {}
+    }
+
+}
+
+}//breakpoint
