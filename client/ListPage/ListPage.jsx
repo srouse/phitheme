@@ -27,20 +27,16 @@ var ListPage = React.createClass({
             "examples_list"
     	);
 
-        $(".nano").nanoScroller();
+        Ps.initialize( $(".listPage")[0] );
     },
 
     componentWillUnmount: function(){
         RouteState.removeDiffListenersViaClusterId( "examples_list" );
+        Ps.destroy( $(".listPage")[0] );
     },
 
     componentDidUpdate: function () {
-        $(".nano").nanoScroller();
-
-        // compensate for animation...
-        setTimeout( function () {
-            $(".nano").nanoScroller();
-        },400);
+        Ps.update( $(".listPage")[0] );
     },
 
     toggleThumbs: function () {
@@ -48,6 +44,12 @@ var ListPage = React.createClass({
             thumbs:"thumbs"
         },{
             thumbs:""
+        });
+    },
+
+    closeList: function () {
+        RouteState.merge({
+            list:""
         });
     },
 
@@ -59,10 +61,19 @@ var ListPage = React.createClass({
             tagTitle = list.title.capitalizeEachWord();
 
         rows.push(
-            <div className="listPage_header"
-                key={ "listPage_header" }>{
-                tagTitle
-            }</div>
+            <div className="o-pageHeader" key={ "listPage_header" }>
+                <div className="o-pageHeader__title">
+                    { tagTitle }
+                </div>
+                <div className="o-pageHeader__nav">
+                    { /* <div className="o-pageHeader__thumbsBtn"
+                        onClick={ this.toggleThumbs }>
+                    </div> */ }
+                    <div className="o-pageHeader__closeBtn"
+                        onClick={ this.closeList }>
+                    </div>
+                </div>
+            </div>
         );
 
         var image;
@@ -71,27 +82,26 @@ var ListPage = React.createClass({
 
             image = "";
             if ( item.image )
-                image = <div className="listPage_rowImage">
-                    <div className="listPage_rowImageChild"
+                image = <div className="listPage__rowImage">
+                    <div className="listPage__rowImageChild"
                         style={{
                             backgroundImage:
                                 "url('"+item.image+"')"
                         }}></div>
                 </div>
 
-            var className = "listPage_row index_" + i%3;
             rows.push(
-                <div className={ className }
+                <div className="listPage__row"
                     onClick={ this.openProject.bind( this , item.slug ) }
-                    key={ "listPage_row_" + item.slug }>
-                    <div className="listPage_rowText">
-                        <div className="listPage_rowTitle">
+                    key={ "listPage__row_" + item.slug }>
+                    <div className="listPage__rowText">
+                        <div className="listPage__rowTitle">
                             { item.title }
                         </div>
-                        <div className="listPage_rowSubTitle">
+                        <div className="listPage__rowSubTitle">
                             { item.medium }
                         </div>
-                        <div className="listPage_rowDescription">
+                        <div className="listPage__rowDescription">
                             { item.summary }
                         </div>
                     </div>
@@ -100,9 +110,19 @@ var ListPage = React.createClass({
             );
         }
 
+
+        var left_to_complete__row = 4 - ( list.projects.length % 4 );
+        for ( var i=0; i<left_to_complete__row; i++ ) {
+            rows.push(
+                <div className="listPage__row listPage__row--empty"
+                    key={ "listPage__row_spacer_" + i }>
+                </div>
+            );
+        }
+
         rows.push(
-            <div className="listPage_spacer"
-                key="listPage_spacer">
+            <div className="listPage__spacer"
+                key="listPage__spacer">
             </div>
         );
         return rows;
@@ -118,14 +138,10 @@ var ListPage = React.createClass({
             this.renderRows( project_list, rows );
         }
 
-        return  <div className="nano listPage">
-                    <div className="nano-content">
-                        <div className="listPage_rowContainer">
-                            { rows }
-                        </div>
+        return  <div className="listPage">
+                    <div className="listPage__rowContainer">
+                        { rows }
                     </div>
-                    { /*<div className="listPage_typeToggle"
-                        onClick={ this.toggleThumbs }></div>*/ }
                 </div>;
     }
 

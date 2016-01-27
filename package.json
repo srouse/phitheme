@@ -16,7 +16,8 @@
         "react" : "~0.13",
         "routestate":"~0.3",
         "nanoscroller":"~0.8",
-        "cssmodeling":"~0.1"
+        "cssmodeling":"~0.1",
+        "perfect-scrollbar":"~0.6"
    },
    "bundledDependencies": [],
     "devDependencies" : {

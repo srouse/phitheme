@@ -629,13 +629,16 @@ h1,h2,h3,h4,h5,h6,p {
 @v-phitheme-h-padding: @v-row-2;
 
 
+@v-home-nav-width: 80%;
+
+
 @v-project-page-h-padding: @v-phitheme-h-padding;
-@v-project-page-width: @v-col-8;
+@v-project-page-width: @v-phi;
 @v-project-page-container-width: @v-col-7;
 
 
-@v-list-width: @v-col-8;
-@v-list-nav-width: 100vw - @v-project-page-width;
+@v-list-width: @v-phi;
+@v-list-nav-width: 100% - @v-project-page-width;
 
 
 @v-misused: 2px solid red;
@@ -732,7 +735,7 @@ h1,h2,h3,h4,h5,h6,p {
 
 @v-border: 1px solid @v-grey-8;
 @v-border-none: none;
-@v-border-strong: 2px solid @v-grey-8;
+@v-border-strong: 1px solid @v-grey-8;
 @v-border-stronger: 4px solid @v-grey-8;
 @v-border-strongest: 8px solid @v-grey-8;
 @v-border-weak: 1px solid @v-grey-9;
@@ -740,7 +743,7 @@ h1,h2,h3,h4,h5,h6,p {
 @v-border-weakest: 1px solid @v-grey-9;
 @v-border-top: 1px solid @v-grey-8;
 @v-border-top-none: none;
-@v-border-top-strong: 2px solid @v-grey-8;
+@v-border-top-strong: 1px solid @v-grey-8;
 @v-border-top-stronger: 4px solid @v-grey-8;
 @v-border-top-strongest: 8px solid @v-grey-8;
 @v-border-top-weak: 1px solid @v-grey-9;
@@ -748,7 +751,7 @@ h1,h2,h3,h4,h5,h6,p {
 @v-border-top-weakest: 1px solid @v-grey-9;
 @v-border-bottom: 1px solid @v-grey-8;
 @v-border-bottom-none: none;
-@v-border-bottom-strong: 2px solid @v-grey-8;
+@v-border-bottom-strong: 1px solid @v-grey-8;
 @v-border-bottom-stronger: 4px solid @v-grey-8;
 @v-border-bottom-strongest: 8px solid @v-grey-8;
 @v-border-bottom-weak: 1px solid @v-grey-9;
@@ -756,7 +759,7 @@ h1,h2,h3,h4,h5,h6,p {
 @v-border-bottom-weakest: 1px solid @v-grey-9;
 @v-border-left: 1px solid @v-grey-8;
 @v-border-left-none: none;
-@v-border-left-strong: 2px solid @v-grey-8;
+@v-border-left-strong: 1px solid @v-grey-8;
 @v-border-left-stronger: 4px solid @v-grey-8;
 @v-border-left-strongest: 8px solid @v-grey-8;
 @v-border-left-weak: 1px solid @v-grey-9;
@@ -764,7 +767,7 @@ h1,h2,h3,h4,h5,h6,p {
 @v-border-left-weakest: 1px solid @v-grey-9;
 @v-border-right: 1px solid @v-grey-8;
 @v-border-right-none: none;
-@v-border-right-strong: 2px solid @v-grey-8;
+@v-border-right-strong: 1px solid @v-grey-8;
 @v-border-right-stronger: 4px solid @v-grey-8;
 @v-border-right-strongest: 8px solid @v-grey-8;
 @v-border-right-weak: 1px solid @v-grey-9;
@@ -772,7 +775,7 @@ h1,h2,h3,h4,h5,h6,p {
 @v-border-right-weakest: 1px solid @v-grey-9;
 @v-border-v: 1px solid @v-grey-8;
 @v-border-v-none: none;
-@v-border-v-strong: 2px solid @v-grey-8;
+@v-border-v-strong: 1px solid @v-grey-8;
 @v-border-v-stronger: 4px solid @v-grey-8;
 @v-border-v-strongest: 8px solid @v-grey-8;
 @v-border-v-weak: 1px solid @v-grey-9;
@@ -780,7 +783,7 @@ h1,h2,h3,h4,h5,h6,p {
 @v-border-v-weakest: 1px solid @v-grey-9;
 @v-border-h: 1px solid @v-grey-8;
 @v-border-h-none: none;
-@v-border-h-strong: 2px solid @v-grey-8;
+@v-border-h-strong: 1px solid @v-grey-8;
 @v-border-h-stronger: 4px solid @v-grey-8;
 @v-border-h-strongest: 8px solid @v-grey-8;
 @v-border-h-weak: 1px solid @v-grey-9;
@@ -823,6 +826,7 @@ h1,h2,h3,h4,h5,h6,p {
 
 
 @v-border-radius: 3px;
+
 
 
 
@@ -2510,6 +2514,7 @@ h1,h2,h3,h4,h5,h6,p {
 .a-clear-left () {  clear: left ; }
 .a-clear-both () {  clear: both ; }
 .a-clear-right () {  clear: right ; }
+.a-user-select-none () {  -webkit-touch-callout: none; /* iOS Safari */ -webkit-user-select: none;   /* Chrome/Safari/Opera */ -khtml-user-select: none;    /* Konqueror */ -moz-user-select: none;      /* Firefox */ -ms-user-select: none;       /* IE/Edge */ user-select: none; }
 .a-float-clear-left () {  clear: left ; float: left }
 .a-float-clear-right () {  clear: right ; float: right }
 .a-position-absolute () {  position : absolute ; }
@@ -2588,6 +2593,8 @@ h1,h2,h3,h4,h5,h6,p {
 .a-fill-container () {  width: 100%;  height: 100%;  }
 .a-mobile-reset () {   .a-position-relative;  .a-width-100;  .a-height-auto;  }
 .a-mobile-nav-reset () {   .a-position-fixed;  .a-top-left;  }
+
+
 
 
 
@@ -4299,6 +4306,7 @@ h1,h2,h3,h4,h5,h6,p {
 .breakpoint-md-a-clear-left (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  clear: left  !important;}}
 .breakpoint-md-a-clear-both (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  clear: both  !important;}}
 .breakpoint-md-a-clear-right (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  clear: right  !important;}}
+.breakpoint-md-a-user-select-none (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  -webkit-touch-callout: none !important; /* iOS Safari */ -webkit-user-select: none !important;   /* Chrome/Safari/Opera */ -khtml-user-select: none !important;    /* Konqueror */ -moz-user-select: none !important;      /* Firefox */ -ms-user-select: none !important;       /* IE/Edge */ user-select: none !important;}}
 .breakpoint-md-a-float-clear-left (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  clear: left  !important; float: left}}
 .breakpoint-md-a-float-clear-right (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  clear: right  !important; float: right}}
 .breakpoint-md-a-position-absolute (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  position : absolute  !important;}}
@@ -4377,6 +4385,8 @@ h1,h2,h3,h4,h5,h6,p {
 .breakpoint-md-a-fill-container (  ) { @media ( max-width: @v-breakpoint-medium-min ) {  width: 100% !important;  height: 100% !important; }}
 .breakpoint-md-a-mobile-reset (  ) { @media ( max-width: @v-breakpoint-medium-min ) {   .breakpoint-md-a-position-relative;  .breakpoint-md-a-width-100;  .breakpoint-md-a-height-auto; }}
 .breakpoint-md-a-mobile-nav-reset (  ) { @media ( max-width: @v-breakpoint-medium-min ) {   .breakpoint-md-a-position-fixed;  .breakpoint-md-a-top-left; }}
+
+
 
 
 
@@ -6088,6 +6098,7 @@ h1,h2,h3,h4,h5,h6,p {
 .breakpoint-sm-a-clear-left (  ) { @media ( max-width: @v-breakpoint-small-min ) {  clear: left  !important;}}
 .breakpoint-sm-a-clear-both (  ) { @media ( max-width: @v-breakpoint-small-min ) {  clear: both  !important;}}
 .breakpoint-sm-a-clear-right (  ) { @media ( max-width: @v-breakpoint-small-min ) {  clear: right  !important;}}
+.breakpoint-sm-a-user-select-none (  ) { @media ( max-width: @v-breakpoint-small-min ) {  -webkit-touch-callout: none !important; /* iOS Safari */ -webkit-user-select: none !important;   /* Chrome/Safari/Opera */ -khtml-user-select: none !important;    /* Konqueror */ -moz-user-select: none !important;      /* Firefox */ -ms-user-select: none !important;       /* IE/Edge */ user-select: none !important;}}
 .breakpoint-sm-a-float-clear-left (  ) { @media ( max-width: @v-breakpoint-small-min ) {  clear: left  !important; float: left}}
 .breakpoint-sm-a-float-clear-right (  ) { @media ( max-width: @v-breakpoint-small-min ) {  clear: right  !important; float: right}}
 .breakpoint-sm-a-position-absolute (  ) { @media ( max-width: @v-breakpoint-small-min ) {  position : absolute  !important;}}
@@ -7858,6 +7869,7 @@ h1,h2,h3,h4,h5,h6,p {
 .a-clear-left {  clear: left ; }
 .a-clear-both {  clear: both ; }
 .a-clear-right {  clear: right ; }
+.a-user-select-none {  -webkit-touch-callout: none; /* iOS Safari */ -webkit-user-select: none;   /* Chrome/Safari/Opera */ -khtml-user-select: none;    /* Konqueror */ -moz-user-select: none;      /* Firefox */ -ms-user-select: none;       /* IE/Edge */ user-select: none; }
 .a-float-clear-left {  clear: left ; float: left }
 .a-float-clear-right {  clear: right ; float: right }
 .a-position-absolute {  position : absolute ; }
@@ -7919,6 +7931,7 @@ h1,h2,h3,h4,h5,h6,p {
 .a-width-auto {  width : auto ; }
 .a-width-initial {  width : initial ; }
 .a-width-inherit {  width : inherit ; }
+
 
 
 
@@ -9712,6 +9725,7 @@ h1,h2,h3,h4,h5,h6,p {
 .breakpoint-sm-a-clear-left { @media ( max-width: @v-breakpoint-small-min ) {  clear: left  !important;} } 
 .breakpoint-sm-a-clear-both { @media ( max-width: @v-breakpoint-small-min ) {  clear: both  !important;} } 
 .breakpoint-sm-a-clear-right { @media ( max-width: @v-breakpoint-small-min ) {  clear: right  !important;} } 
+.breakpoint-sm-a-user-select-none { @media ( max-width: @v-breakpoint-small-min ) {  -webkit-touch-callout: none !important; /* iOS Safari */ -webkit-user-select: none !important;   /* Chrome/Safari/Opera */ -khtml-user-select: none !important;    /* Konqueror */ -moz-user-select: none !important;      /* Firefox */ -ms-user-select: none !important;       /* IE/Edge */ user-select: none !important;} } 
 .breakpoint-sm-a-float-clear-left { @media ( max-width: @v-breakpoint-small-min ) {  clear: left  !important; float: left} } 
 .breakpoint-sm-a-float-clear-right { @media ( max-width: @v-breakpoint-small-min ) {  clear: right  !important; float: right} } 
 .breakpoint-sm-a-position-absolute { @media ( max-width: @v-breakpoint-small-min ) {  position : absolute  !important;} } 

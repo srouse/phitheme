@@ -18,11 +18,28 @@ var ProjectPage = React.createClass({
     		},
             "contenttitle_listeners"
     	);
+
+        //$(".nano").nanoScroller({ alwaysVisible: false });
+        Ps.initialize( $(".c-projectPage")[0] );
     },
 
     componentWillUnmount: function(){
         RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
+        Ps.destroy( $(".c-projectPage")[0] );
     },
+
+    componentDidUpdate: function () {
+        //$(".nano").nanoScroller({ alwaysVisible: false });
+
+        // compensate for animation...
+        /*setTimeout( function () {
+            $(".nano").nanoScroller({ alwaysVisible: false });
+        },400);*/
+
+        Ps.update( $(".c-projectPage")[0] );
+    },
+
+
 
     closeProject: function () {
         RouteState.merge({project:''})
@@ -88,7 +105,7 @@ var ProjectPage = React.createClass({
                 if ( nav_link.internal && nav_link.internal == true ) {
                     nav_links_children.push(
                         <div className="c-projectPage__summaryEntry">
-                            <div className="projectPage_navLinkButton"
+                            <div className="c-projectPage__navLinkButton"
                                 onClick={
                                     this.gotoProject.bind( this , nav_link )
                                 }>
@@ -99,7 +116,7 @@ var ProjectPage = React.createClass({
                 }else{
                     nav_links_children.push(
                         <div className="c-projectPage__summaryEntry">
-                            <a className="projectPage_navLinkButton"
+                            <a className="c-projectPage__navLinkButton"
                                 href={ nav_link.location } target="nav_link">
                                 { nav_link.title }
                             </a>
@@ -122,61 +139,52 @@ var ProjectPage = React.createClass({
         var total_images = false;
         if ( project.images ) {
             var image_index = 0;
-            total_images = project.images.length;
+            /*total_images = project.images.length;
 
             if ( RouteState.route.image ) {
                 image_index = RouteState.route.image-1;
-            }
+            }*/
 
             fullimage = PhiModel.project.images[image_index].image_url;
             fullimage_title = PhiModel.project.images[image_index].title;
         }
 
+        var description = "",summary_cls = "c-projectPage__summary--noDescription";
+        if ( project.description && project.description.length > 0 ) {
+            description =   <div className="c-projectPage__text"
+                                contentEditable={ pseudo_edit }
+                                dangerouslySetInnerHTML={{__html:project.description}}>
+                            </div>;
+            summary_cls = "";
+        }
+
         return  <div className="c-projectPage">
                     <div className="c-projectPage__container">
-
-                        <div className="c-projectPage__titleSection">
-
-                            <div className="c-projectPage__titleSection__titles">
-                                <div className="c-projectPage__title">
-                                    { project.title }
-                                </div>
-                                { /* <div className="c-projectPage__subTitle">
-                                    { project.medium }
-                                </div> */}
+                        <div className="o-pageHeader">
+                            <div className="o-pageHeader__title">
+                                { project.title }
                             </div>
-
-                            <div className="c-projectPage__close"
-                                onClick={ this.closeProject }></div>
-
+                            <div className="o-pageHeader__nav">
+                                <div className="o-pageHeader__closeBtn"
+                                    onClick={ this.closeProject }>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="c-projectPage__content">
 
-                            <div className="c-projectPage__summary">
+                            { description }
+                            <div className={ "c-projectPage__summary " + summary_cls }>
                                 <div className="c-projectPage__summaryEntry
-                                        c-projectPage__summaryEntry--previewImage"
-                                        onClick={ this.openSlideShow }>
+                                    c-projectPage__summaryEntry--previewImage"
+                                    onClick={ this.openSlideShow }>
                                     <image src={ fullimage } />
-                                </div>
-                                <div className="c-projectPage__summaryEntry"
-                                        onClick={ this.openSlideShow }>
-                                    { "view " + total_images + " images" }
                                 </div>
                                 { nav_links_children }
                             </div>
 
 
-                            <div className="c-projectPage__text"
-                                contentEditable={ pseudo_edit }
-                                dangerouslySetInnerHTML={{__html:project.description}}>
-                            </div>
                         </div>
-
-
-
-
-
                     </div>
                 </div>;
     }

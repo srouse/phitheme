@@ -122,6 +122,9 @@ var SlideShow = React.createClass({
         var fullimage_title = "";
         var image_context = "";
 
+        var next = "";
+        var prev = "";
+
         if ( PhiModel.project && PhiModel.project.images ) {
             var image_index = 0;
 
@@ -133,6 +136,22 @@ var SlideShow = React.createClass({
             fullimage_title = PhiModel.project.images[image_index].title;
 
             image_context = image_index+1 + " / " + PhiModel.project.images.length;
+
+            if ( PhiModel.project.images.length > image_index+1 ) {
+                next = <div className="
+                            c-slideShow__btn c-slideShow__btn--nextProject
+                            a-position-right
+                            a-transform-vcenter"
+                        onClick={ this.nextImage }></div>;
+            }
+
+            if ( image_index > 0 ) {
+                prev = <div className="
+                            c-slideShow__btn c-slideShow__btn--prevProject
+                            a-position-left
+                            a-transform-vcenter"
+                        onClick={ this.prevImage }></div>;
+            }
         }
 
 
@@ -146,19 +165,10 @@ var SlideShow = React.createClass({
                     <img src={ fullimage }
                         className="c-slideShow__img" />
                     <div className="
-                            o-slideShow__btn o-slideShow__btn--close
+                            c-slideShow__btn c-slideShow__btn--close
                             a-position-top-right"
                         onClick={ this.closeProject }></div>
-                    <div className="
-                            o-slideShow__btn o-slideShow__btn--nextProject
-                            a-position-left
-                            a-transform-vcenter"
-                        onClick={ this.nextImage }></div>
-                    <div className="
-                            o-slideShow__btn o-slideShow__btn--prevProject
-                            a-position-right
-                            a-transform-vcenter"
-                        onClick={ this.prevImage }></div>
+                    { prev }{ next }
                 </div>;
     }
 

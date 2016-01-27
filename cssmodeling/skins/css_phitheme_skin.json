@@ -119,6 +119,17 @@
         {
 			"name":"project-page-vars",
             "group":"skin",
+			"base":"home",
+			"scheme":{"@base":[
+                "-nav-width"
+            ]},
+			"values":[
+				"80%"
+			]
+		},
+        {
+			"name":"project-page-vars",
+            "group":"skin",
 			"base":"project-page",
 			"scheme":{"@base":[
                 "-h-padding",
@@ -127,7 +138,7 @@
             ]},
 			"values":[
 				"_@_v-phitheme-h-padding",
-                "_@_v-col-8",
+                "_@_v-phi",
                 "_@_v-col-7"
 			]
 		},
@@ -140,8 +151,8 @@
                 "-nav-width"
             ]},
 			"values":[
-				"_@_v-col-8",
-                "100vw - _@_v-project-page-width"
+				"_@_v-phi",
+                "100% - _@_v-project-page-width"
 			]
 		},
 		{
@@ -467,7 +478,7 @@
 			"scheme":"skin-location-power-values",
 			"values":[
 				"1px solid _@_v-grey-8","none",
-				"2px solid _@_v-grey-8","4px solid _@_v-grey-8","8px solid _@_v-grey-8",
+				"1px solid _@_v-grey-8","4px solid _@_v-grey-8","8px solid _@_v-grey-8",
 				"1px solid _@_v-grey-9","1px solid _@_v-grey-9","1px solid _@_v-grey-9"
 			],
 			"atoms":[

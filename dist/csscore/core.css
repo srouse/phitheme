@@ -5490,7 +5490,7 @@ p {
   border: none;
 }
 .a-border-strong {
-  border: 2px solid #CCCCCC;
+  border: 1px solid #CCCCCC;
 }
 .a-border-stronger {
   border: 4px solid #CCCCCC;
@@ -5514,7 +5514,7 @@ p {
   border-top: none;
 }
 .a-border-top-strong {
-  border-top: 2px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
 }
 .a-border-top-stronger {
   border-top: 4px solid #CCCCCC;
@@ -5538,7 +5538,7 @@ p {
   border-bottom: none;
 }
 .a-border-bottom-strong {
-  border-bottom: 2px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC;
 }
 .a-border-bottom-stronger {
   border-bottom: 4px solid #CCCCCC;
@@ -5562,7 +5562,7 @@ p {
   border-left: none;
 }
 .a-border-left-strong {
-  border-left: 2px solid #CCCCCC;
+  border-left: 1px solid #CCCCCC;
 }
 .a-border-left-stronger {
   border-left: 4px solid #CCCCCC;
@@ -5586,7 +5586,7 @@ p {
   border-right: none;
 }
 .a-border-right-strong {
-  border-right: 2px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
 }
 .a-border-right-stronger {
   border-right: 4px solid #CCCCCC;
@@ -5612,8 +5612,8 @@ p {
   border-bottom: none;
 }
 .a-border-v-strong {
-  border-top: 2px solid #CCCCCC;
-  border-bottom: 2px solid #CCCCCC;
+  border-top: 1px solid #CCCCCC;
+  border-bottom: 1px solid #CCCCCC;
 }
 .a-border-v-stronger {
   border-top: 4px solid #CCCCCC;
@@ -5644,8 +5644,8 @@ p {
   border-right: none;
 }
 .a-border-h-strong {
-  border-left: 2px solid #CCCCCC;
-  border-right: 2px solid #CCCCCC;
+  border-left: 1px solid #CCCCCC;
+  border-right: 1px solid #CCCCCC;
 }
 .a-border-h-stronger {
   border-left: 4px solid #CCCCCC;
@@ -5789,6 +5789,19 @@ p {
 }
 .a-clear-right {
   clear: right ;
+}
+.a-user-select-none {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE/Edge */
+  user-select: none;
 }
 .a-float-clear-left {
   clear: left ;
@@ -14417,7 +14430,7 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-strong {
-    border: 2px solid #CCCCCC !important;
+    border: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14457,7 +14470,7 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-top-strong {
-    border-top: 2px solid #CCCCCC !important;
+    border-top: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14497,7 +14510,7 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-bottom-strong {
-    border-bottom: 2px solid #CCCCCC !important;
+    border-bottom: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14537,7 +14550,7 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-left-strong {
-    border-left: 2px solid #CCCCCC !important;
+    border-left: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14577,7 +14590,7 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-right-strong {
-    border-right: 2px solid #CCCCCC !important;
+    border-right: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14619,8 +14632,8 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-v-strong {
-    border-top: 2px solid #CCCCCC !important;
-    border-bottom: 2px solid #CCCCCC !important;
+    border-top: 1px solid #CCCCCC !important;
+    border-bottom: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14667,8 +14680,8 @@ p {
 }
 @media (max-width: 768px) {
   .breakpoint-sm-a-border-h-strong {
-    border-left: 2px solid #CCCCCC !important;
-    border-right: 2px solid #CCCCCC !important;
+    border-left: 1px solid #CCCCCC !important;
+    border-right: 1px solid #CCCCCC !important;
   }
 }
 @media (max-width: 768px) {
@@ -14904,6 +14917,21 @@ p {
 @media (max-width: 768px) {
   .breakpoint-sm-a-clear-right {
     clear: right  !important;
+  }
+}
+@media (max-width: 768px) {
+  .breakpoint-sm-a-user-select-none {
+    -webkit-touch-callout: none !important;
+    /* iOS Safari */
+    -webkit-user-select: none !important;
+    /* Chrome/Safari/Opera */
+    -khtml-user-select: none !important;
+    /* Konqueror */
+    -moz-user-select: none !important;
+    /* Firefox */
+    -ms-user-select: none !important;
+    /* IE/Edge */
+    user-select: none !important;
   }
 }
 @media (max-width: 768px) {

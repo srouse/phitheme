@@ -162,15 +162,15 @@ var PhiTheme = React.createClass({
                     <ListPage />
                     <ProjectPage />
 
-                    { /*needed here for layering*/ }
-                    <div className="c-phiTheme__copyrightNav">
+                    { /* needed here for layering */ }
+                    { /* <div className="c-phiTheme__copyrightNav">
                         <div className="c-phiTheme__copyrightNav__bottomNav">
                             { page_links }
                             <div className="c-phiTheme__copyrightNav__copyright">
                                 { PhiModel.copyright }
                             </div>
                         </div>
-                    </div>
+                    </div> */ }
 
                 </div>;
     }

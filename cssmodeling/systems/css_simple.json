@@ -24,7 +24,7 @@
 		"size-values":{
 			"shortcut":"<em>@base</em>-[ large[ r, st ] , small[ er, est ] ]",
 			"scheme":{"@base":
-						[ 
+						[
 							"",
 							{"-large":["","r","st"]},
 							{"-small":["","er","est"]}
@@ -152,6 +152,26 @@
 					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
 					"selector":".a-@var_name",
 					"declaration_value":"clear: @var_value ;"
+				}
+			]
+		},
+
+        {
+			"name":"user-select",
+            "group":"simple",
+			"base":"user-select-none",
+			"shortcut":"<em>@base</em>",
+    		"scheme":"@base",
+			"values":["none"],
+            "ignore_variable":true,
+			"atoms":[
+				{
+					"name":"user-select",
+                    "group":"simple",
+                    "sub_group":"misc",
+					"example":"<div ... style='width: 100px; height: 100px; background-color: #fff;'></div>",
+					"selector":".a-@var_name",
+					"declaration_value":"-webkit-touch-callout: none; /* iOS Safari */ -webkit-user-select: none;   /* Chrome/Safari/Opera */ -khtml-user-select: none;    /* Konqueror */ -moz-user-select: none;      /* Firefox */ -ms-user-select: none;       /* IE/Edge */ user-select: none;"
 				}
 			]
 		},

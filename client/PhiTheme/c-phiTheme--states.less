@@ -12,11 +12,13 @@
     .c-projectPage {
         body.s_project & {
 
-            width: @v-project-page-width;
+            //width: @v-project-page-width;
+            //.a-position-right;
+            .a-left-phi-inv;
 
             &__container {
-                width: @v-project-page-container-width;
-                margin-left: ( @v-project-page-width - @v-project-page-container-width ) / 2;
+                // width: @v-project-page-container-width;
+                // margin-left: ( @v-project-page-width - @v-project-page-container-width ) / 2;
                 display: block;
             }
         }
@@ -32,13 +34,13 @@
         body.s_list & {
             // .a-width-phi-inv;
             //.a-width-col-6;
-            width: 100vw - @v-list-width;
+            width: 100% - @v-list-width;
         }
 
         body.s_page &,
         body.s_project & {
             .a-height-phi-inv;
-            width: 100vw - @v-project-page-width;
+            width: 100% - @v-project-page-width;
         }
     }
 

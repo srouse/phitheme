@@ -46,7 +46,10 @@ PhiThemeBootstrap.run = function ( data_dom , route ) {
                     styles[".listPage.nano > .nano-pane > .nano-slider"] = {
                         "background-image":"url('"+ PhiModel.style.side_gradient + "')"
                     };
-                    styles[".homePage__rightGradient"] = {
+                    styles[".c-projectPage.nano > .nano-pane > .nano-slider"] = {
+                        "background-image":"url('"+ PhiModel.style.side_gradient + "')"
+                    };
+                    styles[".c-homePage__rightGradient"] = {
                         "background-image":"url('"+ PhiModel.style.side_gradient + "')"
                     };
                     styles[".c-homePage"] = {

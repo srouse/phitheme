@@ -86,8 +86,8 @@ var HomePage = React.createClass({
                     <div className="c-homePage__nav">
                         { project_links }
                     </div>
-
-                    {/* <div className="c-homePage__rightGradient"></div> */}
+                    <div className="c-homePage__rightGradient"></div>
+                    
                 </div>;
     }
 
