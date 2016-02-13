@@ -4,7 +4,7 @@ var ListPage = React.createClass({
     openProject: function ( slug ) {
         RouteState.merge(
             {
-                project:slug
+                'project':slug
             }
         );
     },
@@ -43,15 +43,15 @@ var ListPage = React.createClass({
 
     toggleThumbs: function () {
         RouteState.toggle({
-            thumbs:"thumbs"
+            'list.thumbs':"thumbs"
         },{
-            thumbs:""
+            'list.thumbs':""
         });
     },
 
     closeList: function () {
         RouteState.merge({
-            list:""
+            list:false
         });
     },
 
@@ -96,6 +96,7 @@ var ListPage = React.createClass({
                 <div className="listPage__row"
                     onClick={ this.openProject.bind( this , item.slug ) }
                     key={ "listPage__row_" + item.slug }>
+                    { image }
                     <div className="listPage__rowText">
                         <div className="listPage__rowTitle">
                             { item.title }
@@ -107,7 +108,7 @@ var ListPage = React.createClass({
                             { item.summary }
                         </div>
                     </div>
-                    { image }
+
                 </div>
             );
         }

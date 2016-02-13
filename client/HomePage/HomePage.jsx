@@ -7,9 +7,7 @@ var HomePage = React.createClass({
             RouteState.merge(
                 {
                     list:tag,
-                    project:'',
-                    image:'',
-                    page:''
+                    project:''
                 },
                 true
             );
@@ -24,12 +22,10 @@ var HomePage = React.createClass({
     },
 
     gotoHome: function ( ) {
-        RouteState.merge(
+        RouteState.replace(
             {
                 list:'',
-                project:'',
-                image:'',
-                page:''
+                project:''
             },
             true
         );
@@ -59,7 +55,6 @@ var HomePage = React.createClass({
             for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
                 product = PhiModel.product_nav[p];
                 style = {};
-                // style = {"width":(100/PhiModel.product_nav.length) + "%"};
                 var filter;
                 var color_style = PhiModel.style.text_highlight_color;
                 for ( var f=0; f<product.filters.length; f++ ) {
@@ -106,16 +101,15 @@ var HomePage = React.createClass({
 
         return  <div className="c-homePage">
 
-                    <div className="c-homePage__content">
-                        <div className="c-homePage__logo"
-                            onClick={ this.gotoHome }></div>
-                        <div className="c-homePage__logo--small"
-                            onClick={ this.gotoHome }></div>
-
-                        <div className="c-homePage__highlights">
-                            { highlights_html }
-                        </div>
+                    <div className="c-homePage__logo"
+                        onClick={ this.gotoHome }>
                     </div>
+                    <div className="c-homePage__highlights">
+                        { highlights_html }
+                    </div>
+
+                    <div className="c-homePage__logo--small"
+                            onClick={ this.gotoHome }></div>
                     <div className="c-homePage__nav">
                         { project_links }
                     </div>

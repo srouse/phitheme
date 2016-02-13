@@ -134,12 +134,12 @@
 			"scheme":{"@base":[
                 "-h-padding",
                 "-width",
-                "-container-width"
+                "-width-inv"
             ]},
 			"values":[
 				"_@_v-phitheme-h-padding",
-                "_@_v-phi",
-                "_@_v-col-7"
+                "_@_v-col-8-half",
+                "_@_v-col-3-half"
 			]
 		},
         {
@@ -148,11 +148,13 @@
 			"base":"list",
 			"scheme":{"@base":[
                 "-width",
+                "-width-inv",
                 "-nav-width"
             ]},
 			"values":[
 				"_@_v-phi",
-                "100% - _@_v-project-page-width"
+                "100vw - _@_v-phi",
+                "_@_v-project-page-width-inv"
 			]
 		},
 		{

@@ -4,19 +4,25 @@
 var PhiModel = PhiModelSingleton();
 var PhiThemeBootstrap = function () {};
 
-PhiThemeBootstrap.run = function ( data_dom , route ) {
+PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
 
     $(window).ready(function () {
 
         //HTMLtoJSON( data_dom , PhiModel );
+        $("body").addClass( "body--loading" );
 
-        HTMLtoJSONImportReplace( data_dom ,
+        if ( !cache ) {
+            cache = "";
+        }
+
+        HTMLtoJSONImportReplace( data_dom , cache ,
             function ( html_dom ) {
 
                 // return;
 
                 HTMLtoJSON( html_dom , PhiModel );
 
+                $("body").removeClass( "body--loading" );
                 $("body").addClass( "body--loaded" );
 
                 // some defaults...

@@ -10,7 +10,7 @@
     .c-projectPage {
         body.s_project & {
 
-            .a-left-phi-inv;
+            left: @v-project-page-width-inv;
 
             &__container {
                 display: block;
@@ -19,15 +19,17 @@
     }
 
     &__homePage {
+        body.s_list & {
+            width: @v-list-width-inv;
+        }
 
-        body.s_list &,
         body.s_project & {
-            width: 100% - @v-list-width;
+            width: @v-project-page-width-inv;
         }
 
         body.s_project.s_list & {
             .a-height-phi-inv;
-            width: 100% - @v-project-page-width;
+            width: @v-project-page-width-inv;
         }
     }
 

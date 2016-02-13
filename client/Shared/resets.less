@@ -19,58 +19,61 @@ h1,h2,h3,h4,h5,h6,p {
 }
 
 body {
-    .a-overflow-y;
-    //.a-padding-h-col-2;
 
-    .a-text-size-small;
-    .a-text-color-grey-7;
+    &.body--loading {
+        .a-overflow-y;
+        //.a-padding-h-col-2;
 
-    h1[data-json],h2[data-json],h3[data-json],
-    h4[data-json],h5[data-json],h6[data-json],p[data-json]
-    {
-        font-weight: 300;
-        .a-text-size;
-
-        padding: 4px 0px; margin: 0px;
-    }
-
-    h1[data-json] {
-        .a-text-size-larger;
-        .a-line-height-row-1;
-    }
-    h2[data-json] {
-        .a-text-size-large;
-    }
-
-
-    a[data-json], a[data-import] {
+        .a-text-size-small;
         .a-text-color-grey-7;
-        text-decoration: none;
-    }
 
-    img[data-json] {
-        max-width: 200px; max-height: 200px;
-    }
+        h1[data-json],h2[data-json],h3[data-json],
+        h4[data-json],h5[data-json],h6[data-json],p[data-json]
+        {
+            font-weight: 300;
+            .a-text-size;
 
-    div[data-json='pages:array'],
-    div[data-json='copyright'],
-    div[data-json='product_nav:array'],
-    div[data-json='images:array'] {
-        .a-display-none;
-    }
+            padding: 4px 0px; margin: 0px;
+        }
 
-    div[data-json='style:object'] {
-        .a-float-left;
-        .a-width-col-3;
-        .a-padding-left-col-1;
-    }
+        h1[data-json] {
+            .a-text-size-larger;
+            .a-line-height-row-1;
+        }
+        h2[data-json] {
+            .a-text-size-large;
+        }
 
-    div[data-json='projects:array'] {
-        .a-float-right;
-        .a-width-col-7;
-        .a-padding-right-col-1;
-    }
 
+        a[data-json], a[data-import] {
+            .a-text-color-grey-7;
+            text-decoration: none;
+        }
+
+        img[data-json] {
+            max-width: 200px; max-height: 200px;
+        }
+
+        div[data-json='pages:array'],
+        div[data-json='copyright'],
+        div[data-json='product_nav:array'],
+        div[data-json='images:array'] {
+            .a-display-none;
+        }
+
+        div[data-json='style:object'] {
+            .a-float-left;
+            .a-width-col-3;
+            .a-padding-left-col-1;
+        }
+
+        div[data-json='projects:array'] {
+            .a-float-right;
+            .a-width-col-7;
+            .a-padding-right-col-1;
+        }
+    }
+    
     &.body--loaded {
         overflow: hidden;
         width: 100%; height: 100%;

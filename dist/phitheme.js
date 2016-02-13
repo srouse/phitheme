@@ -19728,6 +19728,10 @@ RouteState.kill = function ()
 
 RouteState.updateRoute = function ( new_route )
 {
+
+	// clear out empty values and dependencies...
+	new_route.cleanRoute();
+
 	if ( this.route ) {
 		this.prev_route = this.route;
 	}else{
@@ -19735,6 +19739,7 @@ RouteState.updateRoute = function ( new_route )
 	}
 
 	this.route = new_route;
+
 	var me = this;
 	$( this.DOMs ).each( function ( index , value ) {
 		me.route.toElementClass( $( value ).find("body") , "s_" );
@@ -20053,10 +20058,18 @@ RouteState.objectFromPath = function ( path )
 
 	//get rid of shebang
 	path = path.replace(/#!\//g,"");
-	path = path.replace(")","");
+	path = path.replace("]","");
 
-	var pathArr = path.split("/(");
+	var dependencyArr = path.split("}[");
+	path = dependencyArr[0];
+	if ( dependencyArr.length > 1 ) {
+		dependencyArr = dependencyArr[1].split(",");
+	}else{
+		path = path.replace("}","");
+		dependencyArr = [];
+	}
 
+	var pathArr = path.split("/{");
 	if ( pathArr.length < 2 ) {
 		return routeStateRoute;
 	}
@@ -20068,12 +20081,29 @@ RouteState.objectFromPath = function ( path )
 	var namesArr = names.split(",");
 
 	var state = {};
-	var pair,name,val;
+	var pair,name,name_arr,val,dependency,depName_arr;
 	for ( var a=0; a<namesArr.length; a++ ) {
 		name = namesArr[a];
+
+		// deal with dependencies...they are index based versus name
+		dependency = dependencyArr[a];
+		if ( dependency ) {
+			if ( !RouteState.config[name]) {
+				RouteState.config[name] = {};
+			}
+			depName_arr = dependency.split(":");
+			if ( depName_arr.length > 1 ) {
+				dependency = namesArr[ depName_arr[0] ] + ":" + depName_arr[1];
+			}else{
+				dependency = namesArr[ dependency ];
+			}
+			RouteState.config[name].dependency = dependency;
+		}
+
+		// now put values together
 		val = valsArr[a];
 		if ( val && val.length > 0 && name && name.length > 0) {
-			if ( val.indexOf( "," ) != -1 ) {
+			if ( val.indexOf( "," ) != -1 ) {// array
 				routeStateRoute[name] = val.split(",");
 			}else{
 				routeStateRoute[name] = val;
@@ -20101,6 +20131,7 @@ RouteState.isArray = function( functionToCheck ) {
 RouteState.merge = function ( overrides , replace_arrays )
 {
 	if ( this.route ) {
+		overrides = RouteState.processObjectForDependencies( overrides );
 		var new_route = this.route.clone( overrides , replace_arrays );
 		RouteState.updateRoute( new_route );
 		new_route.toHash();
@@ -20109,9 +20140,60 @@ RouteState.merge = function ( overrides , replace_arrays )
 
 RouteState.replace = function ( state )
 {
+	state = RouteState.processObjectForDependencies( state );
 	var new_route = RouteState.factory( state );
 	RouteState.updateRoute( new_route );
 	new_route.toHash();
+};
+
+RouteState.processObjectForDependencies = function ( overrides )
+{
+	var name_arr,new_overrides={},new_name;
+	for ( var name in overrides ) {
+		if ( name.indexOf(":") != -1 ) {
+			name_arr = name.split(":");
+			new_name = name_arr[1];
+			RouteState.tieToPropAndValue( new_name , name_arr[0] );
+			new_overrides[new_name] = overrides[name];
+		}else if ( name.indexOf(".") != -1 ) {
+			name_arr = name.split(".");
+			new_name = name_arr[1];
+			RouteState.tieToProp( new_name , name_arr[0] );
+			new_overrides[new_name] = overrides[name];
+		}else{
+			new_overrides[name] = overrides[name];
+			RouteState.removeTies( name );
+		}
+	}
+	return new_overrides;
+}
+
+RouteState.removeTies = function ( source )
+{
+	if ( !RouteState.config[source]) {
+		RouteState.config[source] = {};
+	}
+	delete RouteState.config[source].dependency;
+};
+
+RouteState.tieToProp = function ( source , target )
+{
+	if ( !RouteState.config[source]) {
+		RouteState.config[source] = {};
+	}
+	RouteState.config[source].dependency = target;
+};
+
+RouteState.tieToPropAndValue = function ( source , target )
+{
+	if ( !RouteState.config[source]) {
+		RouteState.config[source] = {};
+	}
+	if ( RouteState.route && RouteState.route[target] ) {
+		RouteState.config[source].dependency = target + ":" + RouteState.route[target];
+	}else{
+		RouteState.tieToProp( source , target );
+	}
 };
 
 // these are all operating on top of merge...
@@ -20129,7 +20211,6 @@ RouteState.toggle = function ( state , other_state , replace_arrays )
 			var sub_name;
 			for ( var i=0; i<state[name].length; i++ ) {
 				sub_name = state[name][i];
-
 				if ( this.route[name].indexOf( sub_name ) == -1 ) {
 					this.merge( state , replace_arrays );
 					return;
@@ -20189,17 +20270,26 @@ RouteState.toggleIfThen = function (
 RouteState.debug = function ()
 {
 	$(".routestate_debug").remove();
-	var html = ["width" + $(window).width() + "|height" + $(window).height()];
+	var html = ["width" + $(window).width() + " | height" + $(window).height()];
+	var depends;
 	for ( var i in this.route ) {
 		if ( !RouteState.isFunction( this.route[i] ) ) {
+
+			depends = "";
+			if ( RouteState.config[i] && RouteState.config[i].dependency ) {
+				depends = " (depends on '" + RouteState.config[i].dependency + "')";
+			}
+
 			if ( RouteState.isArray( this.route[i] ) ) {
 				html.push(
 					i + " = "
 					+ this.route[i].join(",<br/>&nbsp;&nbsp;&nbsp;&nbsp;")
+					+ depends
 				);
 			}else{
-				html.push( i + " = " + this.route[i] );
+				html.push( i + " = " + this.route[i] + depends);
 			}
+
 		}
 	}
 
@@ -20208,7 +20298,7 @@ RouteState.debug = function ()
 				+" style='padding: 10px; border: 1px solid grey;"
 				+" width:300px; background-color: #fff;"
 				+" position: fixed; top: 10px;"
-				+" left: 10px; z-index: 2000000;'>"
+				+" right: 10px; z-index: 2000000;'>"
 				+html.join("<br/>")
 				+ "</div>");
 };
@@ -20224,6 +20314,7 @@ RouteStateRoute.prototype.toHash = function () {
 
 // ===========SERIALIZERS==================
 RouteStateRoute.prototype.toHashString = function () {
+
 	var route_config;
 	var routeObj = this.toObject();
 	var routeArr = [];
@@ -20234,7 +20325,6 @@ RouteStateRoute.prototype.toHashString = function () {
 		route_config = RouteState.config[name];
 
 		if ( route_config ) {
-
 			// ignore this if it shouldn't be in hash
 			if (
 				typeof route_config.show_in_hash !== 'undefined'
@@ -20276,19 +20366,54 @@ RouteStateRoute.prototype.toHashString = function () {
 	});
 
 	var nameArr = [];
+	var nameLookup = {};
 	var valArr = [];
+	var dependancyArr = [];
 
 	// finally put it all together in correct order...
 	$( routeArr ).each(
 		function ( index, value ) {
 			nameArr.push( value.name );
 			valArr.push( value.val );
+			nameLookup[ value.name ] = index;
+
+			/*if ( RouteState.config && RouteState.config[value.name] ) {
+				dependancyArr.push( RouteState.config[value.name].dependency );
+			}else{
+				dependancyArr.push( "" );
+			}*/
 		}
 	);
 
-	//return routeArr.join("/");
+	// now add dependencies, but via index of the name...
+	var depName_arr,show_dependencies = false;
+	$( routeArr ).each(
+		function ( index, value ) {
+			if (
+				RouteState.config &&
+				RouteState.config[value.name] &&
+				RouteState.config[value.name].dependency
+			) {
+				depName_arr = RouteState.config[value.name].dependency.split(":");
+				if ( depName_arr.length > 1 ) {
+					dependancyArr.push( nameLookup[ depName_arr[0] ] + ":" + depName_arr[1] );
+					show_dependencies = true;
+				}else{
+					dependancyArr.push( nameLookup[ depName_arr[0] ] );
+					show_dependencies = true;
+				}
+			}else{
+				dependancyArr.push( "" );
+			}
+		}
+	);
+
 	if ( valArr.length > 0 ) {
-		return "#!/" + valArr.join("/") + "/(" + nameArr.join(",") + ")";
+		if ( show_dependencies ) {
+			return "#!/" + valArr.join("/") + "/{" + nameArr.join(",") + "}[" + dependancyArr.join(",") + "]";
+		}else{
+			return "#!/" + valArr.join("/") + "/{" + nameArr.join(",") + "}";
+		}
 	}else{
 		return "";
 	}
@@ -20339,26 +20464,56 @@ RouteStateRoute.prototype.serializedToBodyClasses = function ( prefix ) {
 	return body_classes.join(" ");
 }
 
+RouteStateRoute.prototype.cleanRoute = function () {
+
+	var dependancy_hits = 0,dependency_arr;
+	for ( var name in this ) {
+		if (
+			!RouteState.isFunction( this[name] )
+		) {
+
+			route_config = RouteState.config[name];
+			if ( route_config && typeof route_config.dependency !== 'undefined' ) {
+
+				// ignore this if it has a missing dependancy
+				dependency_arr = route_config.dependency.split(":");
+				if ( dependency_arr.length > 1 ) {
+					if (
+						!this[dependency_arr[0]] ||
+						String( this[dependency_arr[0]] ) != String( dependency_arr[1] )
+					) {
+						dependancy_hits++;
+						delete this[name];
+					}
+				}else{
+					if (
+						!this[ route_config.dependency ]
+					){
+						dependancy_hits++;
+						delete this[name];
+					}
+				}
+			}
+
+			// clean out empty values...
+			if ( !this[name] || this[name] == "" ) {
+				delete this[name];
+			}
+		}
+	}
+
+	if ( dependancy_hits > 0 ) {
+		this.cleanRoute();
+	}
+}
+
+
 RouteStateRoute.prototype.toObject = function () {
 	var routeObj = {};
 	for ( var name in this ) {
 		if (
 			!RouteState.isFunction( this[name] )
-			&& this[name]
-			&& String( this[name] ).length > 0
 		) {
-
-			route_config = RouteState.config[name];
-			if ( route_config ) {
-				// ignore this if it has a missing dependancy
-				if (
-					typeof route_config.dependency !== 'undefined'
-					&& !this[route_config.dependency]
-				){
-					continue;
-				}
-			}
-
 			routeObj[name] = this[name];
 		}
 	}
@@ -20447,9 +20602,7 @@ var HomePage = React.createClass({displayName: "HomePage",
             RouteState.merge(
                 {
                     list:tag,
-                    project:'',
-                    image:'',
-                    page:''
+                    project:''
                 },
                 true
             );
@@ -20464,12 +20617,10 @@ var HomePage = React.createClass({displayName: "HomePage",
     },
 
     gotoHome: function ( ) {
-        RouteState.merge(
+        RouteState.replace(
             {
                 list:'',
-                project:'',
-                image:'',
-                page:''
+                project:''
             },
             true
         );
@@ -20499,7 +20650,6 @@ var HomePage = React.createClass({displayName: "HomePage",
             for ( var p=0; p<PhiModel.product_nav.length; p++ ) {
                 product = PhiModel.product_nav[p];
                 style = {};
-                // style = {"width":(100/PhiModel.product_nav.length) + "%"};
                 var filter;
                 var color_style = PhiModel.style.text_highlight_color;
                 for ( var f=0; f<product.filters.length; f++ ) {
@@ -20546,16 +20696,15 @@ var HomePage = React.createClass({displayName: "HomePage",
 
         return  React.createElement("div", {className: "c-homePage"}, 
 
-                    React.createElement("div", {className: "c-homePage__content"}, 
-                        React.createElement("div", {className: "c-homePage__logo", 
-                            onClick:  this.gotoHome}), 
-                        React.createElement("div", {className: "c-homePage__logo--small", 
-                            onClick:  this.gotoHome}), 
-
-                        React.createElement("div", {className: "c-homePage__highlights"}, 
-                             highlights_html 
-                        )
+                    React.createElement("div", {className: "c-homePage__logo", 
+                        onClick:  this.gotoHome}
                     ), 
+                    React.createElement("div", {className: "c-homePage__highlights"}, 
+                         highlights_html 
+                    ), 
+
+                    React.createElement("div", {className: "c-homePage__logo--small", 
+                            onClick:  this.gotoHome}), 
                     React.createElement("div", {className: "c-homePage__nav"}, 
                          project_links 
                     ), 
@@ -20572,7 +20721,7 @@ var ListPage = React.createClass({displayName: "ListPage",
     openProject: function ( slug ) {
         RouteState.merge(
             {
-                project:slug
+                'project':slug
             }
         );
     },
@@ -20611,15 +20760,15 @@ var ListPage = React.createClass({displayName: "ListPage",
 
     toggleThumbs: function () {
         RouteState.toggle({
-            thumbs:"thumbs"
+            'list.thumbs':"thumbs"
         },{
-            thumbs:""
+            'list.thumbs':""
         });
     },
 
     closeList: function () {
         RouteState.merge({
-            list:""
+            list:false
         });
     },
 
@@ -20664,6 +20813,7 @@ var ListPage = React.createClass({displayName: "ListPage",
                 React.createElement("div", {className: "listPage__row", 
                     onClick:  this.openProject.bind( this , item.slug), 
                     key:  "listPage__row_" + item.slug}, 
+                     image, 
                     React.createElement("div", {className: "listPage__rowText"}, 
                         React.createElement("div", {className: "listPage__rowTitle"}, 
                              item.title
@@ -20674,8 +20824,8 @@ var ListPage = React.createClass({displayName: "ListPage",
                         React.createElement("div", {className: "listPage__rowDescription"}, 
                              item.summary
                         )
-                    ), 
-                     image 
+                    )
+
                 )
             );
         }
@@ -20756,39 +20906,20 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
 
         // mobile opens new projects/list half way down...
         if (
-            RouteState.route.project == "" ||
-            RouteState.prev_route.project == ""
+            !RouteState.route.project ||
+            !RouteState.prev_route.project
         ) {
             $(window).scrollTop(0);
         }
 
-        if ( RouteState.route.page ) {
-            PhiModel.page = false;//PhiModel.pages[ RouteState.route.page ];
-            var page;
-            for ( var p=0; p<PhiModel.pages.length; p++ ) {
-                page = PhiModel.pages[p];
-                if ( page.title.slugify() == RouteState.route.page ) {
-                    PhiModel.page = page;
-                    break;
-                }
-            }
-            if ( !PhiModel.page ) {
-                PhiModel.page = {};
-                RouteState.merge(
-                    {page:""}
-                )
-            }
-        }else{
-            PhiModel.page = {};
-        }
 
         if ( RouteState.route.project ) {
             PhiModel.project = PhiModel.slugs[ RouteState.route.project ];
             if ( !PhiModel.project ) {
                 PhiModel.project = {};
-                RouteState.merge(
-                    {project:""}
-                )
+                RouteState.merge({
+                    project:false
+                });
             }
         }else{
             PhiModel.project = {};
@@ -20797,7 +20928,7 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
         var list = RouteState.route.list;
         PhiModel.project_list = [];
 
-        if ( list && list != "" ) {
+        if ( list ) {
             if ( list instanceof Array && list.length > 0 ) {
                 PhiModel.project_list = [];
                 for ( var l=0; l<list.length; l++ ) {
@@ -20865,43 +20996,7 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
         RouteState.removeDiffListenersViaClusterId( "home" );
     },
 
-    gotoPage: function ( page ) {
-        RouteState.merge(
-            {
-                page:page,
-                list:"",
-                image:"",
-                project:""
-            }
-        );
-    },
-
     render: function() {
-
-        // bottom links are dynamic...
-        var page_links = [];
-        if ( PhiModel.pages ) {
-            var page,style,page_str;
-
-            for ( var p=0; p<PhiModel.pages.length; p++ ) {
-                page = PhiModel.pages[p];
-                page_str = page.title.slugify();
-                style = {"width":(100/PhiModel.pages.length) + "%"};
-                if ( RouteState.route.page == page_str ) {
-                    style.color = PhiModel.style.text_highlight_color;
-                }
-                page_links.push(
-                    React.createElement("div", {className: "c-phiTheme__copyrightNav__bottomNavLink", 
-                        key:  "homePage_bottomNavLink_" + p, 
-                        style:  style, 
-                        onClick:  this.gotoPage.bind( this , page_str) }, 
-                         page.title
-                    )
-                );
-            }
-
-        }
-
         return  React.createElement("div", {className: "c-phiTheme"}, 
                     React.createElement("div", {className: "c-phiTheme__homePage"}, 
                         React.createElement(HomePage, null)
@@ -20949,7 +21044,6 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             "contenttitle_listeners"
     	);
 
-        //$(".nano").nanoScroller({ alwaysVisible: false });
         Ps.initialize( $(".c-projectPage")[0] );
     },
 
@@ -20959,36 +21053,29 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
     },
 
     componentDidUpdate: function () {
-        //$(".nano").nanoScroller({ alwaysVisible: false });
-
-        // compensate for animation...
-        /*setTimeout( function () {
-            $(".nano").nanoScroller({ alwaysVisible: false });
-        },400);*/
-
         Ps.update( $(".c-projectPage")[0] );
     },
 
-
-
     closeProject: function () {
-        RouteState.merge({project:''})
+        RouteState.merge({
+            project:false
+        })
     },
 
     prevProject: function () {
         var project = PhiModel.getPrevProject( RouteState.route.project );
 
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
+        RouteState.merge({
+            project:project.slug
+        });
     },
 
     nextProject: function () {
         var project = PhiModel.getNextProject( RouteState.route.project );
 
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
+        RouteState.merge({
+            project:project.slug
+        });
     },
 
     gotoProject: function ( nav_link ) {
@@ -21000,8 +21087,8 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
     openSlideShow: function () {
         RouteState.toggle(
-            {slideshow:'slideshow'},
-            {slideshow:''}
+            {'project:slideshow':'slideshow'},
+            {'project:slideshow':''}
         );
     },
 
@@ -21069,9 +21156,9 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         var total_images = false;
         if ( project.images ) {
             var image_index = 0;
-            /*total_images = project.images.length;
+            total_images = project.images.length;
 
-            if ( RouteState.route.image ) {
+            /*if ( RouteState.route.image ) {
                 image_index = RouteState.route.image-1;
             }*/
 
@@ -21108,11 +21195,13 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                                 React.createElement("div", {className: "c-projectPage__summaryEntry" + ' ' +
                                     "c-projectPage__summaryEntry--previewImage", 
                                     onClick:  this.openSlideShow}, 
-                                    React.createElement("image", {src:  fullimage })
+                                    React.createElement("image", {src:  fullimage }), 
+                                    React.createElement("div", {className: "c-projectPage__summaryText"}, 
+                                        "1/",  total_images 
+                                    )
                                 ), 
                                  nav_links_children 
                             )
-
 
                         )
                     )
@@ -21126,14 +21215,6 @@ var SlideShow = React.createClass({displayName: "SlideShow",
 
     componentDidMount: function() {
         var me = this;
-        RouteState.addDiffListener(
-    		"project",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "project_listeners"
-    	);
-
         RouteState.addDiffListener(
     		"image",
     		function ( route , prev_route ) {
@@ -21155,13 +21236,10 @@ var SlideShow = React.createClass({displayName: "SlideShow",
         RouteState.removeDiffListenersViaClusterId( "project_listeners" );
     },
 
-    closeProject: function ( e ) {
-        if ( RouteState.route.slideshow == "slideshow" ) {
-            RouteState.merge({slideshow:'',image:''});
-        }else{
-            RouteState.merge({project:'',image:'',slideshow:''});
-        }
-
+    close: function ( e ) {
+        RouteState.merge({
+            'slideshow':false
+        });
         this.stopPropagation( e );
     },
 
@@ -21173,24 +21251,6 @@ var SlideShow = React.createClass({displayName: "SlideShow",
         return image_index;
     },
 
-    prevProject: function ( e ) {
-        var project = PhiModel.getPrevProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug}
-        );
-        this.stopPropagation( e );
-    },
-
-    nextProject: function ( e ) {
-        var project = PhiModel.getNextProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug}
-        );
-        this.stopPropagation( e );
-    },
-
     nextImage: function ( e ) {
         var image_index = this._getImageIndex();
 
@@ -21199,9 +21259,9 @@ var SlideShow = React.createClass({displayName: "SlideShow",
             new_img_index = image_index+1;
         }
 
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
+        RouteState.merge({
+            'slideshow:image':new_img_index+1
+        });
         this.stopPropagation( e );
     },
 
@@ -21213,24 +21273,9 @@ var SlideShow = React.createClass({displayName: "SlideShow",
             new_img_index = image_index-1;
         }
 
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
-        this.stopPropagation( e );
-    },
-
-    imageToFullscreen: function ( e ) {
-        RouteState.toggle(
-            {slideshow:'slideshow'},
-            {slideshow:''}
-        );
-        this.stopPropagation( e );
-    },
-
-    changeImage: function ( index , e ) {
-        RouteState.merge(
-            {image:index+""}
-        );
+        RouteState.merge({
+            'slideshow:image':new_img_index+1
+        });
         this.stopPropagation( e );
     },
 
@@ -21290,7 +21335,7 @@ var SlideShow = React.createClass({displayName: "SlideShow",
                     React.createElement("div", {className: 
                             "c-slideShow__btn c-slideShow__btn--close" + ' ' +
                             "a-position-top-right", 
-                        onClick:  this.closeProject}), 
+                        onClick:  this.close}), 
                      prev,  next 
                 );
     }
@@ -21501,19 +21546,25 @@ var PhiModelSingleton = function () {
 var PhiModel = PhiModelSingleton();
 var PhiThemeBootstrap = function () {};
 
-PhiThemeBootstrap.run = function ( data_dom , route ) {
+PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
 
     $(window).ready(function () {
 
         //HTMLtoJSON( data_dom , PhiModel );
+        $("body").addClass( "body--loading" );
 
-        HTMLtoJSONImportReplace( data_dom ,
+        if ( !cache ) {
+            cache = "";
+        }
+
+        HTMLtoJSONImportReplace( data_dom , cache ,
             function ( html_dom ) {
 
                 // return;
 
                 HTMLtoJSON( html_dom , PhiModel );
 
+                $("body").removeClass( "body--loading" );
                 $("body").addClass( "body--loaded" );
 
                 // some defaults...
@@ -21607,22 +21658,25 @@ PhiThemeBootstrap.run = function ( data_dom , route ) {
 
 var loadCount = 0;
 var HTMLtoJSONImportReplace = function (
-    html_lookup , done_funk
+    html_lookup , cache , done_funk
 ){
     var elements_to_load = [];
+    if ( !cache ) {
+        cache = "";
+    }
 
     if ( !$(html_lookup) ) {
         console.log( "Didn't find " + html_lookup );
         return;
     }
 
-    var html_dom = $(html_lookup);//.clone(); // doesn't matter with img src replaced
+    var html_dom = $( html_lookup );//.clone(); // doesn't matter with img src replaced
 
-    _HTMLtoJSONImportReplace( html_dom , done_funk );
+    _HTMLtoJSONImportReplace( html_dom , done_funk , cache );
 }
 
     var _HTMLtoJSONImportReplace = function (
-        html_dom , done_funk
+        html_dom , done_funk , cache
     ){
         var elements_to_load = [];
 
@@ -21643,7 +21697,7 @@ var HTMLtoJSONImportReplace = function (
         }else{
             _loadHTMLtoJSONImportReplace(
                 elements_to_load, html_dom,
-                done_funk
+                done_funk , cache
             );
         }
 
@@ -21651,11 +21705,11 @@ var HTMLtoJSONImportReplace = function (
 
     var _loadHTMLtoJSONImportReplace = function (
             elements_to_load, html_dom,
-            done_funk
+            done_funk , cache
         ) {
 
         if ( elements_to_load.length == 0 ) {
-            _HTMLtoJSONImportReplace( html_dom , done_funk );
+            _HTMLtoJSONImportReplace( html_dom , done_funk , cache );
         }else{
             var target_ele = $("<div></div>");
             //var ele = elements_to_load[index];
@@ -21664,7 +21718,7 @@ var HTMLtoJSONImportReplace = function (
 
             // gotta load in html, but without loading in all the images
             $.get(
-                $(ele).attr("href"),
+                $(ele).attr("href") + "?" + cache,
                 function( data ) {
 
                     var clean_data = data.replace( /\bsrc=/g , "data-src=");
@@ -21694,7 +21748,7 @@ var HTMLtoJSONImportReplace = function (
                     //index++;
                     _loadHTMLtoJSONImportReplace(
                         elements_to_load, html_dom,
-                        done_funk
+                        done_funk , cache
                     );
 
                 }
@@ -21706,12 +21760,12 @@ var HTMLtoJSONImportReplace = function (
 
 
 
-var HTMLtoJSON = function ( html_lookup , source ) {
+var HTMLtoJSON = function ( html_lookup , source , cache ) {
     var json = _HTMLtoJSON( $( html_lookup ) , "json" , source );
     return json;
 }
 
-var _HTMLtoJSON = function ( html , set , json_parent ) {
+var _HTMLtoJSON = function ( html , set , json_parent , cache ) {
     var json_parent = json_parent || {};
 
     var getNodeText = function ( node ) {
@@ -21881,10 +21935,14 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }
                             break;
                         case "html" :
+
+                            //var html_dom = $(e).find("[data-json]").removeAttr("data-json");
+                            var html_content = $.trim( $(e).html() );
+
                             if ( parent_is_array ) {
-                                json_parent.push( $.trim( $(e).html() ) );
+                                json_parent.push( html_content );
                             }else{
-                                json_parent[prop_name] = $.trim( $(e).html() );
+                                json_parent[prop_name] = html_content;
                             }
 
                             // if some child nodes are found

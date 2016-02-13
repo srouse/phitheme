@@ -19,7 +19,6 @@ var ProjectPage = React.createClass({
             "contenttitle_listeners"
     	);
 
-        //$(".nano").nanoScroller({ alwaysVisible: false });
         Ps.initialize( $(".c-projectPage")[0] );
     },
 
@@ -29,36 +28,29 @@ var ProjectPage = React.createClass({
     },
 
     componentDidUpdate: function () {
-        //$(".nano").nanoScroller({ alwaysVisible: false });
-
-        // compensate for animation...
-        /*setTimeout( function () {
-            $(".nano").nanoScroller({ alwaysVisible: false });
-        },400);*/
-
         Ps.update( $(".c-projectPage")[0] );
     },
 
-
-
     closeProject: function () {
-        RouteState.merge({project:''})
+        RouteState.merge({
+            project:false
+        })
     },
 
     prevProject: function () {
         var project = PhiModel.getPrevProject( RouteState.route.project );
 
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
+        RouteState.merge({
+            project:project.slug
+        });
     },
 
     nextProject: function () {
         var project = PhiModel.getNextProject( RouteState.route.project );
 
-        RouteState.merge(
-            {project:project.slug,image:""}
-        );
+        RouteState.merge({
+            project:project.slug
+        });
     },
 
     gotoProject: function ( nav_link ) {
@@ -70,8 +62,8 @@ var ProjectPage = React.createClass({
 
     openSlideShow: function () {
         RouteState.toggle(
-            {slideshow:'slideshow'},
-            {slideshow:''}
+            {'project:slideshow':'slideshow'},
+            {'project:slideshow':''}
         );
     },
 
@@ -139,9 +131,9 @@ var ProjectPage = React.createClass({
         var total_images = false;
         if ( project.images ) {
             var image_index = 0;
-            /*total_images = project.images.length;
+            total_images = project.images.length;
 
-            if ( RouteState.route.image ) {
+            /*if ( RouteState.route.image ) {
                 image_index = RouteState.route.image-1;
             }*/
 
@@ -179,10 +171,12 @@ var ProjectPage = React.createClass({
                                     c-projectPage__summaryEntry--previewImage"
                                     onClick={ this.openSlideShow }>
                                     <image src={ fullimage } />
+                                    <div className="c-projectPage__summaryText">
+                                        1/{ total_images }
+                                    </div>
                                 </div>
                                 { nav_links_children }
                             </div>
-
 
                         </div>
                     </div>

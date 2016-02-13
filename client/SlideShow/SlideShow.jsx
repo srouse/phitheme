@@ -4,14 +4,6 @@ var SlideShow = React.createClass({
     componentDidMount: function() {
         var me = this;
         RouteState.addDiffListener(
-    		"project",
-    		function ( route , prev_route ) {
-                me.forceUpdate();
-    		},
-            "project_listeners"
-    	);
-
-        RouteState.addDiffListener(
     		"image",
     		function ( route , prev_route ) {
                 me.forceUpdate();
@@ -32,13 +24,10 @@ var SlideShow = React.createClass({
         RouteState.removeDiffListenersViaClusterId( "project_listeners" );
     },
 
-    closeProject: function ( e ) {
-        if ( RouteState.route.slideshow == "slideshow" ) {
-            RouteState.merge({slideshow:'',image:''});
-        }else{
-            RouteState.merge({project:'',image:'',slideshow:''});
-        }
-
+    close: function ( e ) {
+        RouteState.merge({
+            'slideshow':false
+        });
         this.stopPropagation( e );
     },
 
@@ -50,24 +39,6 @@ var SlideShow = React.createClass({
         return image_index;
     },
 
-    prevProject: function ( e ) {
-        var project = PhiModel.getPrevProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug}
-        );
-        this.stopPropagation( e );
-    },
-
-    nextProject: function ( e ) {
-        var project = PhiModel.getNextProject( RouteState.route.project );
-
-        RouteState.merge(
-            {project:project.slug}
-        );
-        this.stopPropagation( e );
-    },
-
     nextImage: function ( e ) {
         var image_index = this._getImageIndex();
 
@@ -76,9 +47,9 @@ var SlideShow = React.createClass({
             new_img_index = image_index+1;
         }
 
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
+        RouteState.merge({
+            'slideshow:image':new_img_index+1
+        });
         this.stopPropagation( e );
     },
 
@@ -90,24 +61,9 @@ var SlideShow = React.createClass({
             new_img_index = image_index-1;
         }
 
-        RouteState.merge(
-            {image:new_img_index+1}
-        );
-        this.stopPropagation( e );
-    },
-
-    imageToFullscreen: function ( e ) {
-        RouteState.toggle(
-            {slideshow:'slideshow'},
-            {slideshow:''}
-        );
-        this.stopPropagation( e );
-    },
-
-    changeImage: function ( index , e ) {
-        RouteState.merge(
-            {image:index+""}
-        );
+        RouteState.merge({
+            'slideshow:image':new_img_index+1
+        });
         this.stopPropagation( e );
     },
 
@@ -167,7 +123,7 @@ var SlideShow = React.createClass({
                     <div className="
                             c-slideShow__btn c-slideShow__btn--close
                             a-position-top-right"
-                        onClick={ this.closeProject }></div>
+                        onClick={ this.close }></div>
                     { prev }{ next }
                 </div>;
     }

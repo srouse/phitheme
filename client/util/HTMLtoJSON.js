@@ -1,22 +1,25 @@
 
 var loadCount = 0;
 var HTMLtoJSONImportReplace = function (
-    html_lookup , done_funk
+    html_lookup , cache , done_funk
 ){
     var elements_to_load = [];
+    if ( !cache ) {
+        cache = "";
+    }
 
     if ( !$(html_lookup) ) {
         console.log( "Didn't find " + html_lookup );
         return;
     }
 
-    var html_dom = $(html_lookup);//.clone(); // doesn't matter with img src replaced
+    var html_dom = $( html_lookup );//.clone(); // doesn't matter with img src replaced
 
-    _HTMLtoJSONImportReplace( html_dom , done_funk );
+    _HTMLtoJSONImportReplace( html_dom , done_funk , cache );
 }
 
     var _HTMLtoJSONImportReplace = function (
-        html_dom , done_funk
+        html_dom , done_funk , cache
     ){
         var elements_to_load = [];
 
@@ -37,7 +40,7 @@ var HTMLtoJSONImportReplace = function (
         }else{
             _loadHTMLtoJSONImportReplace(
                 elements_to_load, html_dom,
-                done_funk
+                done_funk , cache
             );
         }
 
@@ -45,11 +48,11 @@ var HTMLtoJSONImportReplace = function (
 
     var _loadHTMLtoJSONImportReplace = function (
             elements_to_load, html_dom,
-            done_funk
+            done_funk , cache
         ) {
 
         if ( elements_to_load.length == 0 ) {
-            _HTMLtoJSONImportReplace( html_dom , done_funk );
+            _HTMLtoJSONImportReplace( html_dom , done_funk , cache );
         }else{
             var target_ele = $("<div></div>");
             //var ele = elements_to_load[index];
@@ -58,7 +61,7 @@ var HTMLtoJSONImportReplace = function (
 
             // gotta load in html, but without loading in all the images
             $.get(
-                $(ele).attr("href"),
+                $(ele).attr("href") + "?" + cache,
                 function( data ) {
 
                     var clean_data = data.replace( /\bsrc=/g , "data-src=");
@@ -88,7 +91,7 @@ var HTMLtoJSONImportReplace = function (
                     //index++;
                     _loadHTMLtoJSONImportReplace(
                         elements_to_load, html_dom,
-                        done_funk
+                        done_funk , cache
                     );
 
                 }
@@ -100,12 +103,12 @@ var HTMLtoJSONImportReplace = function (
 
 
 
-var HTMLtoJSON = function ( html_lookup , source ) {
+var HTMLtoJSON = function ( html_lookup , source , cache ) {
     var json = _HTMLtoJSON( $( html_lookup ) , "json" , source );
     return json;
 }
 
-var _HTMLtoJSON = function ( html , set , json_parent ) {
+var _HTMLtoJSON = function ( html , set , json_parent , cache ) {
     var json_parent = json_parent || {};
 
     var getNodeText = function ( node ) {
@@ -275,10 +278,14 @@ var _HTMLtoJSON = function ( html , set , json_parent ) {
                             }
                             break;
                         case "html" :
+
+                            //var html_dom = $(e).find("[data-json]").removeAttr("data-json");
+                            var html_content = $.trim( $(e).html() );
+
                             if ( parent_is_array ) {
-                                json_parent.push( $.trim( $(e).html() ) );
+                                json_parent.push( html_content );
                             }else{
-                                json_parent[prop_name] = $.trim( $(e).html() );
+                                json_parent[prop_name] = html_content;
                             }
 
                             // if some child nodes are found
