@@ -30,7 +30,12 @@ PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
                 PhiModel.page = {};
 
                 RouteState.listenToHash();
-                if ( route ) {
+
+                if (
+                    route &&
+                    !RouteState.route.list &&
+                    !RouteState.route.project
+                ) {
                     RouteState.merge( route );
                 }
                 PhiModel.processProjects( PhiModel.projects );
@@ -40,10 +45,13 @@ PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
                 //inject CSS here...only want this to happen once...
                 var styles = {};
                 if ( PhiModel.style.line_highlight_color ) {
-                    styles[".page_content h1"] = {
+                    /*styles[".page_content h1"] = {
                         "border-bottom-color":PhiModel.style.line_highlight_color
                     };
                     styles[".listPage_header"] = {
+                        "border-bottom-color":PhiModel.style.line_highlight_color
+                    };*/
+                    styles[".listPage__row:hover"] = {
                         "border-bottom-color":PhiModel.style.line_highlight_color
                     };
                 }

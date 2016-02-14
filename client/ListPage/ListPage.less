@@ -166,7 +166,7 @@
         </csstag>*/
         // width: @phi;
         .a-flex-item-fill;
-        .a-margin-left-col-half;
+        margin-left: @v-col-quarter + ( @v-col-quarter/2 );
 
         // float: left; clear: left;
 
@@ -191,7 +191,8 @@
             </div>
         </csstag>*/
         .a-text-size-larger;
-        .a-line-height-row-1-half;
+        //.a-margin-bottom-row-quarter;
+        .a-line-height-row-1;
         .a-text-color-grey-4;
         // .a-single-line;
 
@@ -218,9 +219,10 @@
                 Project Sub Title
             </div>
         </csstag>*/
-        .a-text-size-small;
+        .a-text-size-smaller;
         .a-line-height-row;
-        .a-text-color-grey-5;
+        .a-text-color-grey-7;
+        .a-margin-bottom-row-quarter;
 
         body.s_thumbs & {
             display: none;
@@ -267,6 +269,11 @@
             display: none;
         }
     }
+
+        &__more {
+            .a-text-color-grey-2;
+            // .a-margin-left-row-quarter;
+        }
 
     &__rowImage {
         /* -ctag-example: "<img ... src='../content/posters/oh_poster/oh.png' />"; */

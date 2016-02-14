@@ -227,7 +227,9 @@ var ListPage = React.createClass({displayName: "ListPage",
                              item.medium
                         ), 
                         React.createElement("div", {className: "listPage__rowDescription"}, 
-                             item.summary
+                             item.summary, 
+                             ( item.description ) ?
+                                    React.createElement("span", {className: "listPage__more"}, " more...") : ""
                         )
                     )
 
