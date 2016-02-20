@@ -4,8 +4,6 @@
 
     .listPage {
 
-
-
         body.s_list & {
             .a-mobile-reset;
             .a-margin-top-row-3;
@@ -29,6 +27,13 @@
             .a-flex-v;
             .a-padding-row-0;
             .a-padding-v-row;
+
+            body.s_thumbs & {
+                .calc( width , 50% , -(20px/2) );
+                &:nth-of-type( 2n ) {
+                    margin-right: 0px;
+                }
+            }
         }
 
             &__rowText {
@@ -37,7 +42,7 @@
 
                 .a-padding-row-0;
                 .a-margin-row-0;
-                .a-padding-bottom-row;
+                //.a-padding-bottom-row;
             }
 
                 &__rowTitle {

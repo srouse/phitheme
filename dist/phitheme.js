@@ -20127,6 +20127,33 @@ RouteState.isArray = function( functionToCheck ) {
 			=== '[object Array]';
 };
 
+RouteState.stateToObject = function ( state )
+{
+	var state_arr;
+	var state_obj={
+		name:false,
+		dependency:false,
+		relation:0// 0 = none, 1 = exists, 2 = exists and value
+	};
+	if ( state.indexOf(":") != -1 ) {
+		state_arr = state.split(":");
+		state_obj.name = state_arr[1];
+		state_obj.dependency = state_arr[0];
+		state_obj.relation = 2;
+	}else if ( state.indexOf(".") != -1 ) {
+		state_arr = state.split(".");
+		state_obj.name = state_arr[1];
+		state_obj.dependency = state_arr[0];
+		state_obj.relation = 1;
+	}else{
+		state_obj.name = state;
+		state_obj.dependency = false;
+		state_obj.relation = 0;
+	}
+
+	return state_obj;
+}
+
 // ===========ROUTE OPERATORS============
 RouteState.merge = function ( overrides , replace_arrays )
 {
@@ -20148,21 +20175,20 @@ RouteState.replace = function ( state )
 
 RouteState.processObjectForDependencies = function ( overrides )
 {
-	var name_arr,new_overrides={},new_name;
+	var state_obj,new_overrides={};
 	for ( var name in overrides ) {
-		if ( name.indexOf(":") != -1 ) {
-			name_arr = name.split(":");
-			new_name = name_arr[1];
-			RouteState.tieToPropAndValue( new_name , name_arr[0] );
-			new_overrides[new_name] = overrides[name];
-		}else if ( name.indexOf(".") != -1 ) {
-			name_arr = name.split(".");
-			new_name = name_arr[1];
-			RouteState.tieToProp( new_name , name_arr[0] );
-			new_overrides[new_name] = overrides[name];
-		}else{
-			new_overrides[name] = overrides[name];
-			RouteState.removeTies( name );
+		state_obj = RouteState.stateToObject( name );
+		new_overrides[ state_obj.name ] = overrides[name];
+		switch ( state_obj.relation ) {
+			case 1:
+				RouteState.tieToProp( state_obj.name , state_obj.dependency );
+				break;
+			case 2:
+				RouteState.tieToPropAndValue( state_obj.name , state_obj.dependency );
+				break;
+			default:
+				RouteState.removeTies( name );
+				break;
 		}
 	}
 	return new_overrides;
@@ -20199,26 +20225,30 @@ RouteState.tieToPropAndValue = function ( source , target )
 // these are all operating on top of merge...
 RouteState.toggle = function ( state , other_state , replace_arrays )
 {
+	var state_obj;
 	for ( var name in state ) {
+
+		state_obj = RouteState.stateToObject( name );
+
 		if ( this.isArray( state[name] ) ) {
-			if ( !this.route[name] ) {
-				this.route[name] = [];
+			if ( !this.route[state_obj.name] ) {
+				this.route[state_obj.name] = [];
 			}
-			if ( !RouteState.isArray( this.route[name] ) ) {
-				this.route[name] = [].concat( this.route[name] );
+			if ( !RouteState.isArray( this.route[state_obj.name] ) ) {
+				this.route[state_obj.name] = [].concat( this.route[state_obj.name] );
 			}
 
 			var sub_name;
 			for ( var i=0; i<state[name].length; i++ ) {
 				sub_name = state[name][i];
-				if ( this.route[name].indexOf( sub_name ) == -1 ) {
+				if ( this.route[state_obj.name].indexOf( sub_name ) == -1 ) {
 					this.merge( state , replace_arrays );
 					return;
 					break;
 				}
 			}
 		}else{
-			if ( this.route[name] != state[name] ) {
+			if ( this.route[state_obj.name] != state[name] ) {
 				this.merge( state , replace_arrays );
 				return;
 				break;
@@ -20226,9 +20256,10 @@ RouteState.toggle = function ( state , other_state , replace_arrays )
 		}
 	}
 
+	// if it made it this far it is the latter state
 	this.merge( other_state , replace_arrays );
 };
-
+/*
 RouteState.toggleIfThen = function (
 	cond_state,
 	if_state , then_state ,
@@ -20265,6 +20296,7 @@ RouteState.toggleIfThen = function (
 
 	this.merge( then_state , replace_arrays );
 };
+*/
 // ===========END ROUTE OPERATORS============
 
 RouteState.debug = function ()
@@ -20568,7 +20600,7 @@ RouteStateRoute.prototype.clone = function ( overrides , replace_arrays  ) {
 
 						var override;
 						for ( var p=0; p<overrides[i].length; p++ ) {
-							override = overrides[i][p];
+							override = String( overrides[i][p] );
 							if ( override.indexOf("-") == 0 ) {
 								override = override.replace("-","");
 								var index = routeState[i].indexOf(override);
@@ -20617,7 +20649,7 @@ var HomePage = React.createClass({displayName: "HomePage",
     },
 
     gotoHome: function ( ) {
-        RouteState.replace(
+        RouteState.merge(
             {
                 list:'',
                 project:''
@@ -20760,9 +20792,9 @@ var ListPage = React.createClass({displayName: "ListPage",
 
     toggleThumbs: function () {
         RouteState.toggle({
-            'list.thumbs':"thumbs"
+            'thumbs':"thumbs"
         },{
-            'list.thumbs':""
+            'thumbs':false
         });
     },
 
@@ -20785,9 +20817,9 @@ var ListPage = React.createClass({displayName: "ListPage",
                      tagTitle 
                 ), 
                 React.createElement("div", {className: "o-pageHeader__nav"}, 
-                    /* <div className="o-pageHeader__thumbsBtn"
-                        onClick={ this.toggleThumbs }>
-                    </div> */ 
+                    React.createElement("div", {className: "o-pageHeader__thumbsBtn", 
+                        onClick:  this.toggleThumbs}
+                    ), 
                     React.createElement("div", {className: "o-pageHeader__closeBtn", 
                         onClick:  this.closeList}
                     )
@@ -20795,7 +20827,7 @@ var ListPage = React.createClass({displayName: "ListPage",
             )
         );
 
-        var image;
+        var image,row_items=[];
         for ( var i=0; i<list.projects.length; i++ ) {
             item = list.projects[i];
 
@@ -20809,7 +20841,7 @@ var ListPage = React.createClass({displayName: "ListPage",
                         }})
                 )
 
-            rows.push(
+            row_items.push(
                 React.createElement("div", {className: "listPage__row", 
                     onClick:  this.openProject.bind( this , item.slug), 
                     key:  "listPage__row_" + item.slug}, 
@@ -20835,18 +20867,26 @@ var ListPage = React.createClass({displayName: "ListPage",
 
         var left_to_complete__row = 4 - ( list.projects.length % 4 );
         for ( var i=0; i<left_to_complete__row; i++ ) {
-            rows.push(
+            row_items.push(
                 React.createElement("div", {className: "listPage__row listPage__row--empty", 
                     key:  "listPage__row_spacer_" + i}
                 )
             );
         }
 
-        rows.push(
+        row_items.push(
             React.createElement("div", {className: "listPage__spacer", 
                 key: "listPage__spacer"}
             )
         );
+
+        rows.push(
+            React.createElement("div", {className: "listPage__rowItemsContainer"}, 
+                 row_items 
+            )
+        );
+
+
         return rows;
     },
 
@@ -20859,6 +20899,7 @@ var ListPage = React.createClass({displayName: "ListPage",
             project_list = PhiModel.project_list[i];
             this.renderRows( project_list, rows );
         }
+
 
         return  React.createElement("div", {className: "listPage"}, 
                     React.createElement("div", {className: "listPage__rowContainer"}, 

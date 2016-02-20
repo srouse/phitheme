@@ -22,7 +22,7 @@ var HomePage = React.createClass({
     },
 
     gotoHome: function ( ) {
-        RouteState.replace(
+        RouteState.merge(
             {
                 list:'',
                 project:''

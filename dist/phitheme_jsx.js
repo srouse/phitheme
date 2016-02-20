@@ -22,7 +22,7 @@ var HomePage = React.createClass({displayName: "HomePage",
     },
 
     gotoHome: function ( ) {
-        RouteState.replace(
+        RouteState.merge(
             {
                 list:'',
                 project:''
@@ -165,9 +165,9 @@ var ListPage = React.createClass({displayName: "ListPage",
 
     toggleThumbs: function () {
         RouteState.toggle({
-            'list.thumbs':"thumbs"
+            'thumbs':"thumbs"
         },{
-            'list.thumbs':""
+            'thumbs':false
         });
     },
 
@@ -190,9 +190,9 @@ var ListPage = React.createClass({displayName: "ListPage",
                      tagTitle 
                 ), 
                 React.createElement("div", {className: "o-pageHeader__nav"}, 
-                    /* <div className="o-pageHeader__thumbsBtn"
-                        onClick={ this.toggleThumbs }>
-                    </div> */ 
+                    React.createElement("div", {className: "o-pageHeader__thumbsBtn", 
+                        onClick:  this.toggleThumbs}
+                    ), 
                     React.createElement("div", {className: "o-pageHeader__closeBtn", 
                         onClick:  this.closeList}
                     )
@@ -200,7 +200,7 @@ var ListPage = React.createClass({displayName: "ListPage",
             )
         );
 
-        var image;
+        var image,row_items=[];
         for ( var i=0; i<list.projects.length; i++ ) {
             item = list.projects[i];
 
@@ -214,7 +214,7 @@ var ListPage = React.createClass({displayName: "ListPage",
                         }})
                 )
 
-            rows.push(
+            row_items.push(
                 React.createElement("div", {className: "listPage__row", 
                     onClick:  this.openProject.bind( this , item.slug), 
                     key:  "listPage__row_" + item.slug}, 
@@ -240,18 +240,26 @@ var ListPage = React.createClass({displayName: "ListPage",
 
         var left_to_complete__row = 4 - ( list.projects.length % 4 );
         for ( var i=0; i<left_to_complete__row; i++ ) {
-            rows.push(
+            row_items.push(
                 React.createElement("div", {className: "listPage__row listPage__row--empty", 
                     key:  "listPage__row_spacer_" + i}
                 )
             );
         }
 
-        rows.push(
+        row_items.push(
             React.createElement("div", {className: "listPage__spacer", 
                 key: "listPage__spacer"}
             )
         );
+
+        rows.push(
+            React.createElement("div", {className: "listPage__rowItemsContainer"}, 
+                 row_items 
+            )
+        );
+
+
         return rows;
     },
 
@@ -264,6 +272,7 @@ var ListPage = React.createClass({displayName: "ListPage",
             project_list = PhiModel.project_list[i];
             this.renderRows( project_list, rows );
         }
+
 
         return  React.createElement("div", {className: "listPage"}, 
                     React.createElement("div", {className: "listPage__rowContainer"}, 

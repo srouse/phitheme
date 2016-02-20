@@ -3,7 +3,9 @@
     "description" : "www.phitheme.com",
     "author" : "srouse",
     "version" : "0.1.21",
-    "dependencies": {
+    "dependencies": {},
+   "bundledDependencies": [],
+    "devDependencies" : {
         "grunt":"0.4.5",
         "grunt-contrib-watch": "0.6.1",
         "grunt-contrib-less": "1.0.0",
@@ -14,13 +16,11 @@
         "less":"~2.5",
         "jquery": "~1.11",
         "react" : "~0.13",
-        "routestate":"~0.4",
         "nanoscroller":"~0.8",
-        "cssmodeling":"~0.1",
-        "perfect-scrollbar":"~0.6"
-   },
-   "bundledDependencies": [],
-    "devDependencies" : {
+        "perfect-scrollbar":"~0.6",
+
+        "routestate":"~0.4",
+        "cssmodeling":"~0.1"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"

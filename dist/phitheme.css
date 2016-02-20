@@ -235,6 +235,11 @@ input {
 body.s_thumbs .o-pageHeader__thumbsBtn {
   background-image: url("../assets/list_icon.png");
 }
+@media (max-width: 768px) {
+  .o-pageHeader__nav {
+    width: 16.666vw;
+  }
+}
 html {
   width: 100%;
   height: 100%;
@@ -660,16 +665,16 @@ body.s_project .listPage .o-pageHeader {
   margin-bottom: 20px;
   background-color: #fff;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   align-items: center;
-  flex-wrap: wrap;
 }
 body.s_project .listPage__rowContainer {
   padding-top: 22px;
   margin-bottom: 0px;
 }
 body.s_thumbs .listPage__rowContainer {
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .listPage .listPage_header {
   /* -ctag-example: ...Header;*/
@@ -688,6 +693,9 @@ body.s_project .listPage .listPage_header {
   padding: 0px;
   margin: 0px;
   overflow: hidden;
+}
+.listPage__rowItemsContainer {
+  width: 100%;
 }
 .listPage__row {
   /*<csstag tag="row">
@@ -728,7 +736,22 @@ body.s_thumbs .listPage__row {
   margin: 0px;
   margin-bottom: 10px;
   margin-top: 30px;
+  margin-right: 20px;
   border: none;
+  float: left;
+}
+body.s_thumbs .listPage__row:nth-of-type( 4n ) {
+  margin-right: 0px;
+}
+body.s_thumbs.s_project .listPage__row {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  padding: 0;
+  width: calc(50% + -10px);
+}
+body.s_thumbs.s_project .listPage__row:nth-of-type( 2n ) {
+  margin-right: 0px;
 }
 .listPage__rowText {
   /*<csstag tag="row">
@@ -741,6 +764,9 @@ body.s_thumbs .listPage__row {
   flex: 1;
   margin-left: 3.124875vw;
 }
+body.s_project .listPage__rowText {
+  margin-left: 2.08325vw;
+}
 body.s_thumbs .listPage__rowText {
   margin-bottom: 0px;
   position: absolute;
@@ -748,9 +774,7 @@ body.s_thumbs .listPage__rowText {
   bottom: -20px;
   left: 0px;
   font-size: 12px;
-}
-body.s_project .listPage__rowText {
-  margin-left: 2.08325vw;
+  margin-left: 0px;
 }
 .listPage__rowTitle {
   /*<csstag tag="label">
@@ -893,12 +917,17 @@ body.s_thumbs .listPage__rowImageChild {
     padding-top: 22px;
     padding-bottom: 22px;
   }
+  body.s_thumbs .listPage__row {
+    width: calc(50% + -10px);
+  }
+  body.s_thumbs .listPage__row:nth-of-type( 2n ) {
+    margin-right: 0px;
+  }
   .listPage__rowText {
     width: 100% ;
     text-align: center ;
     padding: 0;
     margin: 0;
-    padding-bottom: 22px;
   }
   .listPage__rowTitle {
     font-size: 19px;
@@ -1202,6 +1231,7 @@ body.s_project .c-projectPage {
 }
 .c-projectPage__summary--noDescription .c-projectPage__navLinkButton {
   justify-content: center;
+  padding: 0 ;
 }
 .c-projectPage__summary--noDescription .c-projectPage__summaryEntry--previewImage {
   flex-grow: 1;

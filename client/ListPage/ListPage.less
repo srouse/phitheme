@@ -71,8 +71,7 @@
         margin-bottom: 20px;
 
         .a-background-white;
-        .a-flex-h;
-        flex-wrap: wrap;
+        .a-flex-v;
 
         body.s_project & {
             .a-padding-top-row-1;
@@ -80,7 +79,8 @@
         }
 
         body.s_thumbs & {
-            justify-content: space-between;
+            justify-content: flex-start;
+            align-items: flex-start;
         }
     }
 
@@ -103,6 +103,10 @@
             padding: 0px; margin: 0px;
             overflow: hidden;
         }
+    }
+
+    &__rowItemsContainer {
+        width: 100%;
     }
 
     &__row {
@@ -148,7 +152,23 @@
             margin: 0px;
             margin-bottom: 10px;
             margin-top: 30px;
+            margin-right: 20px;
             border: none;
+            float: left;
+
+            &:nth-of-type( 4n ) {
+                margin-right: 0px;
+            }
+        }
+
+        body.s_thumbs.s_project & {
+            .a-flex-v;
+            .a-padding-row-0;
+
+            .calc( width , 50% , -(20px/2) );
+            &:nth-of-type( 2n ) {
+                margin-right: 0px;
+            }
         }
 
         &:hover {
@@ -170,16 +190,18 @@
 
         // float: left; clear: left;
 
+        body.s_project & {
+            .a-margin-left-col-quarter;
+        }
+
         body.s_thumbs & {
             margin-bottom: 0px;
             position: absolute;
             width: 100%;
             bottom: -20px; left: 0px;
             font-size: 12px;
-        }
+            margin-left: 0px;
 
-        body.s_project & {
-            .a-margin-left-col-quarter;
         }
 
     }

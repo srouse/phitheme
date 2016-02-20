@@ -6047,6 +6047,18 @@ o-form {
 }
 
 
+@media ( max-width: @screen-sm-min ) {
+
+.o-pageHeader {
+
+    &__nav {
+        .a-width-col-2;
+    }
+
+}
+}
+
+
 
 
 html{
@@ -6546,8 +6558,7 @@ body {
         margin-bottom: 20px;
 
         .a-background-white;
-        .a-flex-h;
-        flex-wrap: wrap;
+        .a-flex-v;
 
         body.s_project & {
             .a-padding-top-row-1;
@@ -6555,7 +6566,8 @@ body {
         }
 
         body.s_thumbs & {
-            justify-content: space-between;
+            justify-content: flex-start;
+            align-items: flex-start;
         }
     }
 
@@ -6578,6 +6590,10 @@ body {
             padding: 0px; margin: 0px;
             overflow: hidden;
         }
+    }
+
+    &__rowItemsContainer {
+        width: 100%;
     }
 
     &__row {
@@ -6623,7 +6639,23 @@ body {
             margin: 0px;
             margin-bottom: 10px;
             margin-top: 30px;
+            margin-right: 20px;
             border: none;
+            float: left;
+
+            &:nth-of-type( 4n ) {
+                margin-right: 0px;
+            }
+        }
+
+        body.s_thumbs.s_project & {
+            .a-flex-v;
+            .a-padding-row-0;
+
+            .calc( width , 50% , -(20px/2) );
+            &:nth-of-type( 2n ) {
+                margin-right: 0px;
+            }
         }
 
         &:hover {
@@ -6645,16 +6677,18 @@ body {
 
         // float: left; clear: left;
 
+        body.s_project & {
+            .a-margin-left-col-quarter;
+        }
+
         body.s_thumbs & {
             margin-bottom: 0px;
             position: absolute;
             width: 100%;
             bottom: -20px; left: 0px;
             font-size: 12px;
-        }
+            margin-left: 0px;
 
-        body.s_project & {
-            .a-margin-left-col-quarter;
         }
 
     }
@@ -6798,8 +6832,6 @@ body {
 
     .listPage {
 
-
-
         body.s_list & {
             .a-mobile-reset;
             .a-margin-top-row-3;
@@ -6823,6 +6855,13 @@ body {
             .a-flex-v;
             .a-padding-row-0;
             .a-padding-v-row;
+
+            body.s_thumbs & {
+                .calc( width , 50% , -(20px/2) );
+                &:nth-of-type( 2n ) {
+                    margin-right: 0px;
+                }
+            }
         }
 
             &__rowText {
@@ -6831,7 +6870,7 @@ body {
 
                 .a-padding-row-0;
                 .a-margin-row-0;
-                .a-padding-bottom-row;
+                //.a-padding-bottom-row;
             }
 
                 &__rowTitle {
@@ -7177,6 +7216,7 @@ body {
 
                 .c-projectPage__navLinkButton {
                     .a-justify-content-center;
+                    .a-padding-0;
                 }
 
                 .c-projectPage__summaryEntry--previewImage {

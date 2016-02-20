@@ -43,9 +43,9 @@ var ListPage = React.createClass({
 
     toggleThumbs: function () {
         RouteState.toggle({
-            'list.thumbs':"thumbs"
+            'thumbs':"thumbs"
         },{
-            'list.thumbs':""
+            'thumbs':false
         });
     },
 
@@ -68,9 +68,9 @@ var ListPage = React.createClass({
                     { tagTitle }
                 </div>
                 <div className="o-pageHeader__nav">
-                    { /* <div className="o-pageHeader__thumbsBtn"
+                    <div className="o-pageHeader__thumbsBtn"
                         onClick={ this.toggleThumbs }>
-                    </div> */ }
+                    </div>
                     <div className="o-pageHeader__closeBtn"
                         onClick={ this.closeList }>
                     </div>
@@ -78,7 +78,7 @@ var ListPage = React.createClass({
             </div>
         );
 
-        var image;
+        var image,row_items=[];
         for ( var i=0; i<list.projects.length; i++ ) {
             item = list.projects[i];
 
@@ -92,7 +92,7 @@ var ListPage = React.createClass({
                         }}></div>
                 </div>
 
-            rows.push(
+            row_items.push(
                 <div className="listPage__row"
                     onClick={ this.openProject.bind( this , item.slug ) }
                     key={ "listPage__row_" + item.slug }>
@@ -118,18 +118,26 @@ var ListPage = React.createClass({
 
         var left_to_complete__row = 4 - ( list.projects.length % 4 );
         for ( var i=0; i<left_to_complete__row; i++ ) {
-            rows.push(
+            row_items.push(
                 <div className="listPage__row listPage__row--empty"
                     key={ "listPage__row_spacer_" + i }>
                 </div>
             );
         }
 
-        rows.push(
+        row_items.push(
             <div className="listPage__spacer"
                 key="listPage__spacer">
             </div>
         );
+
+        rows.push(
+            <div className="listPage__rowItemsContainer">
+                { row_items }
+            </div>
+        );
+
+
         return rows;
     },
 
@@ -142,6 +150,7 @@ var ListPage = React.createClass({
             project_list = PhiModel.project_list[i];
             this.renderRows( project_list, rows );
         }
+
 
         return  <div className="listPage">
                     <div className="listPage__rowContainer">
