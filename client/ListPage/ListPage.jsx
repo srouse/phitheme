@@ -88,7 +88,7 @@ var ListPage = React.createClass({
                     <div className="listPage__rowImageChild"
                         style={{
                             backgroundImage:
-                                "url('"+item.image+"')"
+                                "url('" + item.image + "')"
                         }}></div>
                 </div>
 

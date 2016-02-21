@@ -4,7 +4,7 @@
 var PhiModel = PhiModelSingleton();
 var PhiThemeBootstrap = function () {};
 
-PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
+PhiThemeBootstrap.run = function ( data_dom , route , cache, root ) {
 
     $(window).ready(function () {
 
@@ -15,11 +15,10 @@ PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
             cache = "";
         }
 
-        HTMLtoJSONImportReplace( data_dom , cache ,
+        HTMLtoJSONImportReplace( data_dom , cache , root,
             function ( html_dom ) {
 
                 // return;
-
                 HTMLtoJSON( html_dom , PhiModel );
 
                 $("body").removeClass( "body--loading" );
@@ -28,6 +27,7 @@ PhiThemeBootstrap.run = function ( data_dom , route , cache ) {
                 // some defaults...
                 PhiModel.project = {};
                 PhiModel.page = {};
+                PhiModel.root = root;
 
                 RouteState.listenToHash();
 

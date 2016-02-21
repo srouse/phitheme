@@ -210,7 +210,7 @@ var ListPage = React.createClass({displayName: "ListPage",
                     React.createElement("div", {className: "listPage__rowImageChild", 
                         style: {
                             backgroundImage:
-                                "url('"+item.image+"')"
+                                "url('" + item.image + "')"
                         }})
                 )
 

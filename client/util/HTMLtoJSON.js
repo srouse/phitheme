@@ -1,11 +1,15 @@
 
 var loadCount = 0;
 var HTMLtoJSONImportReplace = function (
-    html_lookup , cache , done_funk
+    html_lookup , cache , root , done_funk
 ){
     var elements_to_load = [];
     if ( !cache ) {
         cache = "";
+    }
+
+    if ( !root ) {
+        root = "";
     }
 
     if ( !$(html_lookup) ) {
@@ -15,11 +19,11 @@ var HTMLtoJSONImportReplace = function (
 
     var html_dom = $( html_lookup );//.clone(); // doesn't matter with img src replaced
 
-    _HTMLtoJSONImportReplace( html_dom , done_funk , cache );
+    _HTMLtoJSONImportReplace( html_dom , done_funk , root , cache );
 }
 
     var _HTMLtoJSONImportReplace = function (
-        html_dom , done_funk , cache
+        html_dom , done_funk , root , cache
     ){
         var elements_to_load = [];
 
@@ -40,7 +44,7 @@ var HTMLtoJSONImportReplace = function (
         }else{
             _loadHTMLtoJSONImportReplace(
                 elements_to_load, html_dom,
-                done_funk , cache
+                done_funk , root , cache
             );
         }
 
@@ -48,25 +52,29 @@ var HTMLtoJSONImportReplace = function (
 
     var _loadHTMLtoJSONImportReplace = function (
             elements_to_load, html_dom,
-            done_funk , cache
+            done_funk , root , cache
         ) {
 
         if ( elements_to_load.length == 0 ) {
-            _HTMLtoJSONImportReplace( html_dom , done_funk , cache );
+            _HTMLtoJSONImportReplace( html_dom , done_funk , root , cache );
         }else{
             var target_ele = $("<div></div>");
-            //var ele = elements_to_load[index];
             var ele = elements_to_load.shift();//.pop();//
             var target_lookup = $(ele).attr("data-import");// data busted after decorating
 
             // gotta load in html, but without loading in all the images
+            var file_root_url = root + $(ele).attr("href");
+            console.log( file_root_url );
             $.get(
-                $(ele).attr("href") + "?" + cache,
+                file_root_url + "?" + cache,
                 function( data ) {
 
-                    var clean_data = data.replace( /\bsrc=/g , "data-src=");
+                    // avoid loading all the images...
+                    var clean_data = data.replace( /\bsrc=/g , "data-src=" );
                     var target_dom = $( "<div>" + clean_data + "</div>" )
                                         .find( target_lookup );
+
+                    target_dom = _HTMLtoJSONCleanDOM( target_dom , file_root_url );
 
                     var ele_attributes = $(ele).get(0).attributes;
                     var ele_attr_names = [];
@@ -91,7 +99,7 @@ var HTMLtoJSONImportReplace = function (
                     //index++;
                     _loadHTMLtoJSONImportReplace(
                         elements_to_load, html_dom,
-                        done_funk , cache
+                        done_funk , root , cache
                     );
 
                 }
@@ -99,8 +107,34 @@ var HTMLtoJSONImportReplace = function (
         }
     }
 
+        var _HTMLtoJSONCleanDOM = function ( target_dom , file_root_url ) {
+            // take off last file reference...
+            var file_root_url_arr = file_root_url.split("/");
+            file_root_url_arr.pop();
+            file_root_url = file_root_url_arr.join("/") + "/";
 
+            $( target_dom ).find( "*[data-src]").each(
+                function ( index, ele ) {
+                    var src_value = $( ele ).attr( "data-src" );
+                    if ( src_value.indexOf( "http://" ) != 0 ) {
+                        $( ele ).attr( "data-src" , file_root_url + src_value );
+                    }
+                }
+            );
 
+            $( target_dom ).find( "*[href]").each(
+                function ( index, ele ) {
+                    var href_value = $( ele ).attr( "href" );
+                    if ( href_value.indexOf( "http://" ) != 0 ) {
+                        $( ele ).attr( "href" , file_root_url + href_value );
+                    }
+                }
+            );
+
+            $( target_dom ).attr( "data-root" , file_root_url );
+
+            return target_dom;
+        }
 
 
 var HTMLtoJSON = function ( html_lookup , source , cache ) {
