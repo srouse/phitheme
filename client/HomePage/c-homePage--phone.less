@@ -90,14 +90,18 @@
             right: 0px;
         }
 
-        .c-homePage__link {
-            .a-text-size-larger;
+
+    }
+
+        &__link {
+            .a-text-size-large;
             .a-transition-none;
 
             body.s_project &,
             body.s_list &,
             body.s_list.s_project  & {
                 .a-margin-row-0;
+                .a-text-size-large;
 
                 /* three items */
                 &:nth-child(1):nth-last-child(3) {
@@ -110,7 +114,6 @@
                 }
             }
         }
-    }
 
 }
 

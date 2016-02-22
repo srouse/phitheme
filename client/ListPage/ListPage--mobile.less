@@ -1,11 +1,18 @@
 
 
+//@v-listRow-thumbSize-phone: ( 100vw - ( 8.333vw * 2  ) - @v-col-quarter - ( @v-col-half * 2 )) / 3 - 1.5vw;
+@v-listRow-thumbSize-phone: ( 100vw - ( 8.333vw * 2  ) - ( @v-col-quarter * 2 ) - ( @v-col-half * 2 )) / 3;
+
+
+@v-listRow-size-phone: ( 100vw - ( 8.333vw * 3  ) - ( @v-col-half )) / 2;
+
 @media ( max-width: @screen-sm-min ) {
 
     .listPage {
 
         body.s_list & {
             .a-mobile-reset;
+            width: 100vw;
             .a-margin-top-row-3;
         }
 
@@ -27,10 +34,18 @@
             .a-flex-v;
             .a-padding-row-0;
             .a-padding-v-row;
+            //padding:  @v-col-1;
+
 
             body.s_thumbs & {
-                .calc( width , 50% , -(20px/2) );
-                &:nth-of-type( 2n ) {
+                //.calc( width , 50% , -(20px/2) );
+                width: @v-listRow-thumbSize-phone;
+                .a-margin-right-col-half;
+
+                &:nth-of-type( 4n ) {
+                    .a-margin-right-col-half;
+                }
+                &:nth-of-type( 3n ) {
                     margin-right: 0px;
                 }
             }
@@ -60,8 +75,13 @@
             }
 
             &__rowImage {
-                .a-height-row-6;
-                width: @v-row-6;
+                body.s_thumbs & {
+                    height: @v-listRow-thumbSize-phone;
+                    width: @v-listRow-thumbSize-phone;
+                }
+                height: @v-listRow-thumbSize-phone;
+                width: @v-listRow-thumbSize-phone;
+
             }
 
             &__rowImageChild {

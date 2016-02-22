@@ -113,7 +113,7 @@
                 "-h-padding"
             ]},
 			"values":[
-				"_@_v-row-2"
+				"_@_v-col-half"
 			]
 		},
         {
@@ -147,12 +147,10 @@
             "group":"skin",
 			"base":"list",
 			"scheme":{"@base":[
-                "-width",
                 "-width-inv",
                 "-nav-width"
             ]},
 			"values":[
-				"_@_v-phi",
                 "100vw - _@_v-phi",
                 "_@_v-project-page-width-inv"
 			]
