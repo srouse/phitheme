@@ -26,7 +26,7 @@
 
     &__container {
         .a-padding-h-col-1;
-        min-height: calc( 100vh ~'-' 88px );
+        min-height: calc( 100vh ~'-' 90px );
     }
 
     &__summary {
@@ -55,6 +55,16 @@
     &__text {
         .a-padding-h-row-0;
         .a-padding-bottom-row;
+    }
+
+    &__previewImage {
+        height: 50vh;
+
+        img {
+            max-width: calc( 100% ~'-' ( @v-project-page-h-padding * 3 ) );
+            max-height: calc( 100% ~'-' ( @v-project-page-h-padding * 3 ) );
+
+        }
     }
 
     &__close {}

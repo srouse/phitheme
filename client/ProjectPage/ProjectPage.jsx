@@ -89,34 +89,39 @@ var ProjectPage = React.createClass({
             }
 
             // put links together with filtered list
+
             var total_filtered_links = filtered_children.length;
-            var nav_links_children = [];
-            for ( var p=0; p<total_filtered_links; p++ ) {
-                nav_link = filtered_children[p];
+            var nav_links = "";
+            if ( total_filtered_links > 0 ) {
+                var nav_links_children = [];
+                for ( var p=0; p<total_filtered_links; p++ ) {
+                    nav_link = filtered_children[p];
 
-                if ( nav_link.internal && nav_link.internal == true ) {
-                    nav_links_children.push(
-                        <div className="c-projectPage__summaryEntry">
-                            <div className="c-projectPage__navLinkButton"
-                                onClick={
-                                    this.gotoProject.bind( this , nav_link )
-                                }>
-                                { nav_link.title }
+                    if ( nav_link.internal && nav_link.internal == true ) {
+                        nav_links_children.push(
+                            <div className="c-projectPage__summaryEntry">
+                                <div className="c-projectPage__navLinkButton"
+                                    onClick={
+                                        this.gotoProject.bind( this , nav_link )
+                                    }>
+                                    { nav_link.title }
+                                </div>
                             </div>
-                        </div>
-                    );
-                }else{
-                    nav_links_children.push(
-                        <div className="c-projectPage__summaryEntry">
-                            <a className="c-projectPage__navLinkButton"
-                                href={ nav_link.location } target="nav_link">
-                                { nav_link.title }
-                            </a>
-                        </div>
-                    );
+                        );
+                    }else{
+                        nav_links_children.push(
+                            <div className="c-projectPage__summaryEntry">
+                                <a className="c-projectPage__navLinkButton"
+                                    href={ nav_link.location } target="nav_link">
+                                    { nav_link.title }
+                                </a>
+                            </div>
+                        );
+                    }
                 }
-
-
+                nav_links = <div className="c-projectPage__links">
+                                { nav_links_children }
+                            </div>;
             }
 
         }
@@ -129,16 +134,20 @@ var ProjectPage = React.createClass({
         fullimage = '';
         fullimage_title = '';
         var total_images = false;
+        var fullimage_html = "";
         if ( project.images ) {
             var image_index = 0;
             total_images = project.images.length;
-
-            /*if ( RouteState.route.image ) {
-                image_index = RouteState.route.image-1;
-            }*/
-
             fullimage = PhiModel.project.images[image_index].image_url;
             fullimage_title = PhiModel.project.images[image_index].title;
+
+            fullimage_html =    <div className="c-projectPage__previewImage"
+                                    onClick={ this.openSlideShow }>
+                                    <image src={ fullimage } />
+                                    <div className="c-projectPage__summaryText">
+                                        1/{ total_images }
+                                    </div>
+                                </div>;
         }
 
         var description = "",summary_cls = "c-projectPage__summary--noDescription";
@@ -164,20 +173,11 @@ var ProjectPage = React.createClass({
                         </div>
 
                         <div className="c-projectPage__content">
-
                             { description }
                             <div className={ "c-projectPage__summary " + summary_cls }>
-                                <div className="c-projectPage__summaryEntry
-                                    c-projectPage__summaryEntry--previewImage"
-                                    onClick={ this.openSlideShow }>
-                                    <image src={ fullimage } />
-                                    <div className="c-projectPage__summaryText">
-                                        1/{ total_images }
-                                    </div>
-                                </div>
-                                { nav_links_children }
+                                { fullimage_html }
+                                { nav_links }
                             </div>
-
                         </div>
                     </div>
                 </div>;

@@ -22,8 +22,7 @@ var HomePage = React.createClass({
     },
 
     gotoHome: function ( ) {
-        RouteState.merge(
-            {
+        RouteState.merge({
                 list:'',
                 project:''
             },
@@ -32,11 +31,9 @@ var HomePage = React.createClass({
     },
 
     openProject: function ( slug ) {
-        RouteState.merge(
-            {
-                project:slug
-            }
-        );
+        RouteState.merge({
+            project:slug
+        });
     },
 
     render: function() {
@@ -78,6 +75,21 @@ var HomePage = React.createClass({
 
         }
 
+        var contact_links = [];
+        if ( PhiModel.contact_links ) {
+            var contact_link;
+            for ( var c=0; c<PhiModel.contact_links.length; c++ ) {
+                contact_link = PhiModel.contact_links[c];
+                contact_links.push(
+                    <a  className="c-homePage__contactLink"
+                        href={ contact_link.location } target="_new"
+                        key={ contact_link.title }>
+                        { contact_link.title }
+                    </a>
+                );
+            }
+        }
+
         var highlights = PhiModel.getHighlightedProjects();
         var highlights_html = [],highlight;
         for ( var h=0; h<highlights.length;h++ ) {
@@ -103,7 +115,11 @@ var HomePage = React.createClass({
 
                     <div className="c-homePage__logo"
                         onClick={ this.gotoHome }>
+                        <div className="c-homePage__contactLinks">
+                            { contact_links }
+                        </div>
                     </div>
+
                     <div className="c-homePage__highlights">
                         { highlights_html }
                     </div>

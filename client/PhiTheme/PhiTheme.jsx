@@ -11,7 +11,6 @@ var PhiTheme = React.createClass({
             $(window).scrollTop(0);
         }
 
-
         if ( RouteState.route.project ) {
             PhiModel.project = PhiModel.slugs[ RouteState.route.project ];
             if ( !PhiModel.project ) {
@@ -57,6 +56,7 @@ var PhiTheme = React.createClass({
     		"project",
     		function ( route , prev_route ) {
                 me.refreshPhiModelState();
+                ga('send', 'pageview', location.hash );
     		},
             "home"
     	);
@@ -65,17 +65,18 @@ var PhiTheme = React.createClass({
     		"list",
     		function ( route , prev_route ) {
                 me.refreshPhiModelState();
+                ga('send', 'pageview', location.hash );
     		},
             "home"
     	);
 
-        this.route_listener_list = RouteState.addDiffListener(
+        /*this.route_listener_list = RouteState.addDiffListener(
     		"page",
     		function ( route , prev_route ) {
                 me.refreshPhiModelState();
     		},
             "home"
-    	);
+    	);*/
 
         this.route_listener_list = RouteState.addDiffListener(
     		"private",

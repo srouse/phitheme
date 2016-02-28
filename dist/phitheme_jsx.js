@@ -22,8 +22,7 @@ var HomePage = React.createClass({displayName: "HomePage",
     },
 
     gotoHome: function ( ) {
-        RouteState.merge(
-            {
+        RouteState.merge({
                 list:'',
                 project:''
             },
@@ -32,11 +31,9 @@ var HomePage = React.createClass({displayName: "HomePage",
     },
 
     openProject: function ( slug ) {
-        RouteState.merge(
-            {
-                project:slug
-            }
-        );
+        RouteState.merge({
+            project:slug
+        });
     },
 
     render: function() {
@@ -78,6 +75,21 @@ var HomePage = React.createClass({displayName: "HomePage",
 
         }
 
+        var contact_links = [];
+        if ( PhiModel.contact_links ) {
+            var contact_link;
+            for ( var c=0; c<PhiModel.contact_links.length; c++ ) {
+                contact_link = PhiModel.contact_links[c];
+                contact_links.push(
+                    React.createElement("a", {className: "c-homePage__contactLink", 
+                        href:  contact_link.location, target: "_new", 
+                        key:  contact_link.title}, 
+                         contact_link.title
+                    )
+                );
+            }
+        }
+
         var highlights = PhiModel.getHighlightedProjects();
         var highlights_html = [],highlight;
         for ( var h=0; h<highlights.length;h++ ) {
@@ -102,8 +114,12 @@ var HomePage = React.createClass({displayName: "HomePage",
         return  React.createElement("div", {className: "c-homePage"}, 
 
                     React.createElement("div", {className: "c-homePage__logo", 
-                        onClick:  this.gotoHome}
+                        onClick:  this.gotoHome}, 
+                        React.createElement("div", {className: "c-homePage__contactLinks"}, 
+                             contact_links 
+                        )
                     ), 
+
                     React.createElement("div", {className: "c-homePage__highlights"}, 
                          highlights_html 
                     ), 
@@ -229,7 +245,7 @@ var ListPage = React.createClass({displayName: "ListPage",
                         React.createElement("div", {className: "listPage__rowDescription"}, 
                              item.summary, 
                              ( item.description ) ?
-                                    React.createElement("span", {className: "listPage__more"}, " more...") : ""
+                                    React.createElement("span", {className: "listPage__more"}, "more...") : ""
                         )
                     )
 
@@ -328,7 +344,6 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
             $(window).scrollTop(0);
         }
 
-
         if ( RouteState.route.project ) {
             PhiModel.project = PhiModel.slugs[ RouteState.route.project ];
             if ( !PhiModel.project ) {
@@ -374,6 +389,7 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
     		"project",
     		function ( route , prev_route ) {
                 me.refreshPhiModelState();
+                ga('send', 'pageview', location.hash );
     		},
             "home"
     	);
@@ -382,17 +398,18 @@ var PhiTheme = React.createClass({displayName: "PhiTheme",
     		"list",
     		function ( route , prev_route ) {
                 me.refreshPhiModelState();
+                ga('send', 'pageview', location.hash );
     		},
             "home"
     	);
 
-        this.route_listener_list = RouteState.addDiffListener(
+        /*this.route_listener_list = RouteState.addDiffListener(
     		"page",
     		function ( route , prev_route ) {
                 me.refreshPhiModelState();
     		},
             "home"
-    	);
+    	);*/
 
         this.route_listener_list = RouteState.addDiffListener(
     		"private",
@@ -530,34 +547,39 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             }
 
             // put links together with filtered list
+
             var total_filtered_links = filtered_children.length;
-            var nav_links_children = [];
-            for ( var p=0; p<total_filtered_links; p++ ) {
-                nav_link = filtered_children[p];
+            var nav_links = "";
+            if ( total_filtered_links > 0 ) {
+                var nav_links_children = [];
+                for ( var p=0; p<total_filtered_links; p++ ) {
+                    nav_link = filtered_children[p];
 
-                if ( nav_link.internal && nav_link.internal == true ) {
-                    nav_links_children.push(
-                        React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
-                            React.createElement("div", {className: "c-projectPage__navLinkButton", 
-                                onClick: 
-                                    this.gotoProject.bind( this , nav_link)
-                                }, 
-                                 nav_link.title
+                    if ( nav_link.internal && nav_link.internal == true ) {
+                        nav_links_children.push(
+                            React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
+                                React.createElement("div", {className: "c-projectPage__navLinkButton", 
+                                    onClick: 
+                                        this.gotoProject.bind( this , nav_link)
+                                    }, 
+                                     nav_link.title
+                                )
                             )
-                        )
-                    );
-                }else{
-                    nav_links_children.push(
-                        React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
-                            React.createElement("a", {className: "c-projectPage__navLinkButton", 
-                                href:  nav_link.location, target: "nav_link"}, 
-                                 nav_link.title
+                        );
+                    }else{
+                        nav_links_children.push(
+                            React.createElement("div", {className: "c-projectPage__summaryEntry"}, 
+                                React.createElement("a", {className: "c-projectPage__navLinkButton", 
+                                    href:  nav_link.location, target: "nav_link"}, 
+                                     nav_link.title
+                                )
                             )
-                        )
-                    );
+                        );
+                    }
                 }
-
-
+                nav_links = React.createElement("div", {className: "c-projectPage__links"}, 
+                                 nav_links_children 
+                            );
             }
 
         }
@@ -570,16 +592,20 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         fullimage = '';
         fullimage_title = '';
         var total_images = false;
+        var fullimage_html = "";
         if ( project.images ) {
             var image_index = 0;
             total_images = project.images.length;
-
-            /*if ( RouteState.route.image ) {
-                image_index = RouteState.route.image-1;
-            }*/
-
             fullimage = PhiModel.project.images[image_index].image_url;
             fullimage_title = PhiModel.project.images[image_index].title;
+
+            fullimage_html =    React.createElement("div", {className: "c-projectPage__previewImage", 
+                                    onClick:  this.openSlideShow}, 
+                                    React.createElement("image", {src:  fullimage }), 
+                                    React.createElement("div", {className: "c-projectPage__summaryText"}, 
+                                        "1/",  total_images 
+                                    )
+                                );
         }
 
         var description = "",summary_cls = "c-projectPage__summary--noDescription";
@@ -605,20 +631,11 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                         ), 
 
                         React.createElement("div", {className: "c-projectPage__content"}, 
-
                              description, 
                             React.createElement("div", {className:  "c-projectPage__summary " + summary_cls}, 
-                                React.createElement("div", {className: "c-projectPage__summaryEntry" + ' ' +
-                                    "c-projectPage__summaryEntry--previewImage", 
-                                    onClick:  this.openSlideShow}, 
-                                    React.createElement("image", {src:  fullimage }), 
-                                    React.createElement("div", {className: "c-projectPage__summaryText"}, 
-                                        "1/",  total_images 
-                                    )
-                                ), 
-                                 nav_links_children 
+                                 fullimage_html, 
+                                 nav_links 
                             )
-
                         )
                     )
                 );

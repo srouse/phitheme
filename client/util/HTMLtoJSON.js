@@ -116,7 +116,10 @@ var HTMLtoJSONImportReplace = function (
             $( target_dom ).find( "*[data-src]").each(
                 function ( index, ele ) {
                     var src_value = $( ele ).attr( "data-src" );
-                    if ( src_value.indexOf( "http://" ) != 0 ) {
+                    if (
+                        src_value.indexOf( "http://" ) != 0 &&
+                        src_value.indexOf( "https://" ) != 0
+                    ) {
                         $( ele ).attr( "data-src" , file_root_url + src_value );
                     }
                 }
@@ -125,7 +128,10 @@ var HTMLtoJSONImportReplace = function (
             $( target_dom ).find( "*[href]").each(
                 function ( index, ele ) {
                     var href_value = $( ele ).attr( "href" );
-                    if ( href_value.indexOf( "http://" ) != 0 ) {
+                    if (
+                        href_value.indexOf( "http://" ) != 0 &&
+                        href_value.indexOf( "https://" ) != 0
+                    ) {
                         $( ele ).attr( "href" , file_root_url + href_value );
                     }
                 }

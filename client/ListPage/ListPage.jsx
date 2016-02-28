@@ -107,7 +107,7 @@ var ListPage = React.createClass({
                         <div className="listPage__rowDescription">
                             { item.summary }
                             { ( item.description ) ?
-                                    <span className="listPage__more">&nbsp;more...</span> : "" }
+                                    <span className="listPage__more">more...</span> : "" }
                         </div>
                     </div>
 
