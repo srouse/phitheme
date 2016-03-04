@@ -150,17 +150,30 @@ var ProjectPage = React.createClass({
                                 </div>;
         }
 
-        var description = "",summary_cls = "c-projectPage__summary--noDescription";
+        // default to the summary ( leave no content behind )
+        var description =   <div className="c-projectPage__summaryContent"
+                                dangerouslySetInnerHTML={{__html:project.summary}}>
+                            </div>;
+
         if ( project.description && project.description.length > 0 ) {
-            description =   <div className="c-projectPage__text"
+            description =   <div className="c-projectPage__summaryContent"
                                 contentEditable={ pseudo_edit }
                                 dangerouslySetInnerHTML={{__html:project.description}}>
                             </div>;
-            summary_cls = "";
         }
+
+        var content =   <div className="c-projectPage__content">
+                            <div className="c-projectPage__summary">
+                                { fullimage_html }
+                                { nav_links }
+                            </div>
+                            { description }
+                        </div>;
+
 
         return  <div className="c-projectPage">
                     <div className="c-projectPage__container">
+
                         <div className="o-pageHeader">
                             <div className="o-pageHeader__title">
                                 { project.title }
@@ -172,13 +185,8 @@ var ProjectPage = React.createClass({
                             </div>
                         </div>
 
-                        <div className="c-projectPage__content">
-                            { description }
-                            <div className={ "c-projectPage__summary " + summary_cls }>
-                                { fullimage_html }
-                                { nav_links }
-                            </div>
-                        </div>
+                        { content }
+
                     </div>
                 </div>;
     }

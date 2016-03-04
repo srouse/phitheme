@@ -14,7 +14,8 @@ var HomePage = React.createClass({
         }else{
             RouteState.merge(
                 {
-                    list:tag
+                    list:tag,
+                    project:''
                 },
                 true
             );

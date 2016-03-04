@@ -20641,7 +20641,8 @@ var HomePage = React.createClass({displayName: "HomePage",
         }else{
             RouteState.merge(
                 {
-                    list:tag
+                    list:tag,
+                    project:''
                 },
                 true
             );
@@ -21235,17 +21236,30 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                                 );
         }
 
-        var description = "",summary_cls = "c-projectPage__summary--noDescription";
+        // default to the summary ( leave no content behind )
+        var description =   React.createElement("div", {className: "c-projectPage__summaryContent", 
+                                dangerouslySetInnerHTML: {__html:project.summary}}
+                            );
+
         if ( project.description && project.description.length > 0 ) {
-            description =   React.createElement("div", {className: "c-projectPage__text", 
+            description =   React.createElement("div", {className: "c-projectPage__summaryContent", 
                                 contentEditable:  pseudo_edit, 
                                 dangerouslySetInnerHTML: {__html:project.description}}
                             );
-            summary_cls = "";
         }
+
+        var content =   React.createElement("div", {className: "c-projectPage__content"}, 
+                            React.createElement("div", {className: "c-projectPage__summary"}, 
+                                 fullimage_html, 
+                                 nav_links 
+                            ), 
+                             description 
+                        );
+
 
         return  React.createElement("div", {className: "c-projectPage"}, 
                     React.createElement("div", {className: "c-projectPage__container"}, 
+
                         React.createElement("div", {className: "o-pageHeader"}, 
                             React.createElement("div", {className: "o-pageHeader__title"}, 
                                  project.title
@@ -21257,13 +21271,8 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                             )
                         ), 
 
-                        React.createElement("div", {className: "c-projectPage__content"}, 
-                             description, 
-                            React.createElement("div", {className:  "c-projectPage__summary " + summary_cls}, 
-                                 fullimage_html, 
-                                 nav_links 
-                            )
-                        )
+                         content 
+
                     )
                 );
     }
