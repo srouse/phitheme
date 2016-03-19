@@ -526,9 +526,9 @@ body.s_list.s_project .c-homePage__link:nth-child(3):nth-last-child(1) {
   }
   .c-homePage__logo {
     transition: none;
-    width: 49.998vw;
+    width: 66.664vw;
     height: 30%;
-    left: 24.999vw;
+    left: 16.666vw;
     top: 10%;
   }
   body.s_list .c-homePage__logo,
@@ -541,6 +541,8 @@ body.s_list.s_project .c-homePage__link:nth-child(3):nth-last-child(1) {
     left: 16.666vw;
     top: 50%;
     height: auto ;
+    font-size: 13px;
+    line-height: 16.5px;
   }
   body.s_project .c-homePage__highlights,
   body.s_list .c-homePage__highlights {
@@ -548,6 +550,10 @@ body.s_list.s_project .c-homePage__link:nth-child(3):nth-last-child(1) {
   }
   .c-homePage__highlight:nth-of-type( n+2 ) {
     display: none;
+  }
+  .c-homePage__contactLink {
+    font-size: 14px;
+    line-height: 22px;
   }
   .c-homePage__logo--small {
     transition: none;
@@ -605,6 +611,16 @@ body.s_list.s_project .c-homePage__link:nth-child(3):nth-last-child(1) {
   body.s_list .c-homePage__link:nth-child(3):nth-last-child(1),
   body.s_list.s_project .c-homePage__link:nth-child(3):nth-last-child(1) {
     margin: 0;
+  }
+}
+@media (max-height: 500px) and (max-width: 768px) {
+  .c-homePage__logo {
+    top: 25%;
+    width: 66.664vw;
+    left: 16.666vw;
+  }
+  .c-homePage__highlights {
+    display: none;
   }
 }
 .listPage {

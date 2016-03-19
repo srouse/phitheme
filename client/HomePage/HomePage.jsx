@@ -105,7 +105,7 @@ var HomePage = React.createClass({
                         { highlight.summary }
                     </div>
                     <div className="c-homePage__highlight__moreBtn">
-                        Read More
+                        More
                     </div>
                 </div>
             );

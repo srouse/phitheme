@@ -50,6 +50,7 @@ module.exports = function(grunt) {
                 'client/Shared/**/*.less',
                 'client/HomePage/c-homePage.less',
                 'client/HomePage/c-homePage--phone.less',
+                'client/HomePage/c-homePage--short.less',
                 'client/ListPage/ListPage.less',
                 'client/ListPage/ListPage--mobile.less',
                 'client/PhiTheme/c-phiTheme.less',

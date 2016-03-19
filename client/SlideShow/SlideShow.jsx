@@ -118,7 +118,7 @@ var SlideShow = React.createClass({
                             { image_context }
                         </span>
                     </div>
-                    <img src={ fullimage }
+                    <img src={ fullimage } key={ fullimage }
                         className="c-slideShow__img" />
                     <div className="
                             c-slideShow__btn c-slideShow__btn--close

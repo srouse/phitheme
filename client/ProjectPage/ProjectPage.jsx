@@ -143,7 +143,7 @@ var ProjectPage = React.createClass({
 
             fullimage_html =    <div className="c-projectPage__previewImage"
                                     onClick={ this.openSlideShow }>
-                                    <image src={ fullimage } />
+                                    <image src={ fullimage } key={ fullimage } />
                                     <div className="c-projectPage__summaryText">
                                         1/{ total_images }
                                     </div>

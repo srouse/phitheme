@@ -20732,7 +20732,7 @@ var HomePage = React.createClass({displayName: "HomePage",
                          highlight.summary
                     ), 
                     React.createElement("div", {className: "c-homePage__highlight__moreBtn"}, 
-                        "Read More"
+                        "More"
                     )
                 )
             );
@@ -21229,7 +21229,7 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
 
             fullimage_html =    React.createElement("div", {className: "c-projectPage__previewImage", 
                                     onClick:  this.openSlideShow}, 
-                                    React.createElement("image", {src:  fullimage }), 
+                                    React.createElement("image", {src:  fullimage, key:  fullimage }), 
                                     React.createElement("div", {className: "c-projectPage__summaryText"}, 
                                         "1/",  total_images 
                                     )
@@ -21399,7 +21399,7 @@ var SlideShow = React.createClass({displayName: "SlideShow",
                              image_context 
                         )
                     ), 
-                    React.createElement("img", {src:  fullimage, 
+                    React.createElement("img", {src:  fullimage, key:  fullimage, 
                         className: "c-slideShow__img"}), 
                     React.createElement("div", {className: 
                             "c-slideShow__btn c-slideShow__btn--close" + ' ' +
