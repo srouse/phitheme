@@ -448,7 +448,6 @@ body.s_list.s_project .c-homePage__contactLinks {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
-  justify-content: space-between;
 }
 body.s_project .c-homePage__nav,
 body.s_list .c-homePage__nav {
@@ -477,6 +476,7 @@ body.s_list.s_project .c-homePage__nav {
   flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
+  flex: 1;
 }
 .c-homePage__link:hover {
   color: #999;

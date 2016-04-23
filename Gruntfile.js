@@ -1,5 +1,8 @@
 
 
+
+
+
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-less');
@@ -122,7 +125,40 @@ module.exports = function(grunt) {
     };
 
 
+    /*grunt.registerMultiTask( 'htmltojson',
+       '',
+       function() {
+           var done = this.async();
+            var HTMLtoJSON = require("./client/util/HTMLtoJSON");
+            //var path = require("path");
 
+            //var jsonFiles = grunt.file.expand( "index.html" );
+
+            //var html = require( path.resolve( jsonFiles[0] ) );
+
+            var jsdom = require("jsdom");
+
+            jsdom.env(
+                '<p><a class="the-link" href="https://github.com/tmpvar/jsdom">jsdom!</a></p>',
+                ["http://code.jquery.com/jquery.js"],
+                function (err, window) {
+                    var json = HTMLtoJSON( window );
+                    console.log( json );
+                    console.log("contents of a.the-link:", window.$("a.the-link").text());
+                    done();
+                }
+            );
+
+           //console.log( html );
+           //console.log( HTMLtoJSON );
+           //grunt.file.write( 'dist/_svg_icons.scss' , scss.join("\n") + "\n\n\n" + scss_macro.join("\n") );
+       }
+   );
+
+   configObj.htmltojson = configObj.htmltojson || {};
+   configObj.htmltojson["phitheme"] = {
+       files:[]
+   };*/
 
     // ===========WATCHES==================
     configObj.watch = configObj.watch || {};

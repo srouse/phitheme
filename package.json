@@ -18,6 +18,7 @@
         "react" : "~0.13",
         "nanoscroller":"~0.8",
         "perfect-scrollbar":"~0.6",
+        "jsdom":"~8.3",
 
         "routestate":"~0.4",
         "cssmodeling":"~0.1"

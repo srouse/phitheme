@@ -64,7 +64,7 @@ var HTMLtoJSONImportReplace = function (
 
             // gotta load in html, but without loading in all the images
             var file_root_url = root + $(ele).attr("href");
-            console.log( file_root_url );
+            // console.log( file_root_url );
             $.get(
                 file_root_url + "?" + cache,
                 function( data ) {
