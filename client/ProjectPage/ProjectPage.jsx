@@ -19,16 +19,16 @@ var ProjectPage = React.createClass({
             "contenttitle_listeners"
     	);
 
-        Ps.initialize( $(".c-projectPage")[0] );
+        //Ps.initialize( $(".c-projectPage")[0] );
     },
 
     componentWillUnmount: function(){
         RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
-        Ps.destroy( $(".c-projectPage")[0] );
+        //Ps.destroy( $(".c-projectPage")[0] );
     },
 
     componentDidUpdate: function () {
-        Ps.update( $(".c-projectPage")[0] );
+        //Ps.update( $(".c-projectPage")[0] );
     },
 
     closeProject: function () {
@@ -163,9 +163,10 @@ var ProjectPage = React.createClass({
         }
 
         var content =   <div className="c-projectPage__content">
+
                             <div className="c-projectPage__summary">
                                 { fullimage_html }
-                                { nav_links }
+                                {/* nav_links */}
                             </div>
                             { description }
                         </div>;
@@ -187,6 +188,19 @@ var ProjectPage = React.createClass({
 
                         { content }
 
+                        <div className="
+                            c-projectPage__nav">
+                            <div className="
+                                c-projectPage__nav__link"
+                                onClick={this.prevProject}>
+                                prev
+                            </div>
+                            <div className="
+                                c-projectPage__nav__link"
+                                onClick={this.nextProject}>
+                                next
+                            </div>
+                        </div>
                     </div>
                 </div>;
     }

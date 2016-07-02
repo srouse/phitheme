@@ -125,8 +125,11 @@ var HomePage = React.createClass({
                         { highlights_html }
                     </div>
 
-                    <div className="c-homePage__logo--small"
-                            onClick={ this.gotoHome }></div>
+                    <div className="
+                        c-homePage__logo--small"
+                        onClick={ this.gotoHome }>
+                    </div>
+                    
                     <div className="c-homePage__nav">
                         { project_links }
                     </div>

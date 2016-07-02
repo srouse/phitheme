@@ -125,8 +125,11 @@ var HomePage = React.createClass({displayName: "HomePage",
                          highlights_html 
                     ), 
 
-                    React.createElement("div", {className: "c-homePage__logo--small", 
-                            onClick:  this.gotoHome}), 
+                    React.createElement("div", {className: 
+                        "c-homePage__logo--small", 
+                        onClick:  this.gotoHome}
+                    ), 
+                    
                     React.createElement("div", {className: "c-homePage__nav"}, 
                          project_links 
                     ), 
@@ -207,9 +210,9 @@ var ListPage = React.createClass({displayName: "ListPage",
                      tagTitle 
                 ), 
                 React.createElement("div", {className: "o-pageHeader__nav"}, 
-                    React.createElement("div", {className: "o-pageHeader__thumbsBtn", 
-                        onClick:  this.toggleThumbs}
-                    ), 
+                    /*<div className="o-pageHeader__thumbsBtn"
+                        onClick={ this.toggleThumbs }>
+                    </div>*/
                     React.createElement("div", {className: "o-pageHeader__closeBtn", 
                         onClick:  this.closeList}
                     )
@@ -246,7 +249,9 @@ var ListPage = React.createClass({displayName: "ListPage",
                         React.createElement("div", {className: "listPage__rowDescription"}, 
                              item.summary, 
                              ( item.description ) ?
-                                    React.createElement("span", {className: "listPage__more"}, "more...") : ""
+                                React.createElement("span", {className: "listPage__more"}, "more...")
+                                : ""
+                            
                         )
                     )
 
@@ -289,7 +294,6 @@ var ListPage = React.createClass({displayName: "ListPage",
             project_list = PhiModel.project_list[i];
             this.renderRows( project_list, rows );
         }
-
 
         return  React.createElement("div", {className: "listPage"}, 
                     React.createElement("div", {className: "listPage__rowContainer"}, 
@@ -478,16 +482,16 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
             "contenttitle_listeners"
     	);
 
-        Ps.initialize( $(".c-projectPage")[0] );
+        //Ps.initialize( $(".c-projectPage")[0] );
     },
 
     componentWillUnmount: function(){
         RouteState.removeDiffListenersViaClusterId( "contenttitle_listeners" );
-        Ps.destroy( $(".c-projectPage")[0] );
+        //Ps.destroy( $(".c-projectPage")[0] );
     },
 
     componentDidUpdate: function () {
-        Ps.update( $(".c-projectPage")[0] );
+        //Ps.update( $(".c-projectPage")[0] );
     },
 
     closeProject: function () {
@@ -622,9 +626,10 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
         }
 
         var content =   React.createElement("div", {className: "c-projectPage__content"}, 
+
                             React.createElement("div", {className: "c-projectPage__summary"}, 
-                                 fullimage_html, 
-                                 nav_links 
+                                 fullimage_html 
+                                /* nav_links */
                             ), 
                              description 
                         );
@@ -644,8 +649,21 @@ var ProjectPage = React.createClass({displayName: "ProjectPage",
                             )
                         ), 
 
-                         content 
+                         content, 
 
+                        React.createElement("div", {className: 
+                            "c-projectPage__nav"}, 
+                            React.createElement("div", {className: 
+                                "c-projectPage__nav__link", 
+                                onClick: this.prevProject}, 
+                                "prev"
+                            ), 
+                            React.createElement("div", {className: 
+                                "c-projectPage__nav__link", 
+                                onClick: this.nextProject}, 
+                                "next"
+                            )
+                        )
                     )
                 );
     }

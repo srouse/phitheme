@@ -68,9 +68,9 @@ var ListPage = React.createClass({
                     { tagTitle }
                 </div>
                 <div className="o-pageHeader__nav">
-                    <div className="o-pageHeader__thumbsBtn"
+                    {/*<div className="o-pageHeader__thumbsBtn"
                         onClick={ this.toggleThumbs }>
-                    </div>
+                    </div>*/}
                     <div className="o-pageHeader__closeBtn"
                         onClick={ this.closeList }>
                     </div>
@@ -107,7 +107,9 @@ var ListPage = React.createClass({
                         <div className="listPage__rowDescription">
                             { item.summary }
                             { ( item.description ) ?
-                                    <span className="listPage__more">more...</span> : "" }
+                                <span className="listPage__more">more...</span>
+                                : ""
+                            }
                         </div>
                     </div>
 
@@ -150,7 +152,6 @@ var ListPage = React.createClass({
             project_list = PhiModel.project_list[i];
             this.renderRows( project_list, rows );
         }
-
 
         return  <div className="listPage">
                     <div className="listPage__rowContainer">

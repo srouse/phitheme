@@ -21,15 +21,20 @@
     &__homePage {
         body.s_list & {
             width: @v-list-width-inv;
+            .a-border-right-weakest;
         }
 
         body.s_project & {
             width: @v-project-page-width-inv;
+            .a-border-right-weakest;
         }
 
         body.s_project.s_list & {
             .a-height-phi-inv;
             width: @v-project-page-width-inv;
+
+            //.a-height-row-5;//height: 100px;
+            height: 100vh;
         }
     }
 
